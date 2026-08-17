@@ -1,0 +1,1725 @@
+/* Home Page Styles */
+
+/* ============================================
+   HOME CONTAINER
+   ============================================ */
+
+.home {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ============================================
+   HERO SECTION - WITH BACKGROUND IMAGE
+   ============================================ */
+
+.home-hero {
+    position: relative;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+
+    /* Background Image */
+    background-image: url('../assests/dubai bakcground.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+/* Overlay to reduce opacity of background image */
+.home-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    /* Adjust this value (0-1) to control darkness/opacity */
+    z-index: 1;
+}
+
+/* Make sure content stays above the overlay */
+.home-hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.home-hero-background {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 50% 80%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+    z-index: 2;
+}
+
+.home-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    z-index: 2;
+}
+
+.home-hero-content {
+    position: relative;
+    z-index: 3;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 60px 20px;
+    text-align: center;
+    color: white;
+}
+
+.home-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-size: 14px;
+    margin-bottom: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.home-hero-title {
+    font-size: 56px;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 20px;
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.home-hero-subtitle {
+    font-size: 20px;
+    opacity: 0.9;
+    margin-bottom: 40px;
+    line-height: 1.6;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.home-hero-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 60px;
+}
+
+.home-hero-stats {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 32px;
+    font-weight: 700;
+    display: block;
+}
+
+.stat-label {
+    font-size: 14px;
+    opacity: 0.8;
+    margin-top: 4px;
+}
+
+.stat-divider {
+    width: 1px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* ============================================
+   CONTAINER
+   ============================================ */
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ============================================
+   SECTION HEADER
+   ============================================ */
+
+.section-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.section-header h2 {
+    font-size: 36px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 12px;
+}
+
+.section-header p {
+    font-size: 18px;
+    color: #666;
+}
+
+/* ============================================
+   FEATURES SECTION
+   ============================================ */
+
+.home-features {
+    padding: 80px 0;
+    background: #f8f9fa;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.feature-card {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
+}
+
+.feature-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px;
+    color: white;
+}
+
+.feature-card h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #1a1a2e;
+}
+
+.feature-card p {
+    color: #666;
+    line-height: 1.6;
+}
+
+/* ============================================
+   FEATURED FLIGHTS SECTION
+   ============================================ */
+
+.home-featured-flights {
+    padding: 80px 0;
+    background: #f8f9fa;
+}
+
+.featured-flights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.featured-flight-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+}
+
+.featured-flight-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+}
+
+.featured-flight-header {
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.featured-flight-airline {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.featured-flight-status {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+}
+
+.featured-flight-body {
+    padding: 24px;
+}
+
+.featured-flight-route {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 12px;
+}
+
+.featured-flight-origin,
+.featured-flight-destination {
+    text-align: center;
+    min-width: 60px;
+}
+
+.featured-flight-code {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1a1a2e;
+}
+
+.featured-flight-city {
+    font-size: 13px;
+    color: #666;
+    margin-top: 4px;
+}
+
+.featured-flight-arrow {
+    flex: 1;
+    text-align: center;
+    min-width: 80px;
+}
+
+.flight-path {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 6px;
+    height: 32px;
+}
+
+.flight-line {
+    flex: 1;
+    height: 2px;
+    background: #d1d5db;
+    position: relative;
+    min-width: 40px;
+}
+
+.flight-plane-icon {
+    position: absolute;
+    background: #667eea;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 50%;
+    margin-top: -13px;
+}
+
+.flight-duration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-size: 11px;
+    color: #6b7280;
+    margin-top: 2px;
+    height: 18px;
+}
+
+.featured-flight-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 1px solid #e5e7eb;
+    margin-top: 4px;
+}
+
+.featured-flight-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.featured-flight-label {
+    font-size: 11px;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.featured-flight-value {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a1a2e;
+    margin-top: 2px;
+}
+
+.featured-flight-footer {
+    padding: 16px 24px;
+    background: #f8f9fa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #e5e7eb;
+}
+
+.featured-flight-price {
+    display: flex;
+    flex-direction: column;
+}
+
+.price-label {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.price-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #667eea;
+}
+
+.featured-flight-book {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #667eea;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.featured-flight-card:hover .featured-flight-book {
+    background: #5a67d8;
+    transform: translateX(4px);
+}
+
+.featured-flights-cta {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.btn--outline-primary {
+    background: transparent;
+    color: #667eea;
+    border: 2px solid #667eea;
+}
+
+.btn--outline-primary:hover {
+    background: #667eea;
+    color: white;
+}
+
+/* ============================================
+   HOW IT WORKS SECTION
+   ============================================ */
+
+.home-how-it-works {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.step-card {
+    text-align: center;
+    padding: 40px 30px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    position: relative;
+}
+
+.step-number {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.step-icon {
+    width: 64px;
+    height: 64px;
+    margin: 10px auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px;
+    color: white;
+}
+
+.step-card h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #1a1a2e;
+}
+
+.step-card p {
+    color: #666;
+    line-height: 1.6;
+}
+
+/* ============================================
+   TRAVEL TIPS SECTION
+   ============================================ */
+
+.home-travel-tips {
+    padding: 80px 0;
+    background: white;
+}
+
+.tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.tip-card {
+    padding: 30px;
+    background: #f8f9fa;
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    border: 1px solid #e5e7eb;
+}
+
+.tip-card:hover {
+    transform: translateY(-4px);
+    border-color: #667eea;
+    box-shadow: 0 8px 30px rgba(102, 126, 234, 0.1);
+}
+
+.tip-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-bottom: 16px;
+}
+
+.tip-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin-bottom: 10px;
+}
+
+.tip-card p {
+    color: #6b7280;
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+.tip-read-more {
+    color: #667eea;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.tip-read-more:hover {
+    color: #5a67d8;
+    transform: translateX(4px);
+}
+
+/* ============================================
+   TESTIMONIALS SECTION
+   ============================================ */
+
+.home-testimonials {
+    padding: 80px 0;
+    background: white;
+}
+
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.testimonial-card {
+    background: #f8f9fa;
+    padding: 30px;
+    border-radius: 16px;
+    transition: all 0.3s ease;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.testimonial-stars {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+}
+
+.testimonial-text {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #1a1a2e;
+    margin-bottom: 20px;
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.testimonial-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+}
+
+.testimonial-name {
+    font-weight: 600;
+    color: #1a1a2e;
+}
+
+.testimonial-role {
+    font-size: 14px;
+    color: #666;
+}
+
+/* ============================================
+   CTA SECTION
+   ============================================ */
+
+.home-cta {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.cta-content {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.cta-content h2 {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.cta-content p {
+    font-size: 18px;
+    opacity: 0.9;
+    margin-bottom: 30px;
+}
+
+/* ============================================
+   TRUST SECTION
+   ============================================ */
+
+.home-trust {
+    padding: 40px 0;
+    background: white;
+    border-top: 1px solid #e9ecef;
+}
+
+.trust-grid {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    flex-wrap: wrap;
+}
+
+.trust-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #666;
+}
+
+.trust-item svg {
+    color: #667eea;
+}
+
+/* ============================================
+   LOADING AND ERROR STATES
+   ============================================ */
+
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    gap: 20px;
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+    color: #667eea;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.error-container {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.error-message {
+    color: #ef4444;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+/* ============================================
+   EMPTY STATE
+   ============================================ */
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background: white;
+    border-radius: 16px;
+    border: 2px dashed #e5e7eb;
+}
+
+.empty-state-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    background: #f3f4f6;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+}
+
+.empty-state h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin-bottom: 12px;
+}
+
+.empty-state p {
+    color: #6b7280;
+    margin-bottom: 24px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ============================================
+   BUTTON STYLES
+   ============================================ */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 32px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 16px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn--primary {
+    background: white;
+    color: #764ba2;
+}
+
+.btn--primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(255, 255, 255, 0.3);
+}
+
+.btn--outline {
+    background: transparent;
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn--outline:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: white;
+}
+
+.btn--lg {
+    padding: 16px 40px;
+    font-size: 18px;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+/* Tablet */
+@media (max-width: 768px) {
+    .home-hero-title {
+        font-size: 36px;
+    }
+
+    .home-hero-subtitle {
+        font-size: 16px;
+    }
+
+    .home-hero-stats {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .stat-divider {
+        display: none;
+    }
+
+    .features-grid,
+    .featured-flights-grid,
+    .steps-grid,
+    .testimonials-grid,
+    .tips-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .trust-grid {
+        gap: 30px;
+    }
+
+    .section-header h2 {
+        font-size: 28px;
+    }
+
+    .home-hero-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .home-hero-actions .btn {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .featured-flight-route {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .featured-flight-arrow {
+        width: 100%;
+        padding: 0;
+    }
+
+    .featured-flight-details {
+        grid-template-columns: 1fr;
+    }
+
+    .empty-state {
+        padding: 40px 20px;
+    }
+
+    .empty-state h3 {
+        font-size: 20px;
+    }
+}
+
+/* Small screens */
+@media (max-width: 480px) {
+    .home-hero-title {
+        font-size: 28px;
+    }
+
+    .home-hero-badge {
+        font-size: 12px;
+        padding: 6px 16px;
+    }
+
+    .section-header h2 {
+        font-size: 24px;
+    }
+
+    .section-header p {
+        font-size: 16px;
+    }
+
+    .featured-flight-code {
+        font-size: 20px;
+    }
+
+    .price-value {
+        font-size: 20px;
+    }
+
+    .featured-flight-book {
+        padding: 6px 16px;
+        font-size: 12px;
+    }
+}
+
+/* ============================================
+   DARK MODE SUPPORT
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+    .section-header h2 {
+        color: #f1f5f9;
+    }
+
+    .section-header p {
+        color: #94a3b8;
+    }
+
+    .feature-card {
+        background: #1e293b;
+    }
+
+    .feature-card h3 {
+        color: #f1f5f9;
+    }
+
+    .feature-card p {
+        color: #94a3b8;
+    }
+
+    .featured-flight-card {
+        background: #1e293b;
+    }
+
+    .featured-flight-code {
+        color: #f1f5f9;
+    }
+
+    .featured-flight-city {
+        color: #94a3b8;
+    }
+
+    .featured-flight-value {
+        color: #f1f5f9;
+    }
+
+    .featured-flight-footer {
+        background: #0f172a;
+    }
+
+    .step-card {
+        background: #1e293b;
+    }
+
+    .step-card h3 {
+        color: #f1f5f9;
+    }
+
+    .step-card p {
+        color: #94a3b8;
+    }
+
+    .tip-card {
+        background: #1e293b;
+        border-color: #334155;
+    }
+
+    .tip-card h3 {
+        color: #f1f5f9;
+    }
+
+    .testimonial-card {
+        background: #1e293b;
+    }
+
+    .testimonial-text {
+        color: #f1f5f9;
+    }
+
+    .testimonial-name {
+        color: #f1f5f9;
+    }
+
+    .testimonial-role {
+        color: #94a3b8;
+    }
+
+    .trust-item {
+        color: #94a3b8;
+    }
+
+    .empty-state {
+        background: #1e293b;
+        border-color: #334155;
+    }
+
+    .empty-state h3 {
+        color: #f1f5f9;
+    }
+
+    .empty-state p {
+        color: #94a3b8;
+    }
+
+    .flight-line {
+        background: #475569;
+    }
+
+    .featured-flight-details {
+        border-top-color: #334155;
+    }
+
+    .home-features {
+        background: #0f172a;
+    }
+
+    .home-featured-flights {
+        background: #0f172a;
+    }
+
+    .home-how-it-works {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    }
+
+    .home-travel-tips {
+        background: #0f172a;
+    }
+
+    .home-testimonials {
+        background: #0f172a;
+    }
+
+    .home-trust {
+        background: #0f172a;
+        border-top-color: #1e293b;
+    }
+}
+
+/* ============================================
+   TOUR PACKAGES SECTION
+   ============================================ */
+
+.home-tour-packages {
+    padding: 80px 0;
+    background: white;
+}
+
+.tour-packages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.tour-package-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    border: 1px solid #e5e7eb;
+}
+
+.tour-package-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+    border-color: #667eea;
+}
+
+.tour-package-image {
+    height: 220px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.tour-package-badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.tour-package-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+}
+
+.tour-package-price {
+    color: white;
+    font-size: 28px;
+    font-weight: 700;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.tour-package-content {
+    padding: 20px 24px 24px;
+}
+
+.tour-package-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.tour-package-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+}
+
+.tour-package-header h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 0;
+}
+
+.tour-package-description {
+    color: #6b7280;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+.tour-package-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.tour-package-feature {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: #4b5563;
+    background: #f3f4f6;
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+
+.tour-package-feature svg {
+    color: #667eea;
+}
+
+.tour-package-feature.more {
+    background: #eef2ff;
+    color: #6366f1;
+    font-weight: 500;
+}
+
+.tour-package-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 16px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.tour-package-duration {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.tour-package-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 50px;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tour-package-btn:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.tour-packages-cta {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* ============================================
+   RESPONSIVE FOR TOUR PACKAGES
+   ============================================ */
+
+@media (max-width: 768px) {
+    .tour-packages-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .tour-package-image {
+        height: 180px;
+    }
+
+    .tour-package-header h3 {
+        font-size: 16px;
+    }
+
+    .tour-package-price {
+        font-size: 22px;
+    }
+
+    .tour-package-features {
+        gap: 6px;
+    }
+
+    .tour-package-feature {
+        font-size: 12px;
+        padding: 3px 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .tour-packages-grid {
+        max-width: 100%;
+    }
+
+    .tour-package-image {
+        height: 160px;
+    }
+
+    .tour-package-content {
+        padding: 16px;
+    }
+
+    .tour-package-footer {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+
+    .tour-package-btn {
+        justify-content: center;
+    }
+}
+
+/* ============================================
+   DARK MODE - TOUR PACKAGES
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+    .home-tour-packages {
+        background: #0f172a;
+    }
+
+    .tour-package-card {
+        background: #1e293b;
+        border-color: #334155;
+    }
+
+    .tour-package-card:hover {
+        border-color: #667eea;
+    }
+
+    .tour-package-header h3 {
+        color: #f1f5f9;
+    }
+
+    .tour-package-description {
+        color: #94a3b8;
+    }
+
+    .tour-package-feature {
+        color: #cbd5e1;
+        background: #2d3748;
+    }
+
+    .tour-package-feature.more {
+        background: rgba(99, 102, 241, 0.15);
+        color: #a5b4fc;
+    }
+
+    .tour-package-footer {
+        border-top-color: #334155;
+    }
+
+    .tour-package-duration {
+        color: #94a3b8;
+    }
+
+    .tour-package-badge {
+        background: rgba(0, 0, 0, 0.85);
+    }
+}
+
+/* ============================================
+   TOUR PACKAGES SECTION
+   ============================================ */
+
+.home-tour-packages {
+    padding: 80px 0;
+    background: white;
+}
+
+.tour-packages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.tour-package-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    border: 1px solid #e5e7eb;
+}
+
+.tour-package-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+    border-color: #667eea;
+}
+
+.tour-package-image {
+    height: 220px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.tour-package-badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.tour-package-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+}
+
+.tour-package-price {
+    color: white;
+    font-size: 28px;
+    font-weight: 700;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.tour-package-content {
+    padding: 20px 24px 24px;
+}
+
+.tour-package-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.tour-package-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+}
+
+.tour-package-header h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 0;
+}
+
+.tour-package-description {
+    color: #6b7280;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+.tour-package-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.tour-package-feature {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: #4b5563;
+    background: #f3f4f6;
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+
+.tour-package-feature svg {
+    color: #667eea;
+}
+
+.tour-package-feature.more {
+    background: #eef2ff;
+    color: #6366f1;
+    font-weight: 500;
+}
+
+.tour-package-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 16px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.tour-package-duration {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.tour-package-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 50px;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tour-package-btn:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.tour-packages-cta {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* ============================================
+   RESPONSIVE FOR TOUR PACKAGES
+   ============================================ */
+
+@media (max-width: 768px) {
+    .tour-packages-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .tour-package-image {
+        height: 180px;
+    }
+
+    .tour-package-header h3 {
+        font-size: 16px;
+    }
+
+    .tour-package-price {
+        font-size: 22px;
+    }
+
+    .tour-package-features {
+        gap: 6px;
+    }
+
+    .tour-package-feature {
+        font-size: 12px;
+        padding: 3px 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .tour-packages-grid {
+        max-width: 100%;
+    }
+
+    .tour-package-image {
+        height: 160px;
+    }
+
+    .tour-package-content {
+        padding: 16px;
+    }
+
+    .tour-package-footer {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+
+    .tour-package-btn {
+        justify-content: center;
+    }
+}
+
+/* ============================================
+   DARK MODE - TOUR PACKAGES
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+    .home-tour-packages {
+        background: #0f172a;
+    }
+
+    .tour-package-card {
+        background: #1e293b;
+        border-color: #334155;
+    }
+
+    .tour-package-card:hover {
+        border-color: #667eea;
+    }
+
+    .tour-package-header h3 {
+        color: #f1f5f9;
+    }
+
+    .tour-package-description {
+        color: #94a3b8;
+    }
+
+    .tour-package-feature {
+        color: #cbd5e1;
+        background: #2d3748;
+    }
+
+    .tour-package-feature.more {
+        background: rgba(99, 102, 241, 0.15);
+        color: #a5b4fc;
+    }
+
+    .tour-package-footer {
+        border-top-color: #334155;
+    }
+
+    .tour-package-duration {
+        color: #94a3b8;
+    }
+
+    .tour-package-badge {
+        background: rgba(0, 0, 0, 0.85);
+    }
+}
+
+/* Maintenance Page Styles */
+.maintenance-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 24px;
+}
+
+.maintenance-container {
+    text-align: center;
+    max-width: 500px;
+    padding: 48px 40px;
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.maintenance-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+}
+
+.maintenance-container h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1a2332;
+    margin: 0 0 12px 0;
+}
+
+.maintenance-container p {
+    font-size: 16px;
+    color: #4a5568;
+    line-height: 1.6;
+    margin: 0 0 24px 0;
+}
+
+.maintenance-spinner {
+    display: flex;
+    justify-content: center;
+    margin: 24px 0;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #e2e8f0;
+    border-top-color: #0a2463;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.maintenance-update {
+    font-size: 14px;
+    color: #8a94a6;
+    margin-top: 8px;
+}
+
+.maintenance-contact {
+    font-size: 14px;
+    color: #4a5568;
+    margin-top: 16px;
+}
+
+.maintenance-contact a {
+    color: #0a2463;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.maintenance-contact a:hover {
+    text-decoration: underline;
+}

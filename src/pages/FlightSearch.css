@@ -1,0 +1,787 @@
+/* FlightForm.css - Complete Working Styles */
+
+/* ============================================
+   ROOT VARIABLES
+   ============================================ */
+
+:root {
+  --primary: #6366f1;
+  --primary-dark: #4f46e5;
+  --primary-light: #eef2ff;
+  --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+  --secondary: #f59e0b;
+  --secondary-light: #fef3c7;
+  --success: #10b981;
+  --success-light: #d1fae5;
+  --danger: #ef4444;
+  --danger-light: #fee2e2;
+  --info: #3b82f6;
+  --info-light: #dbeafe;
+  --text: #0f172a;
+  --text-secondary: #475569;
+  --text-light: #94a3b8;
+  --bg: #f1f5f9;
+  --bg-card: #ffffff;
+  --bg-hover: #f8fafc;
+  --shadow: 0 1px 3px rgba(99, 102, 241, 0.06);
+  --shadow-md: 0 4px 20px rgba(99, 102, 241, 0.08);
+  --shadow-lg: 0 10px 40px rgba(99, 102, 241, 0.1);
+  --shadow-xl: 0 20px 60px rgba(99, 102, 241, 0.12);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-full: 9999px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.25rem;
+  --s-6: 1.5rem;
+  --s-8: 2rem;
+  --step--1: 0.85rem;
+  --signal: #f59e0b;
+}
+
+/* ============================================
+   MAIN WRAPPER
+   ============================================ */
+
+.flight-form-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: var(--font);
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  min-height: 100vh;
+}
+
+.flight-form-header {
+  margin-bottom: 2rem;
+}
+
+.flight-form-header .eyebrow {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--primary);
+  margin: 0 0 0.15rem 0;
+}
+
+.flight-form-header h1 {
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  font-weight: 800;
+  color: var(--text);
+  margin: 0 0 var(--s-3) 0;
+  letter-spacing: -0.5px;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.flight-form-header h1::after {
+  content: ' ✈️';
+  -webkit-text-fill-color: initial;
+}
+
+.flight-form-header .faint {
+  color: var(--text-light);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* ============================================
+   FORM CARD
+   ============================================ */
+
+.flight-form .card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(99, 102, 241, 0.05);
+  padding: 2rem;
+  transition: var(--transition);
+}
+
+.flight-form .card:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+/* ============================================
+   FORM SECTIONS
+   ============================================ */
+
+.form-section {
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(99, 102, 241, 0.06);
+}
+
+.form-section:last-of-type {
+  border-bottom: none;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0;
+}
+
+.form-section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 1.25rem 0;
+  letter-spacing: -0.3px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.form-section-title::before {
+  content: '';
+  width: 4px;
+  height: 20px;
+  background: var(--primary-gradient);
+  border-radius: var(--radius-full);
+  display: inline-block;
+}
+
+/* ============================================
+   FORM ROWS
+   ============================================ */
+
+.form-row {
+  display: grid;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.form-row:last-child {
+  margin-bottom: 0;
+}
+
+.form-row--2col {
+  grid-template-columns: 1fr 1fr;
+}
+
+.form-row--3col {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+/* ============================================
+   FIELD GROUP
+   ============================================ */
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  width: 100%;
+}
+
+.field__label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.field__label .required {
+  color: var(--danger);
+  margin-left: 0.15rem;
+}
+
+.field__label .optional {
+  color: var(--text-light);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.7rem;
+}
+
+/* ============================================
+   FIELD INPUTS
+   ============================================ */
+
+.field {
+  width: 100%;
+  padding: 0.65rem 0.9rem;
+  border: 2px solid #e2e8f0;
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  font-family: var(--font);
+  background: var(--bg-card);
+  color: var(--text);
+  min-height: 48px;
+  transition: var(--transition);
+  outline: none;
+  box-sizing: border-box;
+  display: block;
+}
+
+.field:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+  background: white;
+}
+
+.field:hover {
+  border-color: var(--primary);
+}
+
+.field::placeholder {
+  color: #a0aec0;
+  opacity: 1;
+}
+
+.field:disabled {
+  background: #f1f5f9;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Error state */
+.field--error {
+  border-color: var(--danger) !important;
+  background: var(--danger-light);
+}
+
+.field--error:focus {
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+  border-color: var(--danger);
+}
+
+/* ============================================
+   FIELD HELPERS
+   ============================================ */
+
+.field-helper {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  margin-top: 0.25rem;
+  font-weight: 400;
+}
+
+.field-helper--error {
+  color: var(--danger);
+  font-weight: 500;
+}
+
+/* ============================================
+   SELECT DROPDOWN
+   ============================================ */
+
+select.field {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236366f1' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.9rem center;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+select.field option {
+  padding: 0.5rem;
+  background: white;
+  color: var(--text);
+}
+
+flight-status {
+  color: #0f172a;
+}
+
+/* ============================================
+   NUMBER INPUTS
+   ============================================ */
+
+input[type="number"].field {
+  -moz-appearance: textfield;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+input[type="number"].field::-webkit-outer-spin-button,
+input[type="number"].field::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* ============================================
+   DATETIME INPUTS
+   ============================================ */
+
+input[type="datetime-local"].field {
+  min-height: 48px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+}
+
+input[type="datetime-local"].field::-webkit-calendar-picker-indicator {
+  opacity: 0.6;
+  padding: 4px;
+  cursor: pointer;
+}
+
+input[type="datetime-local"].field::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* ============================================
+   CHECKBOX
+   ============================================ */
+
+.field-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  padding: 0.5rem 0;
+}
+
+.field-checkbox input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--primary);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.field-checkbox .checkbox-label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+/* ============================================
+   FORM ACTIONS
+   ============================================ */
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(99, 102, 241, 0.06);
+  margin-top: 1rem;
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.75rem;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  font-size: 0.875rem;
+  transition: var(--transition);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  min-height: 48px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.2);
+  opacity: 0;
+  transition: var(--transition);
+}
+
+.btn:hover::after {
+  opacity: 1;
+}
+
+.btn--primary {
+  background: var(--primary-gradient);
+  color: white;
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+}
+
+.btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(99, 102, 241, 0.4);
+}
+
+.btn--primary:active {
+  transform: translateY(0);
+}
+
+.btn--primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 2px solid #e2e8f0;
+}
+
+.btn--ghost:hover {
+  background: var(--bg-hover);
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.btn--ghost:active {
+  transform: translateY(0);
+}
+
+/* ============================================
+   LOADING STATE
+   ============================================ */
+
+.flight-form-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(99, 102, 241, 0.05);
+}
+
+/* ============================================
+   RESPONSIVE BREAKPOINTS
+   ============================================ */
+
+/* Desktop */
+@media (max-width: 1200px) {
+  .flight-form-wrapper {
+    padding: 1.5rem;
+  }
+}
+
+/* Tablet */
+@media (max-width: 992px) {
+  .flight-form-wrapper {
+    padding: 1.25rem;
+  }
+
+  .flight-form .card {
+    padding: 1.5rem;
+  }
+
+  .form-row--3col {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .form-row--3col .field-group:last-child {
+    grid-column: span 2;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .flight-form-wrapper {
+    padding: 1rem;
+  }
+
+  .flight-form-header h1 {
+    font-size: 1.3rem;
+  }
+
+  .flight-form .card {
+    padding: 1rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .form-row--2col,
+  .form-row--3col {
+    grid-template-columns: 1fr;
+  }
+
+  .form-row--3col .field-group:last-child {
+    grid-column: span 1;
+  }
+
+  .form-section {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .form-section-title {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .field {
+    font-size: 0.9rem;
+    min-height: 44px;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .field__label {
+    font-size: 0.7rem;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+    gap: 0.75rem;
+  }
+
+  .form-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  input[type="datetime-local"].field {
+    min-height: 44px;
+  }
+
+  select.field {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+/* Small Phones */
+@media (max-width: 480px) {
+  .flight-form-wrapper {
+    padding: 0.75rem;
+  }
+
+  .flight-form-header h1 {
+    font-size: 1.1rem;
+  }
+
+  .flight-form .card {
+    padding: 0.75rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .field {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.75rem;
+    min-height: 40px;
+  }
+
+  .btn {
+    font-size: 0.8rem;
+    min-height: 40px;
+    padding: 0.4rem 1rem;
+  }
+
+  .form-section-title {
+    font-size: 0.8rem;
+  }
+
+  .field-checkbox .checkbox-label {
+    font-size: 0.85rem;
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+.btn:focus-visible,
+.field:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================
+   UTILITY
+   ============================================ */
+
+.faint {
+  color: var(--text-light);
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* ============================================
+   ALERT OVERRIDES (if using Alert component)
+   ============================================ */
+
+.alert {
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.alert--error {
+  background: var(--danger-light);
+  color: #991b1b;
+  border-left-color: var(--danger);
+}
+
+/* ============================================
+   DARK MODE SUPPORT
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f172a;
+    --bg-card: #1e293b;
+    --bg-hover: #2d3748;
+    --text: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-light: #64748b;
+    --primary-light: #1e3a5f;
+  }
+
+  .flight-form-wrapper {
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+  }
+
+  .flight-form .card {
+    background: var(--bg-card);
+    border-color: rgba(255, 255, 255, 0.05);
+  }
+
+  .form-section {
+    border-bottom-color: rgba(255, 255, 255, 0.05);
+  }
+
+  .form-actions {
+    border-top-color: rgba(255, 255, 255, 0.05);
+  }
+
+  .field {
+    background: var(--bg-card);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: var(--text);
+  }
+
+  .field:focus {
+    background: var(--bg-card);
+  }
+
+  .field::placeholder {
+    color: #64748b;
+  }
+
+  .field--error {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: var(--danger) !important;
+  }
+
+  .field--error:focus {
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.2);
+  }
+
+  select.field option {
+    background: var(--bg-card);
+    color: var(--text);
+  }
+
+  select.field {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238b5cf6' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  }
+
+  .btn--ghost {
+    border-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+  }
+
+  .btn--ghost:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  input[type="datetime-local"].field::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+  }
+
+  .field-checkbox input[type="checkbox"] {
+    accent-color: var(--primary);
+  }
+
+  .alert--error {
+    background: rgba(239, 68, 68, 0.15);
+    color: #fca5a5;
+  }
+
+  .flight-form-header h1 {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+/* ============================================
+   SCROLLBAR STYLING
+   ============================================ */
+
+.flight-form-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.flight-form-wrapper::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.flight-form-wrapper::-webkit-scrollbar-thumb {
+  background: var(--primary-gradient);
+  border-radius: 4px;
+}
+
+.flight-form-wrapper::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
+
+@media (prefers-color-scheme: dark) {
+  .flight-form-wrapper::-webkit-scrollbar-track {
+    background: #1e293b;
+  }
+}

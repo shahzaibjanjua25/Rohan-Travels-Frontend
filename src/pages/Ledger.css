@@ -1,0 +1,227 @@
+/* Ledger.css */
+
+.ledger-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-5);
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header */
+.ledger-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-6);
+  padding: var(--space-4) var(--space-5);
+  background: var(--dash-bg-secondary);
+  border-radius: var(--dash-radius-lg);
+  border: 1px solid var(--dash-border-light);
+  box-shadow: var(--dash-shadow-sm);
+  transition: all var(--transition-base);
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.ledger-header:hover {
+  box-shadow: var(--dash-shadow-md);
+}
+
+.ledger-header .eyebrow {
+  font-size: var(--font-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--dash-text-muted);
+  font-weight: 600;
+  margin: 0 0 var(--space-1) 0;
+}
+
+.ledger-header h1 {
+  font-size: var(--font-2xl);
+  font-weight: 700;
+  margin: 0;
+  background: var(--dash-primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.ledger-header .subtitle {
+  font-size: var(--font-sm);
+  color: var(--dash-text-muted);
+  margin: var(--space-1) 0 0 0;
+}
+
+/* Stats */
+.ledger-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+/* Table */
+.ledger-table-wrapper {
+  background: var(--dash-bg-secondary);
+  border-radius: var(--dash-radius-lg);
+  border: 1px solid var(--dash-border-light);
+  box-shadow: var(--dash-shadow-sm);
+  overflow: hidden;
+}
+
+.ledger-table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--dash-border-light);
+}
+
+.ledger-table-header h3 {
+  font-size: var(--font-md);
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Table */
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: var(--font-base);
+}
+
+.table thead {
+  background: linear-gradient(135deg, #0a2463 0%, #1a4a8a 50%, #2a6aaa 100%);
+}
+
+.table thead th {
+  padding: 14px 20px;
+  text-align: left;
+  font-weight: 700;
+  font-size: var(--font-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+  white-space: nowrap;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.table thead th:first-child {
+  padding-left: 24px;
+}
+
+.table thead th:last-child {
+  padding-right: 24px;
+}
+
+.table tbody tr {
+  transition: all var(--transition-base);
+  border-bottom: 1px solid var(--dash-border-light);
+}
+
+.table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.table tbody tr:hover {
+  background: linear-gradient(135deg, #f8f9fc 0%, #f0f2f7 100%);
+}
+
+.table tbody tr:nth-child(even) {
+  background: #fafbfc;
+}
+
+.table tbody tr:nth-child(even):hover {
+  background: linear-gradient(135deg, #f8f9fc 0%, #f0f2f7 100%);
+}
+
+.table tbody td {
+  padding: 14px 20px;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--dash-border-light);
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody td:first-child {
+  padding-left: 24px;
+}
+
+.table tbody td:last-child {
+  padding-right: 24px;
+}
+
+.table__scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Utilities */
+.text-success {
+  color: var(--dash-success);
+}
+
+.text-danger {
+  color: var(--dash-danger);
+}
+
+.text-info {
+  color: var(--dash-info);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .ledger-wrapper {
+    padding: var(--space-3);
+  }
+
+  .ledger-header {
+    flex-direction: column;
+    align-items: stretch;
+    padding: var(--space-4);
+  }
+
+  .ledger-header h1 {
+    font-size: var(--font-xl);
+  }
+
+  .ledger-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .table thead th,
+  .table tbody td {
+    padding: 10px 14px;
+    font-size: var(--font-xs);
+  }
+}
+
+@media (max-width: 480px) {
+  .ledger-wrapper {
+    padding: var(--space-2);
+  }
+
+  .ledger-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .table thead th,
+  .table tbody td {
+    padding: 8px 12px;
+    font-size: 10px;
+  }
+}
