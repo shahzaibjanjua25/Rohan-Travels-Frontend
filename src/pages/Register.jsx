@@ -12,12 +12,12 @@ import logo from '../assests/logo.png';
 import './Login.css';
 
 export default function Register() {
-  const [form, setForm] = useState({ 
-    name: '', 
-    email: '', 
-    password: '', 
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    password: '',
     confirmPassword: '',
-    phone: '' 
+    phone: ''
   });
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState('');
@@ -35,14 +35,14 @@ export default function Register() {
   // Password strength checker
   const getPasswordStrength = (password) => {
     if (!password) return { score: 0, label: '', color: '#e2e8f0' };
-    
+
     let score = 0;
     if (password.length >= 8) score++;
     if (password.length >= 12) score++;
     if (/[a-z]/.test(password) && /[A-Z]/.test(password)) score++;
     if (/\d/.test(password)) score++;
     if (/[^a-zA-Z0-9]/.test(password)) score++;
-    
+
     const levels = [
       { score: 0, label: 'Weak', color: '#ef4444' },
       { score: 1, label: 'Weak', color: '#ef4444' },
@@ -51,14 +51,14 @@ export default function Register() {
       { score: 4, label: 'Strong', color: '#10b981' },
       { score: 5, label: 'Very Strong', color: '#10b981' },
     ];
-    
+
     return levels[score] || levels[0];
   };
 
   // Show error popup
   const showErrorPopup = (title, message, details = null) => {
     let htmlContent = `<div style="text-align: left;">`;
-    
+
     if (details && typeof details === 'object') {
       htmlContent += `<p><strong>${message}</strong></p>`;
       htmlContent += `<ul style="list-style-type: none; padding-left: 0; margin-top: 8px;">`;
@@ -72,7 +72,7 @@ export default function Register() {
     } else {
       htmlContent += `<p>${message}</p>`;
     }
-    
+
     htmlContent += `</div>`;
 
     Swal.fire({
@@ -127,16 +127,27 @@ export default function Register() {
   };
 
   // Send OTP via auth service
+  // frontend/src/pages/Register.jsx
+  // Find the sendOTP function and update it
+
   const sendOTP = async () => {
     setOtpError('');
-    
+
     try {
+      console.log('[Register] Requesting OTP for:', form.email);
       const response = await authService.requestOTP(form.email, 'verification');
+      console.log('[Register] OTP response:', response);
+
       if (response.success) {
+        // Show the OTP in the console for testing (development only)
+        if (response.otp) {
+          console.log('🔑 Your OTP is:', response.otp);
+        }
         return true;
       }
       return false;
     } catch (error) {
+      console.error('[Register] Send OTP error:', error);
       setOtpError(error.message || 'Failed to send verification code.');
       return false;
     }
@@ -161,29 +172,29 @@ export default function Register() {
     showLoadingPopup();
 
     try {
-      const payload = { 
-        name: form.name.trim(), 
-        email: form.email.trim(), 
+      const payload = {
+        name: form.name.trim(),
+        email: form.email.trim(),
         password: form.password,
         isVerified: true
       };
       if (form.phone.trim()) payload.phone = form.phone.trim();
 
       await register(payload);
-      
+
       closeLoadingPopup();
       showSuccessPopup();
-      
+
     } catch (err) {
       closeLoadingPopup();
-      
+
       if (err instanceof ApiError) {
         setErrors(err.fieldErrors || {});
-        
+
         let errorTitle = 'Registration Failed';
         let errorMessage = err.message || 'Something went wrong.';
         let errorDetails = err.fieldErrors || null;
-        
+
         if (err.message?.includes('already exists') || err.message?.includes('duplicate')) {
           errorTitle = 'Email Already Registered';
           errorMessage = 'An account with this email already exists.';
@@ -193,7 +204,7 @@ export default function Register() {
           errorMessage = 'Please fix the following issues:';
           errorDetails = err.fieldErrors;
         }
-        
+
         showErrorPopup(errorTitle, errorMessage, errorDetails);
         setMessage(err.details?.length ? '' : err.message);
       } else {
@@ -210,7 +221,7 @@ export default function Register() {
     setOtpError('');
     const success = await sendOTP();
     setIsResending(false);
-    
+
     if (success) {
       Swal.fire({
         icon: 'success',
@@ -278,7 +289,7 @@ export default function Register() {
     // Send OTP and show verification popup
     const otpSent = await sendOTP();
     setBusy(false);
-    
+
     if (otpSent) {
       setShowOTP(true);
       Swal.fire({
@@ -318,13 +329,13 @@ export default function Register() {
     <div className="auth">
       <div className="auth__card">
         <div className="auth__logo">
-          <img 
-            src={logo} 
-            alt="Rohan Travels & Tours" 
-            className="auth__logo-img" 
+          <img
+            src={logo}
+            alt="Rohan Travels & Tours"
+            className="auth__logo-img"
           />
         </div>
-        
+
         <p className="eyebrow">Rohan Travels</p>
         <h1 className="auth__title">Create an account</h1>
         <p className="auth__sub">Join us to start booking your dream flights.</p>
@@ -370,8 +381,8 @@ export default function Register() {
 
           {/* Password Strength Indicator */}
           {form.password && (
-            <div style={{ 
-              marginTop: '-8px', 
+            <div style={{
+              marginTop: '-8px',
               marginBottom: '8px',
               display: 'flex',
               alignItems: 'center',
