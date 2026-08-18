@@ -1,5 +1,4 @@
 // frontend/src/services/api.js
-// Use environment variable for API URL
 const BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
 const CSRF_COOKIE = 'rt_csrf';
@@ -20,37 +19,39 @@ export class ApiError extends Error {
   }
 }
 
-// frontend/src/services/api.js
-
 const readCookie = (name) => {
-  // Only works for same-domain cookies
   const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
   return match ? decodeURIComponent(match[1]) : null;
 };
 
-// Add a fallback - store CSRF token in a variable
+// ✅ DECLARE csrfPrimer at module level
+let csrfPrimer = null;
 let csrfTokenCache = null;
 
 export const ensureCsrfToken = async () => {
-  // First check cache
-  if (csrfTokenCache) return csrfTokenCache;
-
-  // Then check cookie
-  const existing = readCookie(CSRF_COOKIE);
-  if (existing) {
-    csrfTokenCache = existing;
-    return existing;
+  // 1. Check cache first
+  if (csrfTokenCache) {
+    console.log('🔑 Using cached CSRF token');
+    return csrfTokenCache;
+  }
+  
+  // 2. Check cookie
+  const cookieToken = readCookie(CSRF_COOKIE);
+  if (cookieToken) {
+    csrfTokenCache = cookieToken;
+    console.log('🍪 CSRF token from cookie:', cookieToken.substring(0, 10) + '...');
+    return cookieToken;
   }
 
-  // If we're already fetching, wait for that
+  // 3. If we're already fetching, wait for that
   if (csrfPrimer) {
+    console.log('⏳ Waiting for existing CSRF fetch...');
     await csrfPrimer;
-    const token = readCookie(CSRF_COOKIE);
-    if (token) csrfTokenCache = token;
-    return token;
+    return csrfTokenCache || readCookie(CSRF_COOKIE);
   }
 
-  // Start a new fetch
+  // 4. Start a new fetch
+  console.log('🔄 Fetching new CSRF token...');
   csrfPrimer = (async () => {
     try {
       const response = await fetch(`${BASE_URL}/auth/csrf`, {
@@ -60,33 +61,40 @@ export const ensureCsrfToken = async () => {
           'Accept': 'application/json',
         },
       });
-
+      
       if (!response.ok) {
-        console.warn('CSRF fetch failed:', response.status);
+        console.warn('⚠️ CSRF fetch failed:', response.status);
         return null;
       }
-
-      // Try to read from cookie
+      
+      // Try to get token from cookie
       let token = readCookie(CSRF_COOKIE);
-
-      // If cookie is not readable (cross-domain), try to get it from response body
+      
+      // If cookie not readable, try response body
       if (!token) {
         try {
           const data = await response.json();
-          if (data && data.csrfToken) {
-            token = data.csrfToken;
-            csrfTokenCache = token;
-            console.log('📦 CSRF token from response body:', token.substring(0, 10) + '...');
+          token = data.csrfToken || data.token || null;
+          if (token) {
+            console.log('📦 CSRF token from response body');
+            // Try to set it in a cookie for subsequent requests
+            document.cookie = `${CSRF_COOKIE}=${token}; path=/; SameSite=None; Secure`;
           }
         } catch (e) {
           console.warn('Could not parse CSRF response:', e);
         }
       }
-
-      if (token) csrfTokenCache = token;
+      
+      if (token) {
+        csrfTokenCache = token;
+        console.log('✅ CSRF token obtained:', token.substring(0, 10) + '...');
+      } else {
+        console.warn('⚠️ No CSRF token found');
+      }
+      
       return token;
     } catch (error) {
-      console.error('CSRF fetch error:', error);
+      console.error('❌ CSRF fetch error:', error);
       return null;
     } finally {
       csrfPrimer = null;
@@ -116,7 +124,7 @@ const buildQuery = (params) => {
 const request = async (path, { method = 'GET', body, params, signal } = {}) => {
   const upperMethod = method.toUpperCase();
 
-  const headers = {
+  const headers = { 
     'Accept': 'application/json',
     'Content-Type': 'application/json',
   };
@@ -126,8 +134,9 @@ const request = async (path, { method = 'GET', body, params, signal } = {}) => {
     const token = await ensureCsrfToken();
     if (token) {
       headers[CSRF_HEADER] = token;
+      console.log(`🛡️ CSRF header set for ${upperMethod} ${path}`);
     } else {
-      console.warn(`CSRF token not available for ${upperMethod} ${path}`);
+      console.warn(`⚠️ CSRF token not available for ${upperMethod} ${path}`);
     }
   }
 
@@ -138,7 +147,7 @@ const request = async (path, { method = 'GET', body, params, signal } = {}) => {
     response = await fetch(url, {
       method: upperMethod,
       headers,
-      credentials: 'include', // Important: sends cookies
+      credentials: 'include',
       body: body === undefined ? undefined : JSON.stringify(body),
       signal,
     });
