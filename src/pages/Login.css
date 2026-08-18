@@ -1,5 +1,3 @@
-/* src/pages/Login.css */
-
 /* ============================================
    AUTH CONTAINER
    ============================================ */
@@ -8,9 +6,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: calc(100vh - 72px);
+  min-height: 100vh;
   padding: 40px 20px;
-  background: linear-gradient(135deg, #f0f2f5 0%, #e8ecf1 100%);
+  background: #f4f6f9;
 }
 
 .auth__card {
@@ -80,10 +78,6 @@
   font-weight: 700;
   color: #1a2332;
   margin: 0 0 8px 0;
-  background: linear-gradient(135deg, #0a2463 0%, #1a4a8a 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 .auth__sub {
@@ -95,26 +89,34 @@
 }
 
 /* ============================================
-   FORM
+   FORM - card stack
    ============================================ */
 
-.auth__card .card {
+.card {
   background: transparent;
   border: none;
   padding: 0;
   box-shadow: none;
+}
+
+.stack {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.auth__card .field-group {
+/* ============================================
+   FIELD GROUP
+   ============================================ */
+
+.field {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  width: 100%;
 }
 
-.auth__card .field__label {
+.field__label {
   font-size: 14px;
   font-weight: 600;
   color: #1a2332;
@@ -123,12 +125,16 @@
   gap: 4px;
 }
 
-.auth__card .field__label .required {
+.field__label .required {
   color: #dc3545;
   font-weight: 700;
 }
 
-.auth__card .field {
+/* ============================================
+   INPUT FIELDS - with autofill fix
+   ============================================ */
+
+.field__input {
   width: 100%;
   padding: 12px 16px;
   font-size: 15px;
@@ -139,37 +145,68 @@
   border-radius: 10px;
   transition: all 0.2s ease;
   outline: none;
+  box-sizing: border-box;
 }
 
-.auth__card .field:hover {
+.field__input:hover {
   border-color: #8a94a6;
 }
 
-.auth__card .field:focus {
+.field__input:focus {
   border-color: #0a2463;
   box-shadow: 0 0 0 4px rgba(10, 36, 99, 0.08);
 }
 
-.auth__card .field::placeholder {
+.field__input::placeholder {
   color: #8a94a6;
   opacity: 0.7;
 }
 
-.auth__card .field--error {
+.field__input--error {
   border-color: #dc3545;
 }
 
-.auth__card .field--error:focus {
+.field__input--error:focus {
   box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.08);
 }
 
-.auth__card .field-helper {
+/* ============================================
+   KILL YELLOW AUTOFILL BACKGROUND - COMPLETE FIX
+   ============================================ */
+
+/* Chrome, Safari, Edge, Opera */
+.field__input:-webkit-autofill,
+.field__input:-webkit-autofill:hover,
+.field__input:-webkit-autofill:focus,
+.field__input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+  -webkit-text-fill-color: #1a2332 !important;
+  background-color: #ffffff !important;
+  background-clip: content-box !important;
+  border-color: #e2e8f0 !important;
+  caret-color: #1a2332 !important;
+  transition: background-color 5000s ease-in-out 0s !important;
+}
+
+/* Firefox */
+.field__input:autofill,
+.field__input:-moz-autofill {
+  background-color: #ffffff !important;
+  color: #1a2332 !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* ============================================
+   FIELD HELPERS
+   ============================================ */
+
+.field-helper {
   font-size: 13px;
   color: #8a94a6;
   margin-top: 4px;
 }
 
-.auth__card .field-helper--error {
+.field-helper--error {
   color: #dc3545;
 }
 
@@ -239,10 +276,10 @@
 }
 
 /* ============================================
-   FOOTER LINKS
+   FOOTER LINKS - row
    ============================================ */
 
-.auth__card .row {
+.row {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -252,23 +289,23 @@
   padding-top: 4px;
 }
 
-.auth__card .row a {
+.row a {
   color: #0a2463;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s ease;
 }
 
-.auth__card .row a:hover {
+.row a:hover {
   color: #1a4a8a;
   text-decoration: underline;
 }
 
-.auth__card .muted {
+.muted {
   color: #6b7a8f;
 }
 
-.auth__card .muted a {
+.muted a {
   font-weight: 600;
 }
 
@@ -305,7 +342,7 @@
 @media (max-width: 480px) {
   .auth {
     padding: 20px 12px;
-    min-height: calc(100vh - 64px);
+    min-height: 100vh;
   }
 
   .auth__card {
@@ -326,7 +363,7 @@
     height: 60px;
   }
 
-  .auth__card .field {
+  .field__input {
     padding: 10px 14px;
     font-size: 16px;
   }
@@ -336,7 +373,7 @@
     font-size: 15px;
   }
 
-  .auth__card .row {
+  .row {
     flex-direction: column;
     align-items: center;
     text-align: center;
@@ -350,7 +387,7 @@
 
 @media (prefers-color-scheme: dark) {
   .auth {
-    background: linear-gradient(135deg, #0f172a 0%, #1a2332 100%);
+    background: #0f172a;
   }
 
   .auth__card {
@@ -359,37 +396,53 @@
   }
 
   .auth__title {
-    background: linear-gradient(135deg, #818cf8 0%, #a78bfa 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #f1f5f9;
   }
 
   .auth__sub {
     color: #94a3b8;
   }
 
-  .auth__card .field {
+  .field__label {
+    color: #f1f5f9;
+  }
+
+  .field__input {
     background: #0f172a;
     color: #f1f5f9;
     border-color: #334155;
   }
 
-  .auth__card .field:hover {
+  .field__input:hover {
     border-color: #475569;
   }
 
-  .auth__card .field:focus {
+  .field__input:focus {
     border-color: #818cf8;
     box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
   }
 
-  .auth__card .field__label {
-    color: #f1f5f9;
+  .field__input::placeholder {
+    color: #64748b;
   }
 
-  .auth__card .field::placeholder {
-    color: #64748b;
+  /* Dark mode - Kill yellow autofill */
+  .field__input:-webkit-autofill,
+  .field__input:-webkit-autofill:hover,
+  .field__input:-webkit-autofill:focus,
+  .field__input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #0f172a inset !important;
+    -webkit-text-fill-color: #f1f5f9 !important;
+    background-color: #0f172a !important;
+    border-color: #334155 !important;
+    caret-color: #f1f5f9 !important;
+  }
+
+  .field__input:autofill,
+  .field__input:-moz-autofill {
+    background-color: #0f172a !important;
+    color: #f1f5f9 !important;
+    border-color: #334155 !important;
   }
 
   .btn--primary {
@@ -411,15 +464,15 @@
     border-color: #475569;
   }
 
-  .auth__card .row a {
+  .row a {
     color: #818cf8;
   }
 
-  .auth__card .row a:hover {
+  .row a:hover {
     color: #a78bfa;
   }
 
-  .auth__card .muted {
+  .muted {
     color: #94a3b8;
   }
 
