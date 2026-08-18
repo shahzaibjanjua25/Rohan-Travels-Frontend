@@ -4,6 +4,8 @@ import { useAuth } from '../contexts/AuthContext';
 import { ApiError } from '../services/api';
 import Field from '../components/ui/Field';
 import Alert from '../components/ui/Alert';
+import logo from '../assests/logo.png'; // Add this import
+import './Login.css'; // Add this import
 
 export default function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -42,22 +44,32 @@ export default function Login() {
   return (
     <div className="auth">
       <div className="auth__card">
-        <p className="eyebrow">Rohan Travels</p>
-        <h1 className="auth__title">Sign in</h1>
-        <p className="auth__sub">Manage your bookings and travel documents.</p>
+        {/* Logo */}
+        <div className="auth__logo">
+          <img 
+            src={logo} 
+            alt="Rohan Travels & Tours" 
+            className="auth__logo-img" 
+          />
+        </div>
+        
+        {/* <p className="eyebrow">Rohan Travels</p> */}
+        <h1 className="auth__title">Welcome Back</h1>
+        <p className="auth__sub">Sign in to manage your bookings and travel documents.</p>
 
         <form className="card stack" onSubmit={submit} noValidate>
           {message && <Alert kind="error">{message}</Alert>}
 
           <Field
             id="email"
-            label="Email"
+            label="Email Address"
             type="email"
             autoComplete="email"
             value={form.email}
             onChange={set('email')}
             error={errors.email}
             required
+            placeholder="you@example.com"
           />
 
           <Field
@@ -69,13 +81,14 @@ export default function Login() {
             onChange={set('password')}
             error={errors.password}
             required
+            placeholder="Enter your password"
           />
 
           <button className="btn btn--primary btn--block" type="submit" disabled={busy}>
             {busy ? 'Signing in…' : 'Sign in'}
           </button>
 
-          <div className="row row--between" style={{ fontSize: 'var(--step--1)' }}>
+          <div className="row">
             <Link to="/forgot-password">Forgot your password?</Link>
             <span className="muted">
               New here? <Link to="/register">Create an account</Link>

@@ -2,50 +2,50 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Shell from './components/layout/Shell';
-import Ledger from './pages/Ledger';
-import Home from './pages/Home';
-// Test import first
-// import AdminBookingsTest from './pages/admin/AdminBookingsTest';
-// Then your real component
-import AdminBookings from './pages/admin/AdminBookings';
-import AdminSettings from './pages/admin/AdminSettings';
+
+// Public Pages
+import Home from './pages/Home'; // Add this import
 import FlightSearch from './pages/FlightSearch';
 import FlightDetail from './pages/FlightDetail';
 import UserFlights from './pages/UserFlights';
-import BookingForm from './pages/BookingForm';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
+import NotFound from './pages/NotFound';
+
+// Authenticated Pages
 import Bookings from './pages/Bookings';
 import BookingDetail from './pages/BookingDetail';
 import Dashboard from './pages/Dashboard';
 import Notifications from './pages/Notifications';
 import Account from './pages/Account';
-import NotFound from './pages/NotFound';
-import AdminNotifications from './pages/admin/AdminNotifications';
+import Settings from './pages/Settings';
+import Ledger from './pages/Ledger';
+import BookingForm from './pages/BookingForm';
+
+// Admin Pages
 import AdminFlights from './pages/admin/AdminFlights';
 import AdminUsers from './pages/admin/AdminUsers';
+import AdminBookings from './pages/admin/AdminBookings';
+import AdminNotifications from './pages/admin/AdminNotifications';
+import AdminSettings from './pages/admin/AdminSettings';
 import CreateFlight from './pages/admin/CreateFlight';
 import EditFlight from './pages/admin/EditFlight';
 
 export default function App() {
-  console.log('🔴 App.jsx rendering');
-  console.log('🔴 AdminBookings imported:', typeof AdminBookings);
-  // console.log('🔴 AdminBookingsTest imported:', typeof AdminBookingsTest);
-
   return (
-    <BrowserRouter
-      future={{
-        v7_startTransition: true,
-        v7_relativeSplatPath: true,
-      }}
-    >
+    <BrowserRouter>
       <AuthProvider>
         <Shell>
           <Routes>
-            {/* Public routes */}
+            {/* ============================================
+                PUBLIC ROUTES
+                ============================================ */}
+            {/* ✅ Home page is now the root route */}
             <Route path="/" element={<Home />} />
+            
+            {/* Flight search is now at /flights */}
             <Route path="/flights" element={<UserFlights />} />
             <Route path="/flights/:id" element={<FlightDetail />} />
             <Route path="/login" element={<Login />} />
@@ -53,7 +53,72 @@ export default function App() {
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
 
-            {/* Ledger Route */}
+            {/* ============================================
+                PROTECTED ROUTES (Require Authentication)
+                ============================================ */}
+            <Route
+              path="/flights/:id/book"
+              element={
+                <ProtectedRoute>
+                  <BookingForm />
+                </ProtectedRoute>
+              }
+            />
+            
+            <Route
+              path="/bookings"
+              element={
+                <ProtectedRoute>
+                  <Bookings />
+                </ProtectedRoute>
+              }
+            />
+            
+            <Route
+              path="/bookings/:id"
+              element={
+                <ProtectedRoute>
+                  <BookingDetail />
+                </ProtectedRoute>
+              }
+            />
+            
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            
+            <Route
+              path="/notifications"
+              element={
+                <ProtectedRoute>
+                  <Notifications />
+                </ProtectedRoute>
+              }
+            />
+            
+            <Route
+              path="/account"
+              element={
+                <ProtectedRoute>
+                  <Account />
+                </ProtectedRoute>
+              }
+            />
+            
+            <Route
+              path="/settings"
+              element={
+                <ProtectedRoute>
+                  <Settings />
+                </ProtectedRoute>
+              }
+            />
+            
             <Route
               path="/ledger"
               element={
@@ -63,86 +128,9 @@ export default function App() {
               }
             />
 
-            {/* Admin Notifications Route */}
-            <Route
-              path="/admin/notifications"
-              element={
-                <ProtectedRoute adminOnly>
-                  <AdminNotifications />
-                </ProtectedRoute>
-              }
-            />
-
-            {/* TEST ROUTE - Put this FIRST to test
-            <Route
-              path="/admin/bookings-test"
-              element={
-                <ProtectedRoute adminOnly>
-                  <AdminBookingsTest />
-                </ProtectedRoute>
-              }
-            /> */}
-
-            {/* Protected routes - require authentication */}
-            <Route
-              path="/flights/:id/book"
-              element={
-                <ProtectedRoute>
-                  <BookingForm />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/settings"
-              element={
-                <ProtectedRoute adminOnly>
-                  <AdminSettings />
-                </ProtectedRoute>
-              }
-            />
-
-            <Route
-              path="/bookings"
-              element={
-                <ProtectedRoute>
-                  <Bookings />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/bookings/:id"
-              element={
-                <ProtectedRoute>
-                  <BookingDetail />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/notifications"
-              element={
-                <ProtectedRoute>
-                  <Notifications />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/account"
-              element={
-                <ProtectedRoute>
-                  <Account />
-                </ProtectedRoute>
-              }
-            />
-
-            {/* Admin routes - require admin role */}
+            {/* ============================================
+                ADMIN ROUTES (Require Admin Role)
+                ============================================ */}
             <Route
               path="/admin/flights"
               element={
@@ -151,6 +139,7 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
+            
             <Route
               path="/admin/flights/create"
               element={
@@ -159,6 +148,7 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
+            
             <Route
               path="/admin/flights/:id/edit"
               element={
@@ -167,6 +157,7 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
+            
             <Route
               path="/admin/users"
               element={
@@ -175,8 +166,7 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
-
-            {/* REAL ADMIN BOOKINGS ROUTE */}
+            
             <Route
               path="/admin/bookings"
               element={
@@ -185,9 +175,33 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
-            <Route path="/admin" element={<Navigate to="/admin/flights" replace />} />
+            
+            <Route
+              path="/admin/notifications"
+              element={
+                <ProtectedRoute adminOnly>
+                  <AdminNotifications />
+                </ProtectedRoute>
+              }
+            />
+            
+            <Route
+              path="/admin/settings"
+              element={
+                <ProtectedRoute adminOnly>
+                  <AdminSettings />
+                </ProtectedRoute>
+              }
+            />
+            
+            <Route
+              path="/admin"
+              element={<Navigate to="/admin/flights" replace />}
+            />
 
-            {/* 404 - Not found */}
+            {/* ============================================
+                404 - NOT FOUND
+                ============================================ */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Shell>

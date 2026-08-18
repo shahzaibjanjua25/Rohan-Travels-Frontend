@@ -4,6 +4,7 @@ import { flightService } from '../services/flights';
 import { bookingService } from '../services/bookings';
 import { ApiError } from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
+import { emailService } from '../services/emailService';
 import Swal from 'sweetalert2';
 import Alert from '../components/ui/Alert';
 import Spinner from '../components/ui/Spinner';
@@ -60,8 +61,7 @@ export default function BookingForm() {
         firstName: '',
         lastName: '',
         dateOfBirth: '',
-        // Individual passenger details - NEW
-        cnic: '', // CNIC for adults, B-Form for infants
+        cnic: '',
         passportNumber: '',
         address: '',
         nationality: '',
@@ -115,9 +115,6 @@ export default function BookingForm() {
   const handleCountChange = (type, value) => {
     const newCount = parseInt(value) || 0;
 
-    // ✅ REMOVED: The "At Least One Adult Required" check from here
-    // It will be checked during form submission instead
-
     if (newCount > 10) {
       Swal.fire({
         icon: 'warning',
@@ -129,7 +126,6 @@ export default function BookingForm() {
       return;
     }
 
-    // Don't allow adults to go below 0 (but allow 0 temporarily)
     if (type === 'adults' && newCount < 0) {
       return;
     }
@@ -242,7 +238,7 @@ export default function BookingForm() {
   // ============================================================
 
   const validatePassengerDetails = () => {
-    // ✅ CHECK: At least one adult is required
+    // CHECK: At least one adult is required
     if (passengerCounts.adults < 1) {
       showErrorPopup('At least one adult passenger is required for this booking.');
       return false;
@@ -352,8 +348,8 @@ export default function BookingForm() {
 
     const availableSeats = flight.cabins?.economy?.availableSeats || 0;
     const totalPassengers = passengerCounts.adults + passengerCounts.infants;
-    
-    // ✅ CHECK: At least one adult is required
+
+    // CHECK: At least one adult is required
     if (passengerCounts.adults < 1) {
       showErrorPopup('At least one adult passenger is required for this booking. Please add an adult.');
       setSubmitting(false);
@@ -392,9 +388,9 @@ export default function BookingForm() {
           lastName: p.lastName.trim(),
           dateOfBirth: p.dateOfBirth ? new Date(p.dateOfBirth).toISOString().split('T')[0] : '',
           type: p.type || 'adult',
-          cnic: p.cnic?.trim() || '',      // ✅ Individual CNIC
+          cnic: p.cnic?.trim() || '',      // Individual CNIC
           passportNumber: p.passportNumber?.trim() || '',
-          address: p.address?.trim() || '', // ✅ Individual Address
+          address: p.address?.trim() || '', // Individual Address
           nationality: p.nationality?.trim() || '',
         };
 
@@ -428,6 +424,38 @@ export default function BookingForm() {
 
       console.log('✅ Booking successful!');
       console.log('📋 Response:', response.data);
+
+      // ============================================================
+      // 🚀 SEND EMAIL NOTIFICATIONS (NO TEST OTP)
+      // ============================================================
+      // ============================================================
+      // 🚀 SEND EMAIL NOTIFICATIONS
+      // ============================================================
+      try {
+        console.log('📧 Sending email notifications...');
+        console.log('📧 Booking data for email:', response.data);
+
+        // Send confirmation to customer (Account 2 - Booking)
+        const customerEmailResult = await emailService.sendBookingConfirmation(response.data);
+        if (customerEmailResult.success) {
+          console.log('✅ Customer confirmation email sent (Account 2)');
+        } else {
+          console.warn('⚠️ Customer email failed:', customerEmailResult.error);
+        }
+
+        // Send notification to admin (Account 2 - Booking)
+        const adminEmailResult = await emailService.sendAdminNotification(response.data);
+        if (adminEmailResult.success) {
+          console.log('✅ Admin notification email sent (Account 2)');
+        } else {
+          console.warn('⚠️ Admin email failed:', adminEmailResult.error);
+        }
+
+      } catch (emailError) {
+        // Don't fail the booking if email fails
+        console.error('❌ Email sending error:', emailError);
+        console.warn('⚠️ Booking was successful but email notifications failed.');
+      }
 
       closeLoadingPopup();
       setSuccess(`Booking created successfully! Reference: ${response.data.bookingReference}`);
@@ -467,7 +495,6 @@ export default function BookingForm() {
       setSubmitting(false);
     }
   };
-
 
   // ============================================================
   // RENDER
@@ -709,7 +736,7 @@ export default function BookingForm() {
                   </div>
                 </div>
 
-                {/* Individual Passenger Identification - NEW */}
+                {/* Individual Passenger Identification */}
                 <div className="form-row">
                   <div className="field-group">
                     <label className="field__label">
@@ -739,7 +766,7 @@ export default function BookingForm() {
                   </div>
                 </div>
 
-                {/* Individual Address - NEW */}
+                {/* Individual Address */}
                 <div className="form-row">
                   <div className="field-group">
                     <label className="field__label">Address</label>

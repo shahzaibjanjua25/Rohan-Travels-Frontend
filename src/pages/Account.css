@@ -1,0 +1,339 @@
+/* Account.css */
+
+.account-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-5);
+  animation: accountFadeIn 0.5s ease;
+}
+
+@keyframes accountFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header */
+.account-header {
+  margin-bottom: var(--space-6);
+}
+
+.account-header .eyebrow {
+  font-size: var(--font-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin: 0;
+}
+
+.account-header h1 {
+  font-size: var(--font-2xl);
+  font-weight: 700;
+  margin: 0;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.account-header .faint {
+  color: var(--text-muted);
+  font-size: var(--font-sm);
+  margin: 0;
+}
+
+.account-badge {
+  margin-top: var(--space-2);
+}
+
+.role-badge {
+  display: inline-block;
+  padding: 2px 14px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.role-badge.admin {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.role-badge.user {
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+/* Grid */
+.account-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  margin-bottom: var(--space-6);
+}
+
+/* Cards */
+.account-card {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+}
+
+.account-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.account-card h2 {
+  font-size: var(--font-lg);
+  font-weight: 600;
+  margin: 0 0 var(--space-4) 0;
+  color: var(--text-primary);
+}
+
+.account-card form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.field-hint {
+  margin: var(--space-1) 0;
+}
+
+.field-hint .faint {
+  font-size: var(--font-xs);
+  color: var(--text-muted);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 10px 24px;
+  font-size: var(--font-base);
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  text-decoration: none;
+  font-family: inherit;
+  line-height: 1.4;
+  white-space: nowrap;
+  height: 44px;
+}
+
+.btn--primary {
+  background: var(--primary-gradient);
+  color: white;
+  box-shadow: 0 4px 12px rgba(10, 36, 99, 0.25);
+}
+
+.btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(10, 36, 99, 0.35);
+}
+
+.btn--primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Ledger / Transactions */
+.account-transactions {
+  padding: var(--space-6);
+}
+
+.ledger-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-4);
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.ledger-header h2 {
+  font-size: var(--font-lg);
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.balance-display {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+}
+
+.balance-label {
+  font-size: var(--font-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.balance-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: var(--font-lg);
+}
+
+.balance-value.positive {
+  color: var(--success);
+}
+
+.balance-value.negative {
+  color: var(--danger);
+}
+
+/* Empty State */
+.empty-transactions {
+  text-align: center;
+  padding: var(--space-6) var(--space-4);
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: var(--space-3);
+  opacity: 0.4;
+}
+
+.empty-transactions .faint {
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* Table */
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-sm);
+}
+
+.table thead {
+  background: var(--bg-tertiary);
+  border-bottom: 2px solid var(--border-light);
+}
+
+.table th {
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  font-weight: 600;
+  font-size: var(--font-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+.table td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border-light);
+  vertical-align: middle;
+}
+
+.table tbody tr:hover {
+  background: var(--bg-tertiary);
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.right {
+  text-align: right;
+}
+
+.mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.faint {
+  color: var(--text-muted);
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .account-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+}
+
+@media (max-width: 768px) {
+  .account-wrapper {
+    padding: var(--space-4);
+  }
+  
+  .account-card {
+    padding: var(--space-4);
+  }
+  
+  .account-header h1 {
+    font-size: var(--font-xl);
+  }
+  
+  .ledger-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .balance-display {
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 480px) {
+  .account-wrapper {
+    padding: var(--space-2);
+  }
+  
+  .account-card {
+    padding: var(--space-3);
+  }
+  
+  .account-header h1 {
+    font-size: var(--font-lg);
+  }
+  
+  .btn {
+    font-size: var(--font-sm);
+    height: 38px;
+    padding: 8px 16px;
+  }
+  
+  .table th,
+  .table td {
+    padding: var(--space-2);
+    font-size: var(--font-xs);
+  }
+}

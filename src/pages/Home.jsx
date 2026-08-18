@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { flightService } from '../services/flights';
-import { settingsService } from '../services/settings';
 import {
   Plane,
   Search,
@@ -36,10 +35,6 @@ export default function Home() {
   const [featuredFlights, setFeaturedFlights] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
-  // Maintenance mode state
-  const [maintenanceMode, setMaintenanceMode] = useState(false);
-  const [maintenanceMessage, setMaintenanceMessage] = useState('');
 
   // Tour packages data with Unsplash images and travel type mapping
   const tourPackages = [
@@ -47,38 +42,81 @@ export default function Home() {
       id: 1,
       title: 'Umrah Packages',
       description: 'Spiritual journey to the holy cities of Makkah and Madinah with premium services and comfortable accommodations.',
+      //price: '$1,299',
       duration: '7-14 Days',
       image: 'https://zamzam.com/blog/wp-content/uploads/2021/05/history-of-Umrah.jpg',
       features: ['5-Star Hotels', '24/7 Support', 'Visa Assistance', 'Ziyarat Tours', 'Group Discounts'],
       icon: <Umbrella size={32} />,
       color: '#10b981',
       badge: '⭐ Best Seller',
-      travelType: 'umrah'
+      travelType: 'umrah' // Maps to travelType filter
     },
     {
       id: 2,
       title: 'Hajj Packages',
       description: 'Complete Hajj packages with expert guidance, comfortable accommodations, and full support throughout your pilgrimage.',
+      //price: '$4,999',
       duration: '15-21 Days',
       image: 'https://th.bing.com/th/id/R.7380d077e3e948a5c7ec3d8bafb1e2f1?rik=9HP1aSaPaRf%2fFA&pid=ImgRaw&r=0',
       features: ['VIP Services', 'Expert Guides', 'Medical Support', 'Group Iftar', 'Transportation'],
       icon: <Compass size={32} />,
       color: '#f59e0b',
       badge: '👑 Premium',
-      travelType: 'hajj'
+      travelType: 'hajj' // Maps to travelType filter
     },
     {
       id: 3,
       title: 'Family Visit Packages',
       description: 'Create unforgettable memories with your loved ones with our tailored family vacation packages to top destinations.',
+      //price: '$899',
       duration: '5-12 Days',
       image: 'https://images.unsplash.com/photo-1530789253388-582c481c54b0?auto=format&fit=crop&w=800&q=80',
       features: ['Family Activities', 'Child Care', 'Special Meals', 'Photo Sessions', 'Flexible Plans'],
       icon: <Users size={32} />,
       color: '#6366f1',
       badge: '👨‍👩‍👧‍👦 Family Favorite',
-      travelType: 'family'
+      travelType: 'family' // Maps to travelType filter
     }
+    // ,
+    // {
+    //   id: 4,
+    //   title: 'Dubai Luxury Tours',
+    //   description: 'Experience the ultimate luxury in Dubai with private tours, 5-star hotels, and exclusive access to top attractions.',
+    //   //price: '$2,499',
+    //   duration: '5-7 Days',
+    //   image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80',
+    //   features: ['Burj Khalifa', 'Desert Safari', 'Private Yacht', 'Shopping Tours', 'Fine Dining'],
+    //   icon: <Building size={32} />,
+    //   color: '#8b5cf6',
+    //   badge: '✨ Luxury',
+    //   travelType: 'tour' // Maps to travelType filter
+    // },
+    // {
+    //   id: 5,
+    //   title: 'Turkey Cultural Tours',
+    //   description: 'Explore the rich history and culture of Turkey with guided tours to Istanbul, Cappadocia, and the Mediterranean coast.',
+    //   //price: '$1,899',
+    //   duration: '8-12 Days',
+    //   image: 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=800&q=80',
+    //   features: ['Guided Tours', 'Hot Air Balloon', 'Historical Sites', 'Turkish Cuisine', 'Shopping'],
+    //   icon: <MapPin size={32} />,
+    //   color: '#ef4444',
+    //   badge: '🌟 Top Rated',
+    //   travelType: 'tour' // Maps to travelType filter
+    // },
+    // {
+    //   id: 6,
+    //   title: 'Malaysia Family Tours',
+    //   description: 'Perfect family getaway to Malaysia with visits to Kuala Lumpur, Langkawi, and Penang with kid-friendly activities.',
+    //   //price: '$1,299',
+    //   duration: '7-10 Days',
+    //   image: 'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?auto=format&fit=crop&w=800&q=80',
+    //   features: ['Theme Parks', 'Beach Time', 'Nature Walks', 'Cultural Shows', 'Local Cuisine'],
+    //   icon: <Gift size={32} />,
+    //   color: '#3b82f6',
+    //   badge: '👪 Family Choice',
+    //   travelType: 'family' // Maps to travelType filter
+    // }
   ];
 
   // Helper function to get airline logo/color
@@ -159,7 +197,7 @@ export default function Home() {
         arrivalTime: flight.arrivalTime,
         status: flight.status || 'scheduled',
         cabins: flight.cabins || [],
-        price: getPriceFromFlight(flight),
+        //price: getPriceFromFlight(flight),
         color: getAirlineColor(flight.airline),
         baggageAllowance: flight.baggageAllowance
       }));
@@ -177,12 +215,12 @@ export default function Home() {
   const getPriceFromFlight = (flight) => {
     if (flight.cabins) {
       if (flight.cabins.economy && flight.cabins.economy.price) {
-        return `PKR ${flight.cabins.economy.price}`;
+        return `$${flight.cabins.economy.price}`;
       }
       if (Array.isArray(flight.cabins) && flight.cabins.length > 0) {
         const cheapest = Math.min(...flight.cabins.map(cabin => cabin.price || 0));
         if (cheapest > 0) {
-          return `PKR ${cheapest}`;
+          return `$${cheapest}`;
         }
       }
       if (typeof flight.cabins === 'object') {
@@ -191,11 +229,11 @@ export default function Home() {
           .map(cabin => cabin.price);
         if (prices.length > 0) {
           const cheapest = Math.min(...prices);
-          return `PKR ${cheapest}`;
+          return `$${cheapest}`;
         }
       }
     }
-    return `PKR ${Math.floor(Math.random() * 30000) + 20000}`;
+    return `$${Math.floor(Math.random() * 300) + 200}`;
   };
 
   const getFallbackFlights = () => {
@@ -209,7 +247,7 @@ export default function Home() {
         originCode: 'KHI',
         destination: 'Dubai',
         destinationCode: 'DXB',
-        price: 'PKR 25,000',
+        //price: '$299',
         color: '#8B0000',
         status: 'scheduled'
       },
@@ -222,7 +260,7 @@ export default function Home() {
         originCode: 'DXB',
         destination: 'London',
         destinationCode: 'LHR',
-        price: 'PKR 65,000',
+        //price: '$599',
         color: '#D71921',
         status: 'boarding'
       },
@@ -235,27 +273,15 @@ export default function Home() {
         originCode: 'DOH',
         destination: 'Singapore',
         destinationCode: 'SIN',
-        price: 'PKR 45,000',
+        //price: '$449',
         color: '#8A1538',
         status: 'departed'
       },
     ];
   };
 
-  // Check maintenance mode
-  const checkMaintenance = async () => {
-    try {
-      const res = await settingsService.get();
-      setMaintenanceMode(res.data.maintenanceMode || false);
-      setMaintenanceMessage(res.data.maintenanceMessage || '');
-    } catch (err) {
-      console.error('Failed to check maintenance status:', err);
-    }
-  };
-
   useEffect(() => {
     fetchRandomFlights();
-    checkMaintenance();
   }, []);
 
   const getStatusBadge = (status) => {
@@ -268,26 +294,6 @@ export default function Home() {
     };
     return statusMap[status] || statusMap.scheduled;
   };
-
-  // If maintenance mode is enabled, show maintenance page
-  if (maintenanceMode) {
-    return (
-      <div className="maintenance-page">
-        <div className="maintenance-container">
-          <div className="maintenance-icon">🔧</div>
-          <h1>We'll Be Back Soon</h1>
-          <p>{maintenanceMessage || 'We are currently undergoing scheduled maintenance. Please check back later.'}</p>
-          <div className="maintenance-spinner">
-            <div className="spinner"></div>
-          </div>
-          <p className="maintenance-update">Estimated downtime: 1-2 hours</p>
-          <p className="maintenance-contact">
-            For urgent inquiries, please contact us at <a href="mailto:support@rohantravels.com">support@rohantravels.com</a>
-          </p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="home">
@@ -401,7 +407,7 @@ export default function Home() {
                       className="tour-package-btn"
                       style={{ backgroundColor: pkg.color }}
                       onClick={(e) => {
-                        e.stopPropagation();
+                        e.stopPropagation(); // Prevent double navigation
                         handleTourPackageClick(pkg.travelType);
                       }}
                     >
@@ -510,6 +516,7 @@ export default function Home() {
               <div className="featured-flights-grid">
                 {featuredFlights.map((flight) => {
                   const statusInfo = getStatusBadge(flight.status);
+                  // Determine the correct link based on authentication
                   const flightLink = isAuthenticated
                     ? `/flights/${flight.id}/book`
                     : `/flights/${flight.id}`;

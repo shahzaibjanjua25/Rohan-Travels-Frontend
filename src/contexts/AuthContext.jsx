@@ -1,5 +1,6 @@
+// frontend/src/contexts/AuthContext.jsx
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import api, { onSessionExpired } from '../services/api';
+import api, { onSessionExpired } from '../services/api'; // Fixed import
 import authService from '../services/auth';
 
 const AuthContext = createContext(null);
@@ -81,6 +82,11 @@ export function AuthProvider({ children }) {
     setUser((current) => (current ? { ...current, ...patch } : current));
   }, []);
 
+  const changePassword = useCallback(async (currentPassword, newPassword) => {
+    const response = await authService.changePassword(currentPassword, newPassword);
+    return response;
+  }, []);
+
   const value = useMemo(
     () => ({
       user,
@@ -92,9 +98,10 @@ export function AuthProvider({ children }) {
       register,
       logout,
       updateUser,
+      changePassword,
       refresh: loadSession,
     }),
-    [user, status, login, register, logout, updateUser, loadSession]
+    [user, status, login, register, logout, updateUser, loadSession, changePassword]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
