@@ -4,7 +4,7 @@ import { flightService } from '../../services/flights';
 import { ApiError } from '../../services/api';
 import Alert from '../../components/ui/Alert';
 import Spinner from '../../components/ui/Spinner';
-import './FlightForm.css';
+import './flightform.css';
 
 // International airports worldwide
 const INTERNATIONAL_AIRPORTS = [
