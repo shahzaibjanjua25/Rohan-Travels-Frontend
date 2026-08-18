@@ -130,6 +130,9 @@ export default function Register() {
   // frontend/src/pages/Register.jsx
   // Find the sendOTP function and update it
 
+  // frontend/src/pages/Register.jsx
+  // Find the sendOTP function and replace it
+
   const sendOTP = async () => {
     setOtpError('');
 
@@ -139,9 +142,28 @@ export default function Register() {
       console.log('[Register] OTP response:', response);
 
       if (response.success) {
-        // Show the OTP in the console for testing (development only)
+        // Always show the OTP in the console for testing
         if (response.otp) {
-          console.log('🔑 Your OTP is:', response.otp);
+          console.log('🔑🔑🔑 Your OTP is:', response.otp);
+          // Show a notification with the OTP
+          Swal.fire({
+            icon: 'info',
+            title: '📧 OTP Sent!',
+            html: `
+            <div style="text-align: center;">
+              <p>We've sent a verification code to <strong>${form.email}</strong></p>
+              <div style="background: #e8edf7; padding: 16px; border-radius: 8px; margin: 16px 0;">
+                <p style="font-size: 12px; color: #6b7a8f; margin: 0;">Your OTP Code</p>
+                <p style="font-size: 32px; font-weight: 700; color: #0a2463; letter-spacing: 4px; margin: 4px 0;">${response.otp}</p>
+              </div>
+              <p style="font-size: 13px; color: #6b7a8f;">Check your email or use the code above</p>
+            </div>
+          `,
+            confirmButtonColor: '#0a2463',
+            confirmButtonText: 'OK, I have the code',
+            timer: 8000,
+            timerProgressBar: true,
+          });
         }
         return true;
       }
@@ -152,7 +174,6 @@ export default function Register() {
       return false;
     }
   };
-
   // Handle OTP verification
   const handleVerifyOTP = async (enteredOtp) => {
     try {

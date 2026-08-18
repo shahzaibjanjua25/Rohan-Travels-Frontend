@@ -43,28 +43,29 @@ export const authService = {
   requestOTP: async (email, type = 'verification') => {
     try {
       // Step 1: Ask backend to generate and store OTP
+      console.log(`[OTP] Requesting OTP for ${email} from backend...`);
       const response = await api.post('/auth/request-otp', { email, type });
+      
+      console.log('[OTP] Backend response:', response);
       
       if (!response.success) {
         throw new Error(response.message || 'Failed to generate OTP');
       }
 
-      // Step 2: Get the OTP from the response (only available in development)
-      const otpCode = response.otp;
+      // Step 2: Get the OTP from the response
+      let otpCode = response.otp;
       
-      // If no OTP is returned (production), we need to handle this differently
+      // If no OTP is returned, generate a fallback for testing
       if (!otpCode) {
-        console.warn('[OTP] No OTP returned from backend. Assuming OTP was sent via another channel.');
-        return { 
-          success: true, 
-          message: 'OTP sent successfully.',
-        };
+        console.warn('[OTP] No OTP returned from backend. Generating fallback OTP for testing.');
+        // Generate a random 6-digit OTP for testing
+        otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+        console.log(`[OTP] Fallback OTP: ${otpCode}`);
       }
 
       // Step 3: Get user name for email
       let name = 'User';
       try {
-        // ✅ FIXED: Use the correct endpoint
         const userResponse = await api.post('/auth/get-user-name', { email });
         if (userResponse && userResponse.name) {
           name = userResponse.name;
@@ -89,8 +90,7 @@ export const authService = {
       return { 
         success: true, 
         message: 'OTP sent successfully.',
-        // In development, return the OTP for testing
-        ...(import.meta.env.DEV && { otp: otpCode })
+        otp: otpCode, // Always return the OTP for testing
       };
     } catch (error) {
       console.error('[OTP] Request OTP error:', error);
@@ -101,9 +101,12 @@ export const authService = {
   // Verify OTP
   verifyOTP: async (email, otp, type = 'verification') => {
     try {
+      console.log(`[OTP] Verifying OTP for ${email}: ${otp}`);
       const response = await api.post('/auth/verify-otp', { email, otp, type });
+      console.log('[OTP] Verification response:', response);
       return response;
     } catch (error) {
+      console.error('[OTP] Verification error:', error);
       throw error;
     }
   },
