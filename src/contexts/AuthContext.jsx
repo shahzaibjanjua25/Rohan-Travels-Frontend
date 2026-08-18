@@ -52,7 +52,11 @@ export function AuthProvider({ children }) {
     []
   );
 
+  // frontend/src/contexts/AuthContext.jsx - Update login function
   const login = useCallback(async (email, password) => {
+    // ✅ Ensure CSRF token is fresh before login
+    await api.primeCsrf(true); // Force refresh
+
     const res = await authService.login(email, password);
     setUser(res.data);
     setStatus('authenticated');

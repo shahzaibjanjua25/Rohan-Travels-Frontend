@@ -1,11 +1,13 @@
-import { useState } from 'react';
+// frontend/src/pages/Login.jsx
+import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { ApiError } from '../services/api';
+import api from '../services/api';
 import Field from '../components/ui/Field';
 import Alert from '../components/ui/Alert';
-import logo from '../assests/logo.png'; // Add this import
-import './Login.css'; // Add this import
+import logo from '../assests/logo.png';
+import './Login.css';
 
 export default function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -17,6 +19,13 @@ export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // ✅ Prime CSRF on page load
+  useEffect(() => {
+    api.primeCsrf(true).then(() => {
+      console.log('✅ CSRF primed on login page');
+    });
+  }, []);
+
   const set = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
 
   const submit = async (e) => {
@@ -26,8 +35,10 @@ export default function Login() {
     setErrors({});
 
     try {
+      // ✅ Ensure CSRF is fresh before login
+      await api.primeCsrf(true);
+      
       await login(form.email, form.password);
-      // Return them to wherever the guard interrupted, not always home.
       navigate(location.state?.from?.pathname || '/', { replace: true });
     } catch (err) {
       if (err instanceof ApiError) {
@@ -44,16 +55,9 @@ export default function Login() {
   return (
     <div className="auth">
       <div className="auth__card">
-        {/* Logo */}
         <div className="auth__logo">
-          <img 
-            src={logo} 
-            alt="Rohan Travels & Tours" 
-            className="auth__logo-img" 
-          />
+          <img src={logo} alt="Rohan Travels & Tours" className="auth__logo-img" />
         </div>
-        
-        {/* <p className="eyebrow">Rohan Travels</p> */}
         <h1 className="auth__title">Welcome Back</h1>
         <p className="auth__sub">Sign in to manage your bookings and travel documents.</p>
 

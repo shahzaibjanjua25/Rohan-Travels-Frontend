@@ -20,30 +20,55 @@ export class ApiError extends Error {
 }
 
 const readCookie = (name) => {
-  const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
-  return match ? decodeURIComponent(match[1]) : null;
+  const cookies = document.cookie.split('; ');
+  for (const cookie of cookies) {
+    const [key, value] = cookie.split('=');
+    if (key === name) {
+      return decodeURIComponent(value);
+    }
+  }
+  return null;
 };
 
-// ✅ DECLARE csrfPrimer at module level
-let csrfPrimer = null;
-let csrfTokenCache = null;
+// ✅ Set cookie with proper options
+const setCookie = (name, value, days = 1) => {
+  const expires = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toUTCString();
+  // Try with Secure and SameSite=None first (for production)
+  document.cookie = `${name}=${value}; expires=${expires}; path=/; SameSite=None; Secure`;
+  // Also set without Secure as fallback (for local development)
+  if (window.location.hostname === 'localhost') {
+    document.cookie = `${name}=${value}; expires=${expires}; path=/; SameSite=Lax`;
+  }
+};
 
-export const ensureCsrfToken = async () => {
-  // 1. Check cache first
-  if (csrfTokenCache) {
+let csrfTokenCache = null;
+let csrfPrimer = null;
+let csrfRetryCount = 0;
+const MAX_CSRF_RETRIES = 2;
+
+export const ensureCsrfToken = async (forceRefresh = false) => {
+  // Force refresh if requested
+  if (forceRefresh) {
+    console.log('🔄 Forcing CSRF refresh');
+    csrfTokenCache = null;
+    csrfPrimer = null;
+  }
+
+  // 1. Check cache
+  if (csrfTokenCache && !forceRefresh) {
     console.log('🔑 Using cached CSRF token');
     return csrfTokenCache;
   }
-  
+
   // 2. Check cookie
   const cookieToken = readCookie(CSRF_COOKIE);
-  if (cookieToken) {
+  if (cookieToken && !forceRefresh) {
     csrfTokenCache = cookieToken;
     console.log('🍪 CSRF token from cookie:', cookieToken.substring(0, 10) + '...');
     return cookieToken;
   }
 
-  // 3. If we're already fetching, wait for that
+  // 3. If we're already fetching, wait
   if (csrfPrimer) {
     console.log('⏳ Waiting for existing CSRF fetch...');
     await csrfPrimer;
@@ -61,47 +86,58 @@ export const ensureCsrfToken = async () => {
           'Accept': 'application/json',
         },
       });
-      
+
       if (!response.ok) {
-        console.warn('⚠️ CSRF fetch failed:', response.status);
-        return null;
+        throw new Error(`CSRF fetch failed: ${response.status}`);
       }
-      
-      // Try to get token from cookie
+
+      // Try to get token from cookie first
       let token = readCookie(CSRF_COOKIE);
-      
-      // If cookie not readable, try response body
+
+      // If not in cookie, try response body
       if (!token) {
         try {
           const data = await response.json();
           token = data.csrfToken || data.token || null;
           if (token) {
             console.log('📦 CSRF token from response body');
-            // Try to set it in a cookie for subsequent requests
-            document.cookie = `${CSRF_COOKIE}=${token}; path=/; SameSite=None; Secure`;
+            // Set the cookie manually
+            setCookie(CSRF_COOKIE, token);
           }
         } catch (e) {
           console.warn('Could not parse CSRF response:', e);
         }
       }
-      
+
       if (token) {
         csrfTokenCache = token;
         console.log('✅ CSRF token obtained:', token.substring(0, 10) + '...');
-      } else {
-        console.warn('⚠️ No CSRF token found');
+        csrfRetryCount = 0;
+        return token;
       }
-      
-      return token;
+
+      console.warn('⚠️ No CSRF token found');
+      csrfRetryCount++;
+      return null;
     } catch (error) {
       console.error('❌ CSRF fetch error:', error);
+      csrfRetryCount++;
       return null;
     } finally {
       csrfPrimer = null;
     }
   })();
 
-  return csrfPrimer;
+  const result = await csrfPrimer;
+  
+  // If we failed and have retries left, try again with force refresh
+  if (!result && csrfRetryCount < MAX_CSRF_RETRIES) {
+    console.log(`🔄 CSRF retry ${csrfRetryCount + 1}/${MAX_CSRF_RETRIES}`);
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    return ensureCsrfToken(true);
+  }
+
+  return result;
 };
 
 const sessionExpiredHandlers = new Set();
@@ -121,20 +157,24 @@ const buildQuery = (params) => {
   return qs ? `?${qs}` : '';
 };
 
-const request = async (path, { method = 'GET', body, params, signal } = {}) => {
+const request = async (path, { method = 'GET', body, params, signal, retryCsrf = true } = {}) => {
   const upperMethod = method.toUpperCase();
+  const isUnsafe = UNSAFE_METHODS.has(upperMethod);
 
-  const headers = { 
+  const headers = {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
   };
 
   // CSRF handling for unsafe methods
-  if (UNSAFE_METHODS.has(upperMethod)) {
+  if (isUnsafe) {
     const token = await ensureCsrfToken();
     if (token) {
       headers[CSRF_HEADER] = token;
-      console.log(`🛡️ CSRF header set for ${upperMethod} ${path}`);
+      console.log(`🛡️ CSRF header set for ${upperMethod} ${path}`, {
+        tokenPrefix: token.substring(0, 10) + '...',
+        tokenFull: token,
+      });
     } else {
       console.warn(`⚠️ CSRF token not available for ${upperMethod} ${path}`);
     }
@@ -164,6 +204,20 @@ const request = async (path, { method = 'GET', body, params, signal } = {}) => {
   const isJson = (response.headers.get('content-type') || '').includes('application/json');
   const payload = isJson ? await response.json().catch(() => null) : null;
 
+  // If we get a CSRF error and we haven't retried yet, try once more
+  if (response.status === 403 && isUnsafe && retryCsrf) {
+    const errorMsg = payload?.message || '';
+    if (errorMsg.toLowerCase().includes('csrf')) {
+      console.log('🔄 CSRF error, retrying with fresh token...');
+      // Clear cached token and retry
+      csrfTokenCache = null;
+      // Also try to clear the cookie
+      document.cookie = `${CSRF_COOKIE}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+      await ensureCsrfToken(true);
+      return request(path, { method, body, params, signal, retryCsrf: false });
+    }
+  }
+
   if (!response.ok) {
     // Session expired
     if (response.status === 401) {
@@ -189,6 +243,7 @@ export const api = {
   primeCsrf: ensureCsrfToken,
   // Expose for debugging
   _readCookie: readCookie,
+  _setCookie: setCookie,
 };
 
 export default api;
