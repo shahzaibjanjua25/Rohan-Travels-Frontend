@@ -968,3 +968,40 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Mobile navigation - hidden by default, shown when active */
+.shell__mobile-nav {
+  display: none;
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--bg-card);
+  z-index: 999;
+  padding: 1.5rem;
+  overflow-y: auto;
+  animation: slideDown 0.3s ease;
+  box-shadow: var(--shadow-lg);
+}
+
+.shell__mobile-nav.active {
+  display: block !important;
+}
+
+/* Mobile overlay - hidden by default */
+.shell__mobile-overlay {
+  display: none;
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+  animation: fadeIn 0.3s ease;
+}
+
+.shell__mobile-overlay.active {
+  display: block;
+}

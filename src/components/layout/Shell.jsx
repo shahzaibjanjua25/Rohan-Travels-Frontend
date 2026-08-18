@@ -27,98 +27,80 @@ import {
 
 const MOBILE_BREAKPOINT = 1024;
 const MOBILE_QUERY = `(max-width: ${MOBILE_BREAKPOINT}px)`;
-const SIDEBAR_KEY = 'shell:sidebar-open';
-
-const prefersMobile = () =>
-  typeof window !== 'undefined' && window.matchMedia(MOBILE_QUERY).matches;
-
-const readStoredOpen = () => {
-  try {
-    const stored = window.localStorage.getItem(SIDEBAR_KEY);
-    return stored === null ? true : stored === 'true';
-  } catch {
-    return true;
-  }
-};
 
 const linkClass = ({ isActive }) =>
-  `shell__sidebar-link${isActive ? ' shell__sidebar-link--active' : ''}`;
+  `shell__link${isActive ? ' shell__link--active' : ''}`;
+
+const mobileLinkClass = ({ isActive }) =>
+  `shell__mobile-link${isActive ? ' shell__mobile-link--active' : ''}`;
 
 export default function Shell({ children }) {
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
   const { maintenanceMode, maintenanceMessage, isBlocked, loading } = useMaintenance();
 
   const [unread, setUnread] = useState(0);
-  const [isMobile, setIsMobile] = useState(prefersMobile);
-  const [sidebarOpen, setSidebarOpen] = useState(() =>
-    prefersMobile() ? false : readStoredOpen()
-  );
+  const [isMobile, setIsMobile] = useState(window.innerWidth < MOBILE_BREAKPOINT);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // ← ADD THIS
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 
   const userMenuRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
 
-  /* ---------------------------------------------------------------
-     Viewport tracking.
-     matchMedia only fires when the breakpoint is actually crossed, so
-     the sidebar no longer slams shut every time a mobile browser hides
-     its address bar and fires a resize event.
-  --------------------------------------------------------------- */
+  // ============================================================
+  // Viewport tracking
+  // ============================================================
   useEffect(() => {
-    const mql = window.matchMedia(MOBILE_QUERY);
-
-    const apply = (matches) => {
-      setIsMobile(matches);
-      setSidebarOpen(matches ? false : readStoredOpen());
+    const handleResize = () => {
+      const mobile = window.innerWidth < MOBILE_BREAKPOINT;
+      setIsMobile(mobile);
+      if (!mobile) setIsMobileMenuOpen(false); // Close menu on desktop
     };
 
-    apply(mql.matches);
-    const onChange = (event) => apply(event.matches);
-    mql.addEventListener('change', onChange);
-    return () => mql.removeEventListener('change', onChange);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Persist the desktop preference only; mobile open state is transient.
+  // ============================================================
+  // Close mobile menu when navigating
+  // ============================================================
   useEffect(() => {
-    if (isMobile) return;
-    try {
-      window.localStorage.setItem(SIDEBAR_KEY, String(sidebarOpen));
-    } catch {
-      // Private mode or blocked storage: the layout still works, it just forgets.
-    }
-  }, [isMobile, sidebarOpen]);
-
-  // Navigating closes the mobile drawer and the account menu.
-  useEffect(() => {
+    setIsMobileMenuOpen(false);
     setUserMenuOpen(false);
-    if (isMobile) setSidebarOpen(false);
-  }, [location.pathname, isMobile]);
+  }, [location.pathname]);
 
-  // Lock the page behind the mobile drawer so the background does not scroll.
+  // ============================================================
+  // Lock body scroll when mobile menu is open
+  // ============================================================
   useEffect(() => {
-    if (!isMobile || !sidebarOpen) return undefined;
-    const previous = document.body.style.overflow;
+    if (!isMobile || !isMobileMenuOpen) {
+      document.body.style.overflow = '';
+      return;
+    }
     document.body.style.overflow = 'hidden';
     return () => {
-      document.body.style.overflow = previous;
+      document.body.style.overflow = '';
     };
-  }, [isMobile, sidebarOpen]);
+  }, [isMobile, isMobileMenuOpen]);
 
-  // Escape closes whatever is open on top.
+  // ============================================================
+  // ESC key closes menus
+  // ============================================================
   useEffect(() => {
     const onKeyDown = (event) => {
       if (event.key !== 'Escape') return;
+      setIsMobileMenuOpen(false);
       setUserMenuOpen(false);
-      if (isMobile) setSidebarOpen(false);
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [isMobile]);
+  }, []);
 
-  // Clicking outside the account menu closes it.
+  // ============================================================
+  // Click outside user menu closes it
+  // ============================================================
   useEffect(() => {
-    if (!userMenuOpen) return undefined;
+    if (!userMenuOpen) return;
     const onPointerDown = (event) => {
       if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
         setUserMenuOpen(false);
@@ -132,11 +114,13 @@ export default function Shell({ children }) {
     };
   }, [userMenuOpen]);
 
-  // Unread badge polling.
+  // ============================================================
+  // Unread badge polling
+  // ============================================================
   useEffect(() => {
     if (!isAuthenticated) {
       setUnread(0);
-      return undefined;
+      return;
     }
 
     let cancelled = false;
@@ -145,7 +129,7 @@ export default function Shell({ children }) {
         const res = await notificationService.unreadCount();
         if (!cancelled) setUnread(res.data.unreadCount);
       } catch {
-        // A failed badge count is not worth interrupting anyone over.
+        // Ignore
       }
     };
 
@@ -157,18 +141,16 @@ export default function Shell({ children }) {
     };
   }, [isAuthenticated]);
 
-  const toggleSidebar = useCallback(() => setSidebarOpen((open) => !open), []);
-  const closeSidebar = useCallback(() => setSidebarOpen(false), []);
-
   const handleSignOut = async () => {
     setUserMenuOpen(false);
+    setIsMobileMenuOpen(false);
     await logout();
     navigate('/login');
   };
 
-  /* ---------------------------------------------------------------
-     Navigation config
-  --------------------------------------------------------------- */
+  // ============================================================
+  // Navigation config
+  // ============================================================
   const navItems = [
     { to: '/', label: 'Home', icon: Home, end: true, show: true },
     { to: '/flights', label: 'Flights', icon: Plane, show: true },
@@ -200,7 +182,6 @@ export default function Shell({ children }) {
       : [])
   ];
 
-  // Longest matching path wins, so /admin/bookings/42 still reads "All Bookings".
   const getCurrentTitle = () => {
     if (isBlocked) return 'Maintenance';
     const match = navItems
@@ -225,136 +206,54 @@ export default function Shell({ children }) {
 
   return (
     <div className="shell">
-      {/* Sidebar */}
-      <aside
-        id="shell-sidebar"
-        className={`shell__sidebar${sidebarOpen ? '' : ' shell__sidebar--hidden'}`}
-        aria-hidden={!sidebarOpen}
-      >
-        <div className="shell__sidebar-header">
-          <Link to="/" className="shell__sidebar-brand">
-            <div className="shell__sidebar-brand-icon">
-              <img src={logo} alt="" className="shell__sidebar-brand-logo" />
-            </div>
-            <div className="shell__sidebar-brand-text">
-              <span className="shell__sidebar-brand-name">Rohan Travels</span>
-              <span className="shell__sidebar-brand-tagline">&amp; Tours</span>
-            </div>
-          </Link>
-          {/* ONLY ONE X - in the sidebar */}
-          <button
-            type="button"
-            className="shell__sidebar-close"
-            onClick={closeSidebar}
-            aria-label="Close menu"
-          >
-            <X size={20} />
-          </button>
-        </div>
+      {/* ============================================================
+          TOP NAVBAR
+          ============================================================ */}
+      <header className="shell__bar">
+        <div className="shell__bar-inner">
+          {/* Left: Logo + Mobile Toggle */}
+          <div className="shell__bar-left">
+            <button
+              type="button"
+              className="shell__mobile-toggle"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={isMobileMenuOpen}
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
 
-        {/* Blocked users get no navigation — there is nowhere to go. */}
-        {!isBlocked && (
-          <nav className="shell__sidebar-nav">
+            <Link to="/" className="shell__brand">
+              <div className="shell__brand-icon">
+                <img src={logo} alt="" className="shell__brand-logo" />
+              </div>
+              <div className="shell__brand-text">
+                <span className="shell__brand-name">Rohan Travels</span>
+                <span className="shell__brand-tagline">&amp; Tours</span>
+              </div>
+            </Link>
+          </div>
+
+          {/* Center: Desktop Navigation */}
+          <nav className="shell__nav">
             {navItems
               .filter((item) => item.show)
               .map((item) => {
                 const Icon = item.icon;
                 return (
                   <NavLink key={item.to} to={item.to} className={linkClass} end={item.end}>
-                    <Icon size={20} />
+                    <Icon size={18} />
                     <span>{item.label}</span>
                     {item.badge > 0 && (
-                      <span
-                        className="shell__sidebar-badge"
-                        aria-label={`${item.badge} unread`}
-                      >
-                        {item.badge > 99 ? '99+' : item.badge}
-                      </span>
+                      <span className="shell__badge">{item.badge > 99 ? '99+' : item.badge}</span>
                     )}
                   </NavLink>
                 );
               })}
           </nav>
-        )}
 
-        <div className="shell__sidebar-footer">
-          {isAuthenticated ? (
-            <>
-              <Link to="/account" className="shell__sidebar-user">
-                <div className="shell__sidebar-avatar">
-                  {user?.avatar ? (
-                    <img src={user.avatar} alt="" />
-                  ) : (
-                    <span className="shell__sidebar-avatar-initial">{initial}</span>
-                  )}
-                </div>
-                <div className="shell__sidebar-user-info">
-                  <span className="shell__sidebar-user-name">{user?.name}</span>
-                  <span className="shell__sidebar-user-role">
-                    {isAdmin ? 'Administrator' : 'Agent'}
-                  </span>
-                </div>
-              </Link>
-              <button type="button" className="shell__sidebar-logout" onClick={handleSignOut}>
-                <LogOut size={20} />
-                <span>Sign out</span>
-              </button>
-            </>
-          ) : (
-            <div className="shell__auth-buttons" style={{ flexDirection: 'column' }}>
-              <Link to="/login" className="btn btn--primary btn--full">
-                Sign in
-              </Link>
-              <Link to="/register" className="btn btn--ghost btn--full">
-                Create account
-              </Link>
-            </div>
-          )}
-        </div>
-      </aside>
-
-      {/* Mobile backdrop — only exists while the drawer is over the content */}
-      {isMobile && sidebarOpen && (
-        <button
-          type="button"
-          className="shell__mobile-overlay active"
-          onClick={closeSidebar}
-          aria-label="Close menu"
-        />
-      )}
-
-      {/* Main column */}
-      <main className={`shell__main${sidebarOpen ? '' : ' shell__main--expanded'}`}>
-        {showMaintenanceBanner && (
-          <div className="maintenance-banner">
-            <span>Maintenance mode is on. Only admins can reach the system.</span>
-            <button
-              type="button"
-              className="maintenance-banner-close"
-              onClick={() => navigate('/admin/settings')}
-            >
-              Go to settings
-            </button>
-          </div>
-        )}
-
-        <header className="shell__header">
-          <div className="shell__header-left">
-            <button
-              type="button"
-              className="shell__hamburger"
-              onClick={toggleSidebar}
-              aria-label={sidebarOpen ? 'Close menu' : 'Open menu'}
-              aria-expanded={sidebarOpen}
-              aria-controls="shell-sidebar"
-            >
-              {/* ALWAYS SHOW MENU ICON - NEVER X */}
-              <Menu size={24} />
-            </button>
-            <span className="shell__header-title">{getCurrentTitle()}</span>
-          </div>
-
-          <div className="shell__header-actions">
+          {/* Right: User Actions */}
+          <div className="shell__actions">
             {isAuthenticated ? (
               <div className="shell__user-menu" ref={userMenuRef}>
                 <button
@@ -435,31 +334,114 @@ export default function Shell({ children }) {
               </div>
             )}
           </div>
-        </header>
-
-        <div className="shell__content">
-          {isBlocked ? <MaintenancePage message={maintenanceMessage} /> : children}
         </div>
+      </header>
 
-        <footer className="shell__foot">
-          <div className="shell__foot-inner">
-            <span className="shell__foot-copy">
-              &copy; {new Date().getFullYear()} Rohan Travels &amp; Tours. All rights reserved
-            </span>
-            <div className="shell__foot-links">
-              <Link to="/privacy" className="shell__foot-link">
-                Privacy Policy
-              </Link>
-              <Link to="/terms" className="shell__foot-link">
-                Terms of Service
-              </Link>
-              <Link to="/contact" className="shell__foot-link">
-                Contact
-              </Link>
-            </div>
+      {/* ============================================================
+          MOBILE OVERLAY (backdrop)
+          ============================================================ */}
+      {isMobile && isMobileMenuOpen && (
+        <button
+          type="button"
+          className="shell__mobile-overlay active"
+          onClick={() => setIsMobileMenuOpen(false)}
+          aria-label="Close menu"
+        />
+      )}
+
+      {/* ============================================================
+          MOBILE NAVIGATION
+          ============================================================ */}
+      <nav className={`shell__mobile-nav ${isMobileMenuOpen ? 'active' : ''}`}>
+        <div className="shell__mobile-nav-inner">
+          {navItems
+            .filter((item) => item.show)
+            .map((item) => {
+              const Icon = item.icon;
+              return (
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  className={mobileLinkClass}
+                  end={item.end}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <Icon size={20} />
+                  <span>{item.label}</span>
+                  {item.badge > 0 && (
+                    <span className="shell__badge">{item.badge > 99 ? '99+' : item.badge}</span>
+                  )}
+                </NavLink>
+              );
+            })}
+
+          <div className="shell__mobile-auth">
+            {isAuthenticated ? (
+              <>
+                <Link to="/account" className="btn btn--ghost" onClick={() => setIsMobileMenuOpen(false)}>
+                  <User size={18} />
+                  My account
+                </Link>
+                <button type="button" className="btn btn--danger" onClick={handleSignOut}>
+                  <LogOut size={18} />
+                  Sign out
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="btn btn--primary" onClick={() => setIsMobileMenuOpen(false)}>
+                  Sign in
+                </Link>
+                <Link to="/register" className="btn btn--ghost" onClick={() => setIsMobileMenuOpen(false)}>
+                  Create account
+                </Link>
+              </>
+            )}
           </div>
-        </footer>
+        </div>
+      </nav>
+
+      {/* ============================================================
+          MAIN CONTENT
+          ============================================================ */}
+      <main className="shell__main">
+        {showMaintenanceBanner && (
+          <div className="maintenance-banner">
+            <span>Maintenance mode is on. Only admins can reach the system.</span>
+            <button
+              type="button"
+              className="maintenance-banner-close"
+              onClick={() => navigate('/admin/settings')}
+            >
+              Go to settings
+            </button>
+          </div>
+        )}
+
+        {isBlocked ? <MaintenancePage message={maintenanceMessage} /> : children}
       </main>
+
+      {/* ============================================================
+          FOOTER
+          ============================================================ */}
+      <footer className="shell__foot">
+        <div className="shell__foot-inner">
+          <div className="shell__foot-brand">
+            <span className="shell__foot-name">Rohan Travels &amp; Tours</span>
+            <span className="shell__foot-copy">
+              &copy; {new Date().getFullYear()} All rights reserved
+            </span>
+          </div>
+          <div className="shell__foot-links">
+            <Link to="/privacy" className="shell__foot-link">Privacy</Link>
+            <Link to="/terms" className="shell__foot-link">Terms</Link>
+            <Link to="/contact" className="shell__foot-link">Contact</Link>
+          </div>
+          <span className="shell__foot-date">
+            <span className="mono">{new Date().toLocaleDateString()}</span>
+          </span>
+        </div>
+      </footer>
     </div>
   );
 }
