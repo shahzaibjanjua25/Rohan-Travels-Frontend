@@ -176,10 +176,10 @@ export default function Shell({ children }) {
     },
     ...(isAdmin
       ? [
-          { to: '/admin/flights', label: 'Manage Flights', icon: Settings, show: true },
-          { to: '/admin/users', label: 'People', icon: Users, show: true },
-          { to: '/admin/settings', label: 'Settings', icon: Settings, show: true }
-        ]
+        { to: '/admin/flights', label: 'Manage Flights', icon: Settings, show: true },
+        { to: '/admin/users', label: 'People', icon: Users, show: true },
+        { to: '/admin/settings', label: 'Settings', icon: Settings, show: true }
+      ]
       : [])
   ];
 
@@ -239,21 +239,29 @@ export default function Shell({ children }) {
           </div>
 
           {/* Center: Desktop Navigation */}
+          {/* Center: Desktop Navigation - Responsive with overflow handling */}
           <nav className="shell__nav">
-            {navItems
-              .filter((item) => item.show)
-              .map((item) => {
-                const Icon = item.icon;
-                return (
-                  <NavLink key={item.to} to={item.to} className={linkClass} end={item.end}>
-                    <Icon size={18} />
-                    <span>{item.label}</span>
-                    {item.badge > 0 && (
-                      <span className="shell__badge">{item.badge > 99 ? '99+' : item.badge}</span>
-                    )}
-                  </NavLink>
-                );
-              })}
+            <div className="shell__nav-scroll">
+              {navItems
+                .filter((item) => item.show)
+                .map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <NavLink
+                      key={item.to}
+                      to={item.to}
+                      className={linkClass}
+                      end={item.end}
+                    >
+                      <Icon size={16} />
+                      <span className="shell__nav-label">{item.label}</span>
+                      {item.badge > 0 && (
+                        <span className="shell__badge">{item.badge > 99 ? '99+' : item.badge}</span>
+                      )}
+                    </NavLink>
+                  );
+                })}
+            </div>
           </nav>
 
           {/* Right: User Actions */}
