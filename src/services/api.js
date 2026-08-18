@@ -1,9 +1,26 @@
 // frontend/src/services/api.js
+//
+// CSRF changes vs the old version:
+//   - Removed setCookie(). It wrote rt_csrf on the FRONTEND's origin, so the
+//     cookie could never be sent to the backend. That fallback was guaranteed
+//     to fail and was the reason the retry always 403'd too.
+//   - The in-memory cache no longer wins over the cookie. If a cookie is
+//     present it is authoritative, which kills the "cached A vs cookie B" drift.
+//   - Tokens are shape-checked and expiry-checked client side, so a stale token
+//     from a previous deploy is refreshed instead of being sent and rejected.
+//   - Token values are never logged.
+
 const BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
 const CSRF_COOKIE = 'rt_csrf';
 const CSRF_HEADER = 'X-CSRF-Token';
 const UNSAFE_METHODS = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
+const CSRF_ERROR_CODES = new Set([
+  'CSRF_MISSING',
+  'CSRF_INVALID',
+  'CSRF_MISMATCH',
+  'CSRF_BAD_ORIGIN',
+]);
 
 export class ApiError extends Error {
   constructor(message, { status, details, code } = {}) {
@@ -19,126 +36,94 @@ export class ApiError extends Error {
   }
 }
 
+// ---------------------------------------------------------------------------
+// CSRF
+// ---------------------------------------------------------------------------
+
 const readCookie = (name) => {
-  const cookies = document.cookie.split('; ');
-  for (const cookie of cookies) {
-    const [key, value] = cookie.split('=');
-    if (key === name) {
-      return decodeURIComponent(value);
+  const prefix = `${name}=`;
+  for (const cookie of document.cookie.split('; ')) {
+    if (cookie.startsWith(prefix)) {
+      return decodeURIComponent(cookie.slice(prefix.length));
     }
   }
   return null;
 };
 
-// ✅ Set cookie with proper options
-const setCookie = (name, value, days = 1) => {
-  const expires = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toUTCString();
-  // Try with Secure and SameSite=None first (for production)
-  document.cookie = `${name}=${value}; expires=${expires}; path=/; SameSite=None; Secure`;
-  // Also set without Secure as fallback (for local development)
-  if (window.location.hostname === 'localhost') {
-    document.cookie = `${name}=${value}; expires=${expires}; path=/; SameSite=Lax`;
-  }
+/**
+ * Server tokens look like `nonce.expiry.hmac`. We cannot verify the signature
+ * here (we don't have the secret, and shouldn't), but we can cheaply reject
+ * malformed or expired tokens rather than burning a request on a certain 403.
+ * A 30s skew margin avoids racing the expiry boundary.
+ */
+const looksUsable = (token) => {
+  if (typeof token !== 'string') return false;
+  const parts = token.split('.');
+  if (parts.length !== 3) return false;
+  const expiry = Number(parts[1]);
+  return Number.isFinite(expiry) && expiry > Date.now() + 30_000;
 };
 
 let csrfTokenCache = null;
-let csrfPrimer = null;
-let csrfRetryCount = 0;
-const MAX_CSRF_RETRIES = 2;
+let csrfInFlight = null;
+
+const fetchFreshToken = async () => {
+  const response = await fetch(`${BASE_URL}/auth/csrf`, {
+    method: 'GET',
+    credentials: 'include',
+    headers: { Accept: 'application/json' },
+    cache: 'no-store',
+  });
+
+  if (!response.ok) throw new Error(`CSRF endpoint returned ${response.status}`);
+
+  const data = await response.json().catch(() => null);
+
+  // Cookie first (it means double-submit is available), body second (it means
+  // the browser blocked the cookie — still fine, the token is signed).
+  const cookieToken = readCookie(CSRF_COOKIE);
+  const token = looksUsable(cookieToken) ? cookieToken : data?.csrfToken ?? null;
+
+  if (!looksUsable(token)) throw new Error('No usable CSRF token returned');
+  return token;
+};
 
 export const ensureCsrfToken = async (forceRefresh = false) => {
-  // Force refresh if requested
-  if (forceRefresh) {
-    console.log('🔄 Forcing CSRF refresh');
-    csrfTokenCache = null;
-    csrfPrimer = null;
-  }
-
-  // 1. Check cache
-  if (csrfTokenCache && !forceRefresh) {
-    console.log('🔑 Using cached CSRF token');
-    return csrfTokenCache;
-  }
-
-  // 2. Check cookie
-  const cookieToken = readCookie(CSRF_COOKIE);
-  if (cookieToken && !forceRefresh) {
-    csrfTokenCache = cookieToken;
-    console.log('🍪 CSRF token from cookie:', cookieToken.substring(0, 10) + '...');
-    return cookieToken;
-  }
-
-  // 3. If we're already fetching, wait
-  if (csrfPrimer) {
-    console.log('⏳ Waiting for existing CSRF fetch...');
-    await csrfPrimer;
-    return csrfTokenCache || readCookie(CSRF_COOKIE);
-  }
-
-  // 4. Start a new fetch
-  console.log('🔄 Fetching new CSRF token...');
-  csrfPrimer = (async () => {
-    try {
-      const response = await fetch(`${BASE_URL}/auth/csrf`, {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          'Accept': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`CSRF fetch failed: ${response.status}`);
-      }
-
-      // Try to get token from cookie first
-      let token = readCookie(CSRF_COOKIE);
-
-      // If not in cookie, try response body
-      if (!token) {
-        try {
-          const data = await response.json();
-          token = data.csrfToken || data.token || null;
-          if (token) {
-            console.log('📦 CSRF token from response body');
-            // Set the cookie manually
-            setCookie(CSRF_COOKIE, token);
-          }
-        } catch (e) {
-          console.warn('Could not parse CSRF response:', e);
-        }
-      }
-
-      if (token) {
-        csrfTokenCache = token;
-        console.log('✅ CSRF token obtained:', token.substring(0, 10) + '...');
-        csrfRetryCount = 0;
-        return token;
-      }
-
-      console.warn('⚠️ No CSRF token found');
-      csrfRetryCount++;
-      return null;
-    } catch (error) {
-      console.error('❌ CSRF fetch error:', error);
-      csrfRetryCount++;
-      return null;
-    } finally {
-      csrfPrimer = null;
+  if (!forceRefresh) {
+    // The cookie is authoritative when present — never let a stale in-memory
+    // value shadow it.
+    const cookieToken = readCookie(CSRF_COOKIE);
+    if (looksUsable(cookieToken)) {
+      csrfTokenCache = cookieToken;
+      return cookieToken;
     }
-  })();
-
-  const result = await csrfPrimer;
-  
-  // If we failed and have retries left, try again with force refresh
-  if (!result && csrfRetryCount < MAX_CSRF_RETRIES) {
-    console.log(`🔄 CSRF retry ${csrfRetryCount + 1}/${MAX_CSRF_RETRIES}`);
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    return ensureCsrfToken(true);
+    if (looksUsable(csrfTokenCache)) return csrfTokenCache;
+  } else {
+    csrfTokenCache = null;
   }
 
-  return result;
+  // Coalesce concurrent callers onto one request.
+  if (!csrfInFlight) {
+    csrfInFlight = fetchFreshToken()
+      .then((token) => {
+        csrfTokenCache = token;
+        return token;
+      })
+      .catch((err) => {
+        console.warn('[csrf] could not obtain token:', err.message);
+        return null;
+      })
+      .finally(() => {
+        csrfInFlight = null;
+      });
+  }
+
+  return csrfInFlight;
 };
+
+// ---------------------------------------------------------------------------
+// Request pipeline
+// ---------------------------------------------------------------------------
 
 const sessionExpiredHandlers = new Set();
 export const onSessionExpired = (fn) => {
@@ -161,23 +146,11 @@ const request = async (path, { method = 'GET', body, params, signal, retryCsrf =
   const upperMethod = method.toUpperCase();
   const isUnsafe = UNSAFE_METHODS.has(upperMethod);
 
-  const headers = {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json',
-  };
+  const headers = { Accept: 'application/json', 'Content-Type': 'application/json' };
 
-  // CSRF handling for unsafe methods
   if (isUnsafe) {
-    const token = await ensureCsrfToken();
-    if (token) {
-      headers[CSRF_HEADER] = token;
-      console.log(`🛡️ CSRF header set for ${upperMethod} ${path}`, {
-        tokenPrefix: token.substring(0, 10) + '...',
-        tokenFull: token,
-      });
-    } else {
-      console.warn(`⚠️ CSRF token not available for ${upperMethod} ${path}`);
-    }
+    const token = await ensureCsrfToken(!retryCsrf);
+    if (token) headers[CSRF_HEADER] = token;
   }
 
   const url = `${BASE_URL}${path}${buildQuery(params)}`;
@@ -198,31 +171,27 @@ const request = async (path, { method = 'GET', body, params, signal, retryCsrf =
     });
   }
 
-  // Handle 204 No Content
   if (response.status === 204) return null;
 
   const isJson = (response.headers.get('content-type') || '').includes('application/json');
   const payload = isJson ? await response.json().catch(() => null) : null;
 
-  // If we get a CSRF error and we haven't retried yet, try once more
+  // One self-healing retry on a CSRF rejection. Keyed on the error code, not on
+  // string-matching the message.
   if (response.status === 403 && isUnsafe && retryCsrf) {
-    const errorMsg = payload?.message || '';
-    if (errorMsg.toLowerCase().includes('csrf')) {
-      console.log('🔄 CSRF error, retrying with fresh token...');
-      // Clear cached token and retry
+    const code = payload?.code;
+    const looksLikeCsrf =
+      CSRF_ERROR_CODES.has(code) || (payload?.message || '').toLowerCase().includes('token');
+
+    if (looksLikeCsrf) {
       csrfTokenCache = null;
-      // Also try to clear the cookie
-      document.cookie = `${CSRF_COOKIE}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
       await ensureCsrfToken(true);
       return request(path, { method, body, params, signal, retryCsrf: false });
     }
   }
 
   if (!response.ok) {
-    // Session expired
-    if (response.status === 401) {
-      sessionExpiredHandlers.forEach((fn) => fn());
-    }
+    if (response.status === 401) sessionExpiredHandlers.forEach((fn) => fn());
 
     throw new ApiError(payload?.message || `Request failed (${response.status})`, {
       status: response.status,
@@ -241,9 +210,6 @@ export const api = {
   patch: (path, body, options) => request(path, { ...options, method: 'PATCH', body }),
   delete: (path, options) => request(path, { ...options, method: 'DELETE' }),
   primeCsrf: ensureCsrfToken,
-  // Expose for debugging
-  _readCookie: readCookie,
-  _setCookie: setCookie,
 };
 
 export default api;

@@ -1085,3 +1085,216 @@
     padding: 0.5rem 0;
   }
 }
+/* ============================================
+   MOBILE SIDEBAR (Slide-in from left)
+   ============================================ */
+
+/* Mobile overlay - backdrop */
+.shell__mobile-overlay {
+  display: none;
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+  animation: fadeIn 0.3s ease;
+}
+
+.shell__mobile-overlay.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Mobile sidebar - slides in from left */
+.shell__mobile-sidebar {
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  bottom: 0;
+  width: 300px;
+  max-width: 80%;
+  background: var(--bg-card);
+  z-index: 999;
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-lg);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.shell__mobile-sidebar.open {
+  transform: translateX(0);
+}
+
+.shell__mobile-sidebar-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1rem 0;
+}
+
+/* Sidebar Header */
+.shell__mobile-sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.25rem 1rem 1.25rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  flex-shrink: 0;
+}
+
+.shell__mobile-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+.shell__mobile-brand-logo {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
+.shell__mobile-brand-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.shell__mobile-sidebar-close {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shell__mobile-sidebar-close:hover {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+/* Sidebar Navigation */
+.shell__mobile-sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.75rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.shell__mobile-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.shell__mobile-link:hover {
+  background: var(--primary-light);
+  color: var(--text);
+}
+
+.shell__mobile-link--active {
+  color: var(--primary);
+  background: var(--primary-light);
+  font-weight: 600;
+}
+
+.shell__mobile-link .shell__badge {
+  margin-left: auto;
+}
+
+/* Sidebar Footer */
+.shell__mobile-sidebar-footer {
+  padding: 1rem 1.25rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.shell__mobile-sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: var(--transition);
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+}
+
+.shell__mobile-sidebar-link:hover {
+  background: var(--primary-light);
+  color: var(--text);
+}
+
+.shell__mobile-sidebar-link--danger {
+  color: var(--danger);
+}
+
+.shell__mobile-sidebar-link--danger:hover {
+  background: #fef2f2;
+  color: var(--danger);
+}
+
+/* ============================================
+   RESPONSIVE - Show/Hide Sidebar
+   ============================================ */
+
+/* Desktop: hide mobile sidebar completely */
+@media (min-width: 769px) {
+  .shell__mobile-sidebar {
+    display: none !important;
+  }
+  
+  .shell__mobile-overlay {
+    display: none !important;
+  }
+}
+
+/* ============================================
+   SCROLLBAR for sidebar
+   ============================================ */
+
+.shell__mobile-sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.shell__mobile-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.shell__mobile-sidebar::-webkit-scrollbar-thumb {
+  background: var(--text-light);
+  border-radius: var(--radius-full);
+}

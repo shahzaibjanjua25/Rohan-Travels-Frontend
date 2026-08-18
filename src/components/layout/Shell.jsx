@@ -40,7 +40,7 @@ export default function Shell({ children }) {
 
   const [unread, setUnread] = useState(0);
   const [isMobile, setIsMobile] = useState(window.innerWidth < MOBILE_BREAKPOINT);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // ← ADD THIS
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 
   const userMenuRef = useRef(null);
@@ -54,7 +54,8 @@ export default function Shell({ children }) {
     const handleResize = () => {
       const mobile = window.innerWidth < MOBILE_BREAKPOINT;
       setIsMobile(mobile);
-      if (!mobile) setIsMobileMenuOpen(false); // Close menu on desktop
+      // Close menu when going to desktop
+      if (!mobile) setIsMobileMenuOpen(false);
     };
 
     window.addEventListener('resize', handleResize);
@@ -207,21 +208,24 @@ export default function Shell({ children }) {
   return (
     <div className="shell">
       {/* ============================================================
-          TOP NAVBAR
+          TOP NAVBAR (ALWAYS VISIBLE)
           ============================================================ */}
       <header className="shell__bar">
         <div className="shell__bar-inner">
-          {/* Left: Logo + Mobile Toggle */}
+          {/* Left: Logo + Hamburger */}
           <div className="shell__bar-left">
-            <button
-              type="button"
-              className="shell__mobile-toggle"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
-              aria-expanded={isMobileMenuOpen}
-            >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+            {/* Hamburger button - ONLY on mobile */}
+            {isMobile && (
+              <button
+                type="button"
+                className="shell__mobile-toggle"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+                aria-expanded={isMobileMenuOpen}
+              >
+                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            )}
 
             <Link to="/" className="shell__brand">
               <div className="shell__brand-icon">
@@ -338,68 +342,87 @@ export default function Shell({ children }) {
       </header>
 
       {/* ============================================================
-          MOBILE OVERLAY (backdrop)
+          MOBILE SIDEBAR (Slide-in panel)
           ============================================================ */}
+      {/* Mobile Overlay (backdrop) */}
       {isMobile && isMobileMenuOpen && (
-        <button
-          type="button"
+        <div
           className="shell__mobile-overlay active"
           onClick={() => setIsMobileMenuOpen(false)}
+          role="button"
           aria-label="Close menu"
         />
       )}
 
-      {/* ============================================================
-          MOBILE NAVIGATION
-          ============================================================ */}
-      <nav className={`shell__mobile-nav ${isMobileMenuOpen ? 'active' : ''}`}>
-        <div className="shell__mobile-nav-inner">
-          {navItems
-            .filter((item) => item.show)
-            .map((item) => {
-              const Icon = item.icon;
-              return (
-                <NavLink
-                  key={item.to}
-                  to={item.to}
-                  className={mobileLinkClass}
-                  end={item.end}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <Icon size={20} />
-                  <span>{item.label}</span>
-                  {item.badge > 0 && (
-                    <span className="shell__badge">{item.badge > 99 ? '99+' : item.badge}</span>
-                  )}
-                </NavLink>
-              );
-            })}
+      {/* Mobile Sidebar */}
+      <div className={`shell__mobile-sidebar ${isMobileMenuOpen ? 'open' : ''}`}>
+        <div className="shell__mobile-sidebar-inner">
+          {/* Sidebar Header */}
+          <div className="shell__mobile-sidebar-header">
+            <Link to="/" className="shell__mobile-brand" onClick={() => setIsMobileMenuOpen(false)}>
+              <img src={logo} alt="" className="shell__mobile-brand-logo" />
+              <span className="shell__mobile-brand-name">Rohan Travels</span>
+            </Link>
+            <button
+              type="button"
+              className="shell__mobile-sidebar-close"
+              onClick={() => setIsMobileMenuOpen(false)}
+              aria-label="Close menu"
+            >
+              <X size={24} />
+            </button>
+          </div>
 
-          <div className="shell__mobile-auth">
+          {/* Sidebar Navigation */}
+          <nav className="shell__mobile-sidebar-nav">
+            {navItems
+              .filter((item) => item.show)
+              .map((item) => {
+                const Icon = item.icon;
+                return (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    className={mobileLinkClass}
+                    end={item.end}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <Icon size={20} />
+                    <span>{item.label}</span>
+                    {item.badge > 0 && (
+                      <span className="shell__badge">{item.badge > 99 ? '99+' : item.badge}</span>
+                    )}
+                  </NavLink>
+                );
+              })}
+          </nav>
+
+          {/* Sidebar Footer */}
+          <div className="shell__mobile-sidebar-footer">
             {isAuthenticated ? (
               <>
-                <Link to="/account" className="btn btn--ghost" onClick={() => setIsMobileMenuOpen(false)}>
+                <Link to="/account" className="shell__mobile-sidebar-link" onClick={() => setIsMobileMenuOpen(false)}>
                   <User size={18} />
                   My account
                 </Link>
-                <button type="button" className="btn btn--danger" onClick={handleSignOut}>
+                <button type="button" className="shell__mobile-sidebar-link shell__mobile-sidebar-link--danger" onClick={handleSignOut}>
                   <LogOut size={18} />
                   Sign out
                 </button>
               </>
             ) : (
               <>
-                <Link to="/login" className="btn btn--primary" onClick={() => setIsMobileMenuOpen(false)}>
+                <Link to="/login" className="btn btn--primary btn--full" onClick={() => setIsMobileMenuOpen(false)}>
                   Sign in
                 </Link>
-                <Link to="/register" className="btn btn--ghost" onClick={() => setIsMobileMenuOpen(false)}>
+                <Link to="/register" className="btn btn--ghost btn--full" onClick={() => setIsMobileMenuOpen(false)}>
                   Create account
                 </Link>
               </>
             )}
           </div>
         </div>
-      </nav>
+      </div>
 
       {/* ============================================================
           MAIN CONTENT
