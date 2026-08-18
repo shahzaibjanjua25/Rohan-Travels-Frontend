@@ -9,9 +9,8 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "node node_modules/vite/bin/vite.js build",
-    "preview": "vite preview",
-    "vercel-build": "npm install && node node_modules/vite/bin/vite.js build"
+    "build": "npx --yes vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
@@ -20,9 +19,10 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.28.0",
-    "sweetalert2": "^11.26.25",
+    "sweetalert2": "^11.26.25"
+  },
+  "devDependencies": {
     "vite": "^5.4.11",
     "@vitejs/plugin-react": "^4.3.4"
-  },
-  "devDependencies": {}
+  }
 }
