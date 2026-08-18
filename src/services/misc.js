@@ -191,7 +191,14 @@ export const bookingService = {
 // ============================================
 // USER SERVICE
 // ============================================
+// ============================================
+// USER SERVICE
+// ============================================
 export const userService = {
+  list: async (params) => {
+    const response = await api.get('/users', { params });
+    return response;
+  },
   getAll: async (params) => {
     const response = await api.get('/users', { params });
     return response;
@@ -201,7 +208,7 @@ export const userService = {
     return response;
   },
   update: async (id, data) => {
-    const response = await api.put(`/users/${id}`, data);
+    const response = await api.patch(`/users/${id}`, data);
     return response;
   },
   delete: async (id) => {
