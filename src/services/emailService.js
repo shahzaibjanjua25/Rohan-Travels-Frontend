@@ -80,7 +80,7 @@ export const emailService = {
   // ============================================
 
   sendBookingConfirmation: async (bookingData) => {
-    console.log('📧 sendBookingConfirmation called with:', bookingData);
+    // console.log This is test debug code('📧 sendBookingConfirmation called with:', bookingData);
     
     const customerEmail = bookingData.customerDetails?.email || bookingData.contactEmail;
     
@@ -113,7 +113,7 @@ export const emailService = {
       company_name: 'Rohan Travels & Tours',
     };
 
-    console.log('📧 Booking email params:', templateParams);
+    // console.log This is test debug code('📧 Booking email params:', templateParams);
 
     try {
       const response = await emailjs.send(
@@ -122,7 +122,7 @@ export const emailService = {
         templateParams,
         publicKey2
       );
-      console.log('✅ Booking email sent successfully:', response);
+      // console.log This is test debug code('✅ Booking email sent successfully:', response);
       return { success: true, data: response };
     } catch (error) {
       console.error('❌ Booking confirmation email error:', error);
@@ -131,7 +131,7 @@ export const emailService = {
   },
 
   sendAdminNotification: async (bookingData) => {
-    console.log('📧 sendAdminNotification called with:', bookingData);
+    // console.log This is test debug code('📧 sendAdminNotification called with:', bookingData);
     
     // ✅ ADMIN: Send to your admin email
     const adminEmail = 'mrohantraveltour@gmail.com';
@@ -166,7 +166,7 @@ export const emailService = {
       status: bookingData.status || 'pending',
     };
 
-    console.log('📧 Admin email params:', templateParams);
+    // console.log This is test debug code('📧 Admin email params:', templateParams);
 
     try {
       const response = await emailjs.send(
@@ -175,7 +175,7 @@ export const emailService = {
         templateParams,
         publicKey2
       );
-      console.log('✅ Admin email sent successfully:', response);
+      // console.log This is test debug code('✅ Admin email sent successfully:', response);
       return { success: true, data: response };
     } catch (error) {
       console.error('❌ Admin notification email error:', error);

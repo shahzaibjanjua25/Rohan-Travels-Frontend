@@ -88,9 +88,9 @@ export default function BookingForm() {
 
   const loadFlight = async () => {
     try {
-      console.log('📌 Loading flight with ID:', id);
+      // console.log This is test debug code('📌 Loading flight with ID:', id);
       const response = await flightService.get(id);
-      console.log('✅ Flight data loaded:', response.data);
+      // console.log This is test debug code('✅ Flight data loaded:', response.data);
       setFlight(response.data);
       setLoading(false);
     } catch (err) {
@@ -335,7 +335,7 @@ export default function BookingForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('\n🚀 === SUBMITTING BOOKING ===');
+    // console.log This is test debug code('\n🚀 === SUBMITTING BOOKING ===');
 
     setSubmitting(true);
     setError('');
@@ -375,7 +375,7 @@ export default function BookingForm() {
       return;
     }
 
-    console.log('✅ All validations passed');
+    // console.log This is test debug code('✅ All validations passed');
 
     showLoadingPopup();
 
@@ -418,12 +418,12 @@ export default function BookingForm() {
         specialRequests: specialRequests.trim(),
       };
 
-      console.log('📦 Full booking data being sent:', JSON.stringify(bookingData, null, 2));
+      // console.log This is test debug code('📦 Full booking data being sent:', JSON.stringify(bookingData, null, 2));
 
       const response = await bookingService.create(bookingData);
 
-      console.log('✅ Booking successful!');
-      console.log('📋 Response:', response.data);
+      // console.log This is test debug code('✅ Booking successful!');
+      // console.log This is test debug code('📋 Response:', response.data);
 
       // ============================================================
       // 🚀 SEND EMAIL NOTIFICATIONS (NO TEST OTP)
@@ -432,13 +432,13 @@ export default function BookingForm() {
       // 🚀 SEND EMAIL NOTIFICATIONS
       // ============================================================
       try {
-        console.log('📧 Sending email notifications...');
-        console.log('📧 Booking data for email:', response.data);
+        // console.log This is test debug code('📧 Sending email notifications...');
+        // console.log This is test debug code('📧 Booking data for email:', response.data);
 
         // Send confirmation to customer (Account 2 - Booking)
         const customerEmailResult = await emailService.sendBookingConfirmation(response.data);
         if (customerEmailResult.success) {
-          console.log('✅ Customer confirmation email sent (Account 2)');
+          // console.log This is test debug code('✅ Customer confirmation email sent (Account 2)');
         } else {
           console.warn('⚠️ Customer email failed:', customerEmailResult.error);
         }
@@ -446,7 +446,7 @@ export default function BookingForm() {
         // Send notification to admin (Account 2 - Booking)
         const adminEmailResult = await emailService.sendAdminNotification(response.data);
         if (adminEmailResult.success) {
-          console.log('✅ Admin notification email sent (Account 2)');
+          // console.log This is test debug code('✅ Admin notification email sent (Account 2)');
         } else {
           console.warn('⚠️ Admin email failed:', adminEmailResult.error);
         }

@@ -41,12 +41,12 @@ export default function ForgotPassword() {
     try {
       // Check if email exists
       const response = await authService.checkEmail(email);
-      console.log('Check email response:', response);
+      // // console.log This is test debug code This is test debug code('Check email response:', response);
       
       if (response.exists) {
         // Request OTP
         const otpResponse = await authService.requestOTP(email, 'reset');
-        console.log('OTP request response:', otpResponse);
+        // // console.log This is test debug code This is test debug code('OTP request response:', otpResponse);
         
         if (otpResponse.success) {
           setShowOTP(true);
@@ -73,7 +73,7 @@ export default function ForgotPassword() {
     try {
       // Verify OTP
       const response = await authService.verifyOTP(email, enteredOtp, 'reset');
-      console.log('OTP verification response:', response);
+      // // console.log This is test debug code This is test debug code('OTP verification response:', response);
       
       if (response.success) {
         setShowOTP(false);

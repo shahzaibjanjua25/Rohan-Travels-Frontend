@@ -149,7 +149,7 @@ export default function Home() {
 
   // Handle tour package click - navigate to flights with travel type filter
   const handleTourPackageClick = (travelType) => {
-    console.log(`📌 Navigating to flights with travelType: ${travelType}`);
+    // console.log This is test debug code(`📌 Navigating to flights with travelType: ${travelType}`);
     navigate(`/flights?travelType=${travelType}`);
   };
 

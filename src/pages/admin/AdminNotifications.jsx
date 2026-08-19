@@ -45,11 +45,11 @@ export default function AdminNotifications() {
       setLoading(true);
       setError('');
       
-      console.log('🔍 Fetching admin notifications...');
+     // console.log This is test debug code🔍 Fetching admin notifications...');
       
       const res = await notificationService.getAll();
       
-      console.log('📦 Admin API Response:', res);
+     // console.log This is test debug code📦 Admin API Response:', res);
       
       let data = [];
       let unread = 0;
@@ -66,7 +66,7 @@ export default function AdminNotifications() {
         data = [];
       }
       
-      console.log('📊 Loaded admin notifications:', data.length);
+     // console.log This is test debug code📊 Loaded admin notifications:', data.length);
       setNotifications(data);
       setTotalUnread(unread);
       
@@ -167,7 +167,7 @@ export default function AdminNotifications() {
       setDeletingAll(true);
       setError('');
       
-      console.log('🗑️ Deleting all notifications...');
+     // console.log This is test debug code🗑️ Deleting all notifications...');
       await notificationService.deleteAllAdmin();
       
       setNotifications([]);

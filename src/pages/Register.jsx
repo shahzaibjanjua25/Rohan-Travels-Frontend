@@ -137,14 +137,14 @@ export default function Register() {
     setOtpError('');
 
     try {
-      console.log('[Register] Requesting OTP for:', form.email);
+      // console.log This is test debug code('[Register] Requesting OTP for:', form.email);
       const response = await authService.requestOTP(form.email, 'verification');
-      console.log('[Register] OTP response:', response);
+      // console.log This is test debug code('[Register] OTP response:', response);
 
       if (response.success) {
         // Always show the OTP in the console for testing
         if (response.otp) {
-          console.log('🔑🔑🔑 Your OTP is:', response.otp);
+          // console.log This is test debug code('🔑🔑🔑 Your OTP is:', response.otp);
           // Show a notification with the OTP
           Swal.fire({
             icon: 'info',

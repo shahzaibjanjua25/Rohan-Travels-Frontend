@@ -59,11 +59,11 @@ export default function BookingDetail() {
   const load = async () => {
     setLoading(true);
     setError('');
-    console.log('📌 Loading booking with ID:', id);
+    // console.log This is test debug code('📌 Loading booking with ID:', id);
 
     try {
       const bookingResponse = await bookingService.get(id);
-      console.log('✅ Full booking data:', JSON.stringify(bookingResponse.data, null, 2));
+      // // console.log This is test debug code This is test debug code('✅ Full booking data:', JSON.stringify(bookingResponse.data, null, 2));
 
       const bookingData = bookingResponse.data;
 
@@ -89,9 +89,9 @@ export default function BookingDetail() {
           }
 
           if (flightId) {
-            console.log('📌 Fetching full flight details for ID:', flightId);
+            // // console.log This is test debug code This is test debug code('📌 Fetching full flight details for ID:', flightId);
             const flightResponse = await flightService.get(flightId);
-            console.log('✅ Full flight details loaded:', flightResponse.data);
+            // // console.log This is test debug code This is test debug code('✅ Full flight details loaded:', flightResponse.data);
 
             const fullFlightData = {
               ...bookingData.flightDetails,
@@ -194,13 +194,13 @@ export default function BookingDetail() {
       // Calculate hours until departure
       const hoursUntilDeparture = (departureTime - now) / (1000 * 60 * 60);
 
-      console.log('📌 Cancellation check:', {
-        departureTime,
-        now,
-        hoursUntilDeparture,
-        allowedUntilHours,
-        bookingStatus: booking.status
-      });
+      // // console.log This is test debug code This is test debug code('📌 Cancellation check:', {
+      //   departureTime,
+      //   now,
+      //   hoursUntilDeparture,
+      //   allowedUntilHours,
+      //   bookingStatus: booking.status
+      // });
 
       // Check if departure time has already passed
       if (hoursUntilDeparture < 0) {
@@ -268,22 +268,22 @@ export default function BookingDetail() {
     setError('');
 
     try {
-      console.log(`📌 Attempting to update booking ${id} to status: ${newStatus}`);
+      // console.log This is test debug code(`📌 Attempting to update booking ${id} to status: ${newStatus}`);
 
       let response;
 
       if (newStatus === 'confirmed') {
-        console.log('📌 Using markPaid endpoint for confirmed status');
+        // console.log This is test debug code('📌 Using markPaid endpoint for confirmed status');
         response = await bookingService.markPaid(id, {
           paymentMethod: 'system',
           transactionId: `ADMIN-${Date.now()}`
         });
       } else {
-        console.log(`📌 Using updateStatus endpoint for: ${newStatus}`);
+        // console.log This is test debug code(`📌 Using updateStatus endpoint for: ${newStatus}`);
         response = await bookingService.updateStatus(id, newStatus);
       }
 
-      console.log('✅ Status updated successfully:', response);
+      // console.log This is test debug code('✅ Status updated successfully:', response);
 
       setNotice(`Booking status updated to ${formatStatus(newStatus)}`);
       await load();
