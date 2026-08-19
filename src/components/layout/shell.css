@@ -1252,7 +1252,7 @@
   }
 }
 /* ============================================
-   WHATSAPP FLOATING BUTTON
+   FLOATING WHATSAPP BUTTON
    ============================================ */
 
 .whatsapp-float {
@@ -1260,33 +1260,59 @@
   bottom: 28px;
   right: 28px;
   z-index: 9999;
+  background: #25D366;
+  color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 60px;
-  height: 60px;
-  background: #25d366;
-  border-radius: 50%;
   box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
-  animation: whatsappPulse 2s ease-in-out infinite;
+  animation: whatsappPulse 2s infinite;
 }
 
 .whatsapp-float:hover {
-  transform: scale(1.12);
-  box-shadow: 0 8px 35px rgba(37, 211, 102, 0.55);
-  background: #20b85f;
+  transform: scale(1.1) translateY(-4px);
+  box-shadow: 0 8px 40px rgba(37, 211, 102, 0.5);
 }
 
 .whatsapp-float:active {
-  transform: scale(0.92);
+  transform: scale(0.95);
 }
 
-.whatsapp-float svg {
-  width: 32px;
-  height: 32px;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+.whatsapp-float-tooltip {
+  position: absolute;
+  right: calc(100% + 16px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.whatsapp-float:hover .whatsapp-float-tooltip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(-8px);
+}
+
+.whatsapp-float-tooltip::after {
+  content: '';
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 6px solid transparent;
+  border-left-color: rgba(0, 0, 0, 0.8);
 }
 
 @keyframes whatsappPulse {
@@ -1294,7 +1320,7 @@
     box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
   }
   50% {
-    box-shadow: 0 4px 30px rgba(37, 211, 102, 0.7);
+    box-shadow: 0 4px 40px rgba(37, 211, 102, 0.7), 0 0 0 8px rgba(37, 211, 102, 0.1);
   }
   100% {
     box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
@@ -1302,20 +1328,302 @@
 }
 
 /* ============================================
-   WHATSAPP FLOATING BUTTON - RESPONSIVE
+   BEAUTIFIED FOOTER
    ============================================ */
 
+.shell__foot {
+  background: #0f172a;
+  border-top: none;
+  padding: 3rem 2rem 1rem;
+  margin-top: auto;
+  width: 100%;
+  color: #94a3b8;
+}
+
+.shell__foot-inner {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Brand Column */
+.shell__foot-brand-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.shell__foot-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.shell__foot-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: -0.3px;
+}
+
+.shell__foot-description {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #94a3b8;
+  margin: 0.5rem 0 1rem;
+  max-width: 320px;
+}
+
+/* Social Links */
+.shell__foot-social {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.shell__foot-social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  color: #94a3b8;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.shell__foot-social-link:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.shell__foot-social-link--whatsapp:hover {
+  background: #25D366;
+  color: white;
+  border-color: #25D366;
+}
+
+/* Footer Headings */
+.shell__foot-heading {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 1rem 0;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.shell__foot-heading::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 30px;
+  height: 2px;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6);
+  border-radius: 2px;
+}
+
+/* Quick Links */
+.shell__foot-links-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.shell__foot-links-list li {
+  margin: 0;
+}
+
+.shell__foot-link {
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.shell__foot-link:hover {
+  color: white;
+  transform: translateX(4px);
+}
+
+/* Contact Column */
+.shell__foot-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.shell__foot-contact-item:hover {
+  color: white;
+}
+
+.shell__foot-contact-item a {
+  color: inherit;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.shell__foot-contact-item a:hover {
+  color: white;
+}
+
+/* Hours Column */
+.shell__foot-hours-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.4rem 0;
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.shell__foot-copy {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-top: 1rem;
+  line-height: 1.6;
+}
+
+.shell__foot-rights {
+  font-size: 0.7rem;
+  color: #475569;
+}
+
+/* Bottom Bar */
+.shell__foot-bottom {
+  padding-top: 1rem;
+  margin-top: 0.5rem;
+}
+
+.shell__foot-bottom-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.shell__foot-bottom-text {
+  font-size: 0.8rem;
+  color: #475569;
+}
+
+.shell__foot-heart {
+  color: #ef4444;
+  display: inline-block;
+  animation: heartBeat 1.5s ease-in-out infinite;
+}
+
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+.shell__foot-date .mono {
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: #475569;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.2rem 0.75rem;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* ============================================
+   RESPONSIVE FOOTER
+   ============================================ */
+
+@media (max-width: 1024px) {
+  .shell__foot-inner {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+}
+
 @media (max-width: 768px) {
+  .shell__foot {
+    padding: 2rem 1rem 1rem;
+  }
+
+  .shell__foot-inner {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .shell__foot-description {
+    max-width: 100%;
+  }
+
+  .shell__foot-brand-header {
+    justify-content: center;
+  }
+
+  .shell__foot-social {
+    justify-content: center;
+  }
+
+  .shell__foot-heading {
+    text-align: center;
+  }
+
+  .shell__foot-heading::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .shell__foot-links-list {
+    align-items: center;
+  }
+
+  .shell__foot-contact-item {
+    justify-content: center;
+  }
+
+  .shell__foot-hours-item {
+    justify-content: center;
+  }
+
+  .shell__foot-copy {
+    text-align: center;
+  }
+
+  .shell__foot-bottom-inner {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+
   .whatsapp-float {
     bottom: 20px;
     right: 20px;
     width: 52px;
     height: 52px;
   }
-  
-  .whatsapp-float svg {
-    width: 28px;
-    height: 28px;
+
+  .whatsapp-float-tooltip {
+    display: none;
   }
 }
 
@@ -1326,23 +1634,74 @@
     width: 48px;
     height: 48px;
   }
-  
+
   .whatsapp-float svg {
     width: 24px;
     height: 24px;
   }
+
+  .shell__foot {
+    padding: 1.5rem 0.75rem 0.75rem;
+  }
 }
 
 /* ============================================
-   WHATSAPP FLOATING BUTTON - REDUCED MOTION
+   DARK MODE FOOTER (already dark)
    ============================================ */
 
-@media (prefers-reduced-motion: reduce) {
-  .whatsapp-float {
-    animation: none;
+@media (prefers-color-scheme: light) {
+  .shell__foot {
+    background: #0f172a;
+    color: #94a3b8;
   }
-  
-  .whatsapp-float:hover {
-    transform: scale(1.05);
+
+  .shell__foot-name {
+    color: white;
+  }
+
+  .shell__foot-heading {
+    color: white;
+  }
+
+  .shell__foot-social-link {
+    background: rgba(255, 255, 255, 0.06);
+    color: #94a3b8;
+  }
+
+  .shell__foot-social-link:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
+  }
+
+  .shell__foot-link {
+    color: #94a3b8;
+  }
+
+  .shell__foot-link:hover {
+    color: white;
+  }
+
+  .shell__foot-contact-item {
+    color: #94a3b8;
+  }
+
+  .shell__foot-contact-item:hover {
+    color: white;
+  }
+
+  .shell__foot-hours-item {
+    color: #94a3b8;
+  }
+
+  .shell__foot-copy {
+    color: #64748b;
+  }
+
+  .shell__foot-rights {
+    color: #475569;
+  }
+
+  .shell__foot-bottom-text {
+    color: #475569;
   }
 }

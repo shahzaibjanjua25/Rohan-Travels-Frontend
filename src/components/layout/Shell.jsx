@@ -1,4 +1,4 @@
-// components/layout/Shell.jsx
+// frontend/src/components/layout/Shell.jsx
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
@@ -22,11 +22,18 @@ import {
   ChevronDown,
   Settings,
   CreditCard,
-  Home
+  Home,
+  Phone,
+  Facebook,
+  MessageCircle,
+  Globe,
+  Mail,
+  MapPin,
+  Clock,
+  HelpCircle,
 } from 'lucide-react';
 
 const MOBILE_BREAKPOINT = 1024;
-const MOBILE_QUERY = `(max-width: ${MOBILE_BREAKPOINT}px)`;
 
 const linkClass = ({ isActive }) =>
   `shell__link${isActive ? ' shell__link--active' : ''}`;
@@ -54,7 +61,6 @@ export default function Shell({ children }) {
     const handleResize = () => {
       const mobile = window.innerWidth < MOBILE_BREAKPOINT;
       setIsMobile(mobile);
-      // Close menu when going to desktop
       if (!mobile) setIsMobileMenuOpen(false);
     };
 
@@ -183,6 +189,9 @@ export default function Shell({ children }) {
       : [])
   ];
 
+  // Contact page link
+  const contactLink = { to: '/contact', label: 'Contact', icon: Phone, show: true };
+
   const getCurrentTitle = () => {
     if (isBlocked) return 'Maintenance';
     const match = navItems
@@ -205,9 +214,6 @@ export default function Shell({ children }) {
   const showMaintenanceBanner = isAdmin && maintenanceMode;
   const initial = user?.name?.charAt(0)?.toUpperCase() || 'U';
 
-  // WhatsApp contact number
-  const WHATSAPP_URL = 'https://wa.me/qr/Y5PW7NQXWGTLP1';
-
   return (
     <div className="shell">
       {/* ============================================================
@@ -217,7 +223,6 @@ export default function Shell({ children }) {
         <div className="shell__bar-inner">
           {/* Left: Logo + Hamburger */}
           <div className="shell__bar-left">
-            {/* Hamburger button - ONLY on mobile */}
             {isMobile && (
               <button
                 type="button"
@@ -263,6 +268,11 @@ export default function Shell({ children }) {
                     </NavLink>
                   );
                 })}
+              {/* Contact link in nav */}
+              <NavLink to="/contact" className={linkClass}>
+                <Phone size={16} />
+                <span className="shell__nav-label">Contact</span>
+              </NavLink>
             </div>
           </nav>
 
@@ -322,6 +332,10 @@ export default function Shell({ children }) {
                       <CreditCard size={18} />
                       <span>Ledger</span>
                     </Link>
+                    <Link to="/contact" className="shell__dropdown-item" role="menuitem">
+                      <Phone size={18} />
+                      <span>Contact Us</span>
+                    </Link>
 
                     <div className="shell__dropdown-divider" />
 
@@ -352,9 +366,8 @@ export default function Shell({ children }) {
       </header>
 
       {/* ============================================================
-          MOBILE SIDEBAR (Slide-in panel)
+          MOBILE SIDEBAR
           ============================================================ */}
-      {/* Mobile Overlay (backdrop) */}
       {isMobile && isMobileMenuOpen && (
         <div
           className="shell__mobile-overlay active"
@@ -364,10 +377,8 @@ export default function Shell({ children }) {
         />
       )}
 
-      {/* Mobile Sidebar */}
       <div className={`shell__mobile-sidebar ${isMobileMenuOpen ? 'open' : ''}`}>
         <div className="shell__mobile-sidebar-inner">
-          {/* Sidebar Header */}
           <div className="shell__mobile-sidebar-header">
             <Link to="/" className="shell__mobile-brand" onClick={() => setIsMobileMenuOpen(false)}>
               <img src={logo} alt="" className="shell__mobile-brand-logo" />
@@ -383,7 +394,6 @@ export default function Shell({ children }) {
             </button>
           </div>
 
-          {/* Sidebar Navigation */}
           <nav className="shell__mobile-sidebar-nav">
             {navItems
               .filter((item) => item.show)
@@ -405,9 +415,16 @@ export default function Shell({ children }) {
                   </NavLink>
                 );
               })}
+            <NavLink
+              to="/contact"
+              className={mobileLinkClass}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <Phone size={20} />
+              <span>Contact Us</span>
+            </NavLink>
           </nav>
 
-          {/* Sidebar Footer */}
           <div className="shell__mobile-sidebar-footer">
             {isAuthenticated ? (
               <>
@@ -435,28 +452,6 @@ export default function Shell({ children }) {
       </div>
 
       {/* ============================================================
-          WHATSAPP FLOATING BUTTON
-          ============================================================ */}
-      <a
-        href={WHATSAPP_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="whatsapp-float"
-        aria-label="Chat with us on WhatsApp"
-        title="Chat with us on WhatsApp"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          width="32"
-          height="32"
-          fill="white"
-        >
-          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-        </svg>
-      </a>
-
-      {/* ============================================================
           MAIN CONTENT
           ============================================================ */}
       <main className="shell__main">
@@ -477,59 +472,134 @@ export default function Shell({ children }) {
       </main>
 
       {/* ============================================================
-          FOOTER
+          FOOTER - BEAUTIFIED
           ============================================================ */}
       <footer className="shell__foot">
         <div className="shell__foot-inner">
+          {/* Brand Column */}
           <div className="shell__foot-brand">
-            <span className="shell__foot-name">Rohan Travels &amp; Tours</span>
-            <span className="shell__foot-copy">
-              &copy; {new Date().getFullYear()} All rights reserved
+            <div className="shell__foot-brand-header">
+              <img src={logo} alt="Rohan Travels" className="shell__foot-logo" />
+              <span className="shell__foot-name">Rohan Travels &amp; Tours</span>
+            </div>
+            <p className="shell__foot-description">
+              Your trusted partner for seamless flight bookings and unforgettable travel experiences across the globe.
+            </p>
+            <div className="shell__foot-social">
+              <a
+                href="https://www.facebook.com/share/1GccNRa3SP/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="shell__foot-social-link"
+                aria-label="Facebook"
+              >
+                <Facebook size={20} />
+              </a>
+              <a
+                href="https://www.tiktok.com/@m_rohan_travels_tours?_r=1&_t=ZN-98xOcwAp770"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="shell__foot-social-link"
+                aria-label="TikTok"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M16.6 5.82s.51.5 0 0A4.278 4.278 0 0 1 15.54 3h-3.09v12.4a2.592 2.592 0 0 1-2.59 2.5 2.592 2.592 0 0 1 0-5.18 2.57 2.57 0 0 1 1.64.59V9.73a5.69 5.69 0 0 0 5.11 5.07 5.69 5.69 0 0 0 0-11.38v.4z" />
+                </svg>
+              </a>
+              <a
+                href="https://wa.me/qr/Y5PW7NQXWGTLP1"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="shell__foot-social-link shell__foot-social-link--whatsapp"
+                aria-label="WhatsApp"
+              >
+                <MessageCircle size={20} />
+              </a>
+            </div>
+          </div>
+
+          {/* Quick Links Column */}
+          <div className="shell__foot-links-column">
+            <h4 className="shell__foot-heading">Quick Links</h4>
+            <ul className="shell__foot-links-list">
+              <li><Link to="/flights" className="shell__foot-link">Search Flights</Link></li>
+              {isAuthenticated && (
+                <>
+                  <li><Link to="/bookings" className="shell__foot-link">My Bookings</Link></li>
+                  <li><Link to="/dashboard" className="shell__foot-link">Dashboard</Link></li>
+                </>
+              )}
+              <li><Link to="/contact" className="shell__foot-link">Contact Us</Link></li>
+            </ul>
+          </div>
+
+          {/* Contact Column */}
+          <div className="shell__foot-contact">
+            <h4 className="shell__foot-heading">Get In Touch</h4>
+            <div className="shell__foot-contact-item">
+              <MessageCircle size={16} />
+              <a href="https://wa.me/qr/Y5PW7NQXWGTLP1" target="_blank" rel="noopener noreferrer">
+                WhatsApp
+              </a>
+            </div>
+            <div className="shell__foot-contact-item">
+              <Facebook size={16} />
+              <a href="https://www.facebook.com/share/1GccNRa3SP/" target="_blank" rel="noopener noreferrer">
+                Facebook
+              </a>
+            </div>
+            <div className="shell__foot-contact-item">
+              <Mail size={16} />
+              <a href="mailto:support@rohantravels.com">support@rohantravels.com</a>
+            </div>
+          </div>
+
+          {/* Hours Column */}
+          <div className="shell__foot-hours">
+            <h4 className="shell__foot-heading">Support Hours</h4>
+            <div className="shell__foot-hours-item">
+              <Clock size={16} />
+              <span>24/7 Customer Support</span>
+            </div>
+            <div className="shell__foot-hours-item">
+              <Globe size={16} />
+              <span>Available Worldwide</span>
+            </div>
+            <div className="shell__foot-copy">
+              &copy; {new Date().getFullYear()} Rohan Travels &amp; Tours
+              <br />
+              <span className="shell__foot-rights">All rights reserved</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="shell__foot-bottom">
+          <div className="shell__foot-bottom-inner">
+            <span className="shell__foot-bottom-text">
+              Made with <span className="shell__foot-heart">❤️</span> for travelers everywhere
+            </span>
+            <span className="shell__foot-date">
+              <span className="mono">{new Date().toLocaleDateString()}</span>
             </span>
           </div>
-          <div className="shell__foot-links">
-            <a
-              href="https://www.facebook.com/share/1GccNRa3SP/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="shell__foot-link"
-              aria-label="Follow us on Facebook"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-              </svg>
-              <span>Facebook</span>
-            </a>
-            <a
-              href="https://www.tiktok.com/@m_rohan_travels_tours?_r=1&_t=ZN-98xOcwAp770"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="shell__foot-link"
-              aria-label="Follow us on TikTok"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z" />
-              </svg>
-              <span>TikTok</span>
-            </a>
-            <a
-              href="https://wa.me/qr/Y5PW7NQXWGTLP1"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="shell__foot-link"
-              aria-label="Contact us on WhatsApp"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-              </svg>
-              <span>WhatsApp</span>
-            </a>
-          </div>
-          <span className="shell__foot-date">
-            <span className="mono">{new Date().toLocaleDateString()}</span>
-          </span>
         </div>
       </footer>
+
+      {/* ============================================================
+          FLOATING WHATSAPP BUTTON
+          ============================================================ */}
+      <a
+        href="https://wa.me/qr/Y5PW7NQXWGTLP1"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="whatsapp-float"
+        aria-label="Chat on WhatsApp"
+        title="Chat with us on WhatsApp"
+      >
+        <MessageCircle size={32} />
+        <span className="whatsapp-float-tooltip">Chat with us!</span>
+      </a>
     </div>
   );
 }

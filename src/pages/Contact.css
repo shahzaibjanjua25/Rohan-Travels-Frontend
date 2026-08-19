@@ -1,0 +1,265 @@
+/* frontend/src/pages/Contact.css */
+
+.contact-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  animation: contactFadeIn 0.5s ease;
+}
+
+@keyframes contactFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hero */
+.contact-hero {
+  text-align: center;
+  padding: 3rem 0 2rem;
+}
+
+.contact-hero h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #1a2332;
+  margin: 0 0 0.5rem 0;
+  background: linear-gradient(135deg, #0a2463 0%, #1a4a8a 50%, #2a6aaa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.contact-hero p {
+  font-size: 1.1rem;
+  color: #6b7a8f;
+  margin: 0;
+}
+
+/* Grid */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.contact-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.contact-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+}
+
+.contact-card-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.contact-card--whatsapp .contact-card-icon {
+  background: #25D366;
+}
+
+.contact-card--facebook .contact-card-icon {
+  background: #1877F2;
+}
+
+.contact-card--tiktok .contact-card-icon {
+  background: #000000;
+}
+
+.contact-card--email .contact-card-icon {
+  background: #6366f1;
+}
+
+.contact-card h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1a2332;
+  margin: 0 0 0.25rem 0;
+}
+
+.contact-card p {
+  font-size: 0.9rem;
+  color: #6b7a8f;
+  margin: 0 0 0.75rem 0;
+}
+
+.contact-card-action {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #0a2463;
+  transition: all 0.3s ease;
+}
+
+.contact-card:hover .contact-card-action {
+  transform: translateX(4px);
+}
+
+.contact-card--whatsapp:hover .contact-card-action {
+  color: #25D366;
+}
+
+.contact-card--facebook:hover .contact-card-action {
+  color: #1877F2;
+}
+
+.contact-card--tiktok:hover .contact-card-action {
+  color: #000000;
+}
+
+.contact-card--email:hover .contact-card-action {
+  color: #6366f1;
+}
+
+/* Info Section */
+.contact-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+  padding: 2rem;
+  background: #f8fafc;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+}
+
+.contact-info-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: #1a2332;
+}
+
+.contact-info-item svg {
+  color: #0a2463;
+  flex-shrink: 0;
+}
+
+.contact-info-item h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0 0 0.1rem 0;
+}
+
+.contact-info-item p {
+  font-size: 0.85rem;
+  color: #6b7a8f;
+  margin: 0;
+}
+
+/* Back Button */
+.contact-back {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.contact-back .btn {
+  min-height: 44px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .contact-page {
+    padding: 1rem;
+  }
+
+  .contact-hero h1 {
+    font-size: 2rem;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .contact-info {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-hero h1 {
+    font-size: 1.6rem;
+  }
+
+  .contact-card {
+    padding: 1.5rem 1rem;
+  }
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  .contact-hero h1 {
+    background: linear-gradient(135deg, #818cf8 0%, #a78bfa 50%, #c084fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .contact-hero p {
+    color: #94a3b8;
+  }
+
+  .contact-card {
+    background: #1e293b;
+    border-color: #334155;
+  }
+
+  .contact-card h3 {
+    color: #f1f5f9;
+  }
+
+  .contact-card p {
+    color: #94a3b8;
+  }
+
+  .contact-card-action {
+    color: #818cf8;
+  }
+
+  .contact-info {
+    background: #1e293b;
+    border-color: #334155;
+  }
+
+  .contact-info-item {
+    color: #f1f5f9;
+  }
+
+  .contact-info-item svg {
+    color: #818cf8;
+  }
+
+  .contact-info-item p {
+    color: #94a3b8;
+  }
+}

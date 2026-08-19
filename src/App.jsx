@@ -1,10 +1,11 @@
+// frontend/src/App.jsx
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Shell from './components/layout/Shell';
 
 // Public Pages
-import Home from './pages/Home'; // Add this import
+import Home from './pages/Home';
 import FlightSearch from './pages/FlightSearch';
 import FlightDetail from './pages/FlightDetail';
 import UserFlights from './pages/UserFlights';
@@ -13,6 +14,7 @@ import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import NotFound from './pages/NotFound';
+import Contact from './pages/Contact';
 
 // Authenticated Pages
 import Bookings from './pages/Bookings';
@@ -42,16 +44,14 @@ export default function App() {
             {/* ============================================
                 PUBLIC ROUTES
                 ============================================ */}
-            {/* ✅ Home page is now the root route */}
             <Route path="/" element={<Home />} />
-            
-            {/* Flight search is now at /flights */}
             <Route path="/flights" element={<UserFlights />} />
             <Route path="/flights/:id" element={<FlightDetail />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/contact" element={<Contact />} />
 
             {/* ============================================
                 PROTECTED ROUTES (Require Authentication)
