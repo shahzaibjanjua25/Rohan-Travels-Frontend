@@ -30,7 +30,7 @@ export const emailService = {
       otp_type: type === 'verification' ? 'Account Verification' : 'Password Reset',
       expiry_time: '10 minutes',
       company_name: 'Rohan Travels & Tours',
-      support_email: 'support@rohantravels.com',
+      support_email: 'mrohantraveltour@gmail.com',
     };
 
     const templateId = type === 'verification' 
@@ -57,7 +57,7 @@ export const emailService = {
       user_name: name || 'User',
       reset_link: resetLink,
       company_name: 'Rohan Travels & Tours',
-      support_email: 'support@rohantravels.com',
+      support_email: 'mrohantraveltour@gmail.com',
       expiry_time: '1 hour',
     };
 
@@ -109,7 +109,7 @@ export const emailService = {
       status: bookingData.status || 'pending',
       // ✅ CUSTOMER: Goes to /bookings/
       booking_url: `${window.location.origin}/bookings/${bookingData._id}`,
-      support_email: 'support@rohantravels.com',
+      support_email: 'mrohantraveltour@gmail.com',
       company_name: 'Rohan Travels & Tours',
     };
 

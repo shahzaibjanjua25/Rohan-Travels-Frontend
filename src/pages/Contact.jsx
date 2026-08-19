@@ -63,14 +63,14 @@ export default function Contact() {
 
         {/* Email Card */}
         <a
-          href="mailto:support@rohantravels.com"
+          href="mailto:mrohantraveltour@gmail.com"
           className="contact-card contact-card--email"
         >
           <div className="contact-card-icon">
             <Mail size={32} />
           </div>
           <h3>Email</h3>
-          <p>support@rohantravels.com</p>
+          <p>mrohantraveltour@gmail.com</p>
           <span className="contact-card-action">Send email →</span>
         </a>
       </div>

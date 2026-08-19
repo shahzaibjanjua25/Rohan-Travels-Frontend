@@ -13,7 +13,7 @@ export default function MaintenancePage({ message }) {
         <p className="maintenance-update">Estimated downtime: 1-2 hours</p>
         <p className="maintenance-contact">
           For urgent inquiries, please contact us at{' '}
-          <a href="mailto:support@rohantravels.com">support@rohantravels.com</a>
+          <a href="mailto:mrohantraveltour@gmail.com">mrohantraveltour@gmail.com</a>
         </p>
       </div>
     </div>
