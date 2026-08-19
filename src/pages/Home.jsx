@@ -1,10 +1,13 @@
 // frontend/src/pages/Home.jsx
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { flightService } from '../services/flights';
 import bahrainImage from '../assests/bahrain.jpg';
 import omanImage from '../assests/oman.jpg';
+import heroVideo from '../assests/hero-vid.mp4';
+import saudiphoto from '../assests/saudia.jpg';
+
 import {
   Plane,
   Search,
@@ -26,8 +29,203 @@ import {
   CheckCircle,
   Gift,
   Building,
+  Phone,
+  Mail,
+  ArrowRight,
+  Facebook,
+  Instagram,
+  Twitter,
+  ChevronDown,
 } from 'lucide-react';
+import { FaFacebook, FaWhatsapp, FaTiktok } from 'react-icons/fa';
 import './Home.css';
+
+// ============================================
+// AIRPORT DATA
+// ============================================
+const DOMESTIC_AIRPORTS = [
+  { code: 'ISB', city: 'Islamabad', name: 'Islamabad International Airport' },
+  { code: 'LHE', city: 'Lahore', name: 'Allama Iqbal International Airport' },
+  { code: 'KHI', city: 'Karachi', name: 'Jinnah International Airport' },
+  { code: 'PEW', city: 'Peshawar', name: 'Bacha Khan International Airport' },
+  { code: 'MUX', city: 'Multan', name: 'Multan International Airport' },
+  { code: 'SKT', city: 'Sialkot', name: 'Sialkot International Airport' },
+  { code: 'UET', city: 'Quetta', name: 'Quetta International Airport' },
+  { code: 'LYP', city: 'Faisalabad', name: 'Faisalabad International Airport' },
+  { code: 'GWD', city: 'Gwadar', name: 'Gwadar International Airport' },
+  { code: 'KDU', city: 'Skardu', name: 'Skardu Airport' },
+  { code: 'GIL', city: 'Gilgit', name: 'Gilgit Airport' },
+  { code: 'CJL', city: 'Chitral', name: 'Chitral Airport' },
+  { code: 'DSK', city: 'Dera Ismail Khan', name: 'Dera Ismail Khan Airport' },
+  { code: 'RYK', city: 'Rahim Yar Khan', name: 'Shaikh Zayed International Airport' },
+  { code: 'TUK', city: 'Turbat', name: 'Turbat International Airport' },
+  { code: 'PAJ', city: 'Panjgur', name: 'Panjgur Airport' },
+  { code: 'DBA', city: 'Dalbandin', name: 'Dalbandin Airport' },
+  { code: 'SGI', city: 'Sargodha', name: 'Sargodha Airport' },
+  { code: 'MWD', city: 'Mianwali', name: 'Mianwali Airport' },
+  { code: 'ZIA', city: 'Zhob', name: 'Zhob Airport' },
+];
+
+const INTERNATIONAL_AIRPORTS = [
+  // UAE
+  { code: 'DXB', city: 'Dubai', name: 'Dubai International Airport', country: 'UAE' },
+  { code: 'AUH', city: 'Abu Dhabi', name: 'Abu Dhabi International Airport', country: 'UAE' },
+  { code: 'SHJ', city: 'Sharjah', name: 'Sharjah International Airport', country: 'UAE' },
+
+  // Saudi Arabia
+  { code: 'JED', city: 'Jeddah', name: 'King Abdulaziz International Airport', country: 'Saudi Arabia' },
+  { code: 'RUH', city: 'Riyadh', name: 'King Khalid International Airport', country: 'Saudi Arabia' },
+  { code: 'MED', city: 'Madinah', name: 'Prince Mohammad bin Abdulaziz International Airport', country: 'Saudi Arabia' },
+  { code: 'DMM', city: 'Dammam', name: 'King Fahd International Airport', country: 'Saudi Arabia' },
+
+  // Qatar
+  { code: 'DOH', city: 'Doha', name: 'Hamad International Airport', country: 'Qatar' },
+
+  // Oman
+  { code: 'MCT', city: 'Muscat', name: 'Muscat International Airport', country: 'Oman' },
+  { code: 'SLL', city: 'Salalah', name: 'Salalah International Airport', country: 'Oman' },
+
+  // Bahrain
+  { code: 'BAH', city: 'Manama', name: 'Bahrain International Airport', country: 'Bahrain' },
+
+  // Kuwait
+  { code: 'KWI', city: 'Kuwait City', name: 'Kuwait International Airport', country: 'Kuwait' },
+
+  // Turkey
+  { code: 'IST', city: 'Istanbul', name: 'Istanbul Airport', country: 'Turkey' },
+  { code: 'SAW', city: 'Istanbul', name: 'Sabiha Gökçen International Airport', country: 'Turkey' },
+
+  // UK
+  { code: 'LHR', city: 'London', name: 'London Heathrow Airport', country: 'UK' },
+  { code: 'LGW', city: 'London', name: 'London Gatwick Airport', country: 'UK' },
+  { code: 'MAN', city: 'Manchester', name: 'Manchester Airport', country: 'UK' },
+
+  // USA
+  { code: 'JFK', city: 'New York', name: 'John F. Kennedy International Airport', country: 'USA' },
+  { code: 'LAX', city: 'Los Angeles', name: 'Los Angeles International Airport', country: 'USA' },
+
+  // Europe
+  { code: 'CDG', city: 'Paris', name: 'Charles de Gaulle Airport', country: 'France' },
+  { code: 'FRA', city: 'Frankfurt', name: 'Frankfurt Airport', country: 'Germany' },
+  { code: 'AMS', city: 'Amsterdam', name: 'Amsterdam Airport Schiphol', country: 'Netherlands' },
+
+  // Asia
+  { code: 'SIN', city: 'Singapore', name: 'Singapore Changi Airport', country: 'Singapore' },
+  { code: 'KUL', city: 'Kuala Lumpur', name: 'Kuala Lumpur International Airport', country: 'Malaysia' },
+  { code: 'BKK', city: 'Bangkok', name: 'Suvarnabhumi Airport', country: 'Thailand' },
+  { code: 'NRT', city: 'Tokyo', name: 'Narita International Airport', country: 'Japan' },
+  { code: 'ICN', city: 'Seoul', name: 'Incheon International Airport', country: 'South Korea' },
+  { code: 'HKG', city: 'Hong Kong', name: 'Hong Kong International Airport', country: 'Hong Kong' },
+
+  // Middle East
+  { code: 'BEY', city: 'Beirut', name: 'Beirut-Rafic Hariri International Airport', country: 'Lebanon' },
+  { code: 'AMM', city: 'Amman', name: 'Queen Alia International Airport', country: 'Jordan' },
+];
+
+// Country to airport codes mapping
+const COUNTRY_AIRPORT_MAP = {
+  'UAE': ['DXB', 'AUH', 'SHJ'],
+  'Saudi Arabia': ['JED', 'RUH', 'MED', 'DMM'],
+  'Oman': ['MCT', 'SLL'],
+  'Bahrain': ['BAH'],
+  'Qatar': ['DOH'],
+  'Kuwait': ['KWI'],
+  'Turkey': ['IST', 'SAW'],
+  'UK': ['LHR', 'LGW', 'MAN'],
+  'USA': ['JFK', 'LAX'],
+  'France': ['CDG'],
+  'Germany': ['FRA'],
+  'Netherlands': ['AMS'],
+  'Singapore': ['SIN'],
+  'Malaysia': ['KUL'],
+  'Thailand': ['BKK'],
+  'Japan': ['NRT'],
+  'South Korea': ['ICN'],
+  'Hong Kong': ['HKG'],
+  'Lebanon': ['BEY'],
+  'Jordan': ['AMM'],
+  'Pakistan': ['ISB', 'LHE', 'KHI', 'PEW', 'MUX', 'SKT', 'UET', 'LYP', 'GWD', 'KDU', 'GIL', 'CJL', 'DSK', 'RYK', 'TUK', 'PAJ', 'DBA', 'SGI', 'MWD', 'ZIA'],
+};
+
+// Airport Select Component
+function AirportSelect({ id, label, placeholder, value, onChange, airports = [], className = '' }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const wrapperRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const filteredAirports = airports.filter(airport => {
+    const search = searchTerm.toLowerCase();
+    return (
+      airport.code?.toLowerCase().includes(search) ||
+      airport.city?.toLowerCase().includes(search) ||
+      airport.name?.toLowerCase().includes(search) ||
+      airport.country?.toLowerCase().includes(search)
+    );
+  });
+
+  const handleSelect = (airport) => {
+    onChange(airport.code);
+    setSearchTerm('');
+    setIsOpen(false);
+  };
+
+  const displayValue = value || searchTerm;
+
+  return (
+    <div className="airport-select-wrapper" ref={wrapperRef}>
+      <div className="airport-select-trigger" onClick={() => setIsOpen(!isOpen)}>
+        <input
+          id={id}
+          type="text"
+          className="search-input"
+          placeholder={placeholder}
+          value={displayValue}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+            setIsOpen(true);
+          }}
+          onFocus={() => setIsOpen(true)}
+          autoComplete="off"
+        />
+        <ChevronDown className={`airport-select-arrow ${isOpen ? 'open' : ''}`} size={16} />
+      </div>
+      {isOpen && (
+        <div className="airport-select-dropdown">
+          {filteredAirports.length === 0 ? (
+            <div className="airport-select-item no-results">
+              {searchTerm ? 'No airports found' : 'Start typing to search...'}
+            </div>
+          ) : (
+            filteredAirports.map((airport) => (
+              <button
+                key={airport.code}
+                type="button"
+                className="airport-select-item"
+                onClick={() => handleSelect(airport)}
+              >
+                <span className="airport-code">{airport.code}</span>
+                <span className="airport-name">
+                  {airport.city}, {airport.country || 'Pakistan'}
+                  <span className="airport-full-name"> · {airport.name}</span>
+                </span>
+              </button>
+            ))
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function Home() {
   const { isAuthenticated } = useAuth();
@@ -35,103 +233,113 @@ export default function Home() {
   const [featuredFlights, setFeaturedFlights] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [tripType, setTripType] = useState('round_trip');
+  const [searchParams, setSearchParams] = useState({
+    origin: '',
+    destination: '',
+    departureDate: '',
+    returnDate: '',
+    passengers: 1,
+  });
 
-  // Tour packages data with destination airport codes (3-letter IATA codes)
-  // Tour packages data with destination airport codes (3-letter IATA codes)
+  // Business Contact Info
+  const BUSINESS_INFO = {
+    phone: '+92 348 7839237',
+    email: 'mrohantraveltour@gmail.com',
+    address: 'Old Rasul Road, Usmania Mohallah Usmani Mohalla, Mandi Bahauddin, Pakistan',
+    facebook: 'https://www.facebook.com/share/1GccNRa3SP/',
+    tiktok: 'https://www.tiktok.com/@m_rohan_travels_tours?_r=1&_t=ZN-98xOcwAp770',
+    whatsapp: 'https://wa.me/qr/Y5PW7NQXWGTLP1',
+  };
+
+  // Tour packages with country-based filtering
   const tourPackages = [
+    // 1. Umrah Packages (Saudi Arabia) - Uses travelType filter
     {
       id: 1,
-      title: 'Dubai Tickets',
-      description: 'Experience the ultimate luxury in Dubai with private tours, 5-star hotels, and exclusive access to top attractions.',
-      duration: '5-7 Days',
-      image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80',
-      features: ['Burj Khalifa', 'Desert Safari', 'Private Yacht', 'Shopping Tours', 'Fine Dining'],
-      icon: <Building size={32} />,
-      color: '#8b5cf6',
-      badge: '🌟 Top Rated',
-      destinationAirport: 'DXB',
-      destinationCity: 'Dubai',
-      destinationCountry: 'UAE',
-    },
-    {
-      id: 2,
-      title: 'Turkey Cultural Tickets',
-      description: 'Explore the rich history and culture of Turkey with guided tours to Istanbul, Cappadocia, and the Mediterranean coast.',
-      duration: '8-12 Days',
-      image: 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=800&q=80',
-      features: ['Guided Tours', 'Hot Air Balloon', 'Historical Sites', 'Turkish Cuisine', 'Shopping'],
-      icon: <MapPin size={32} />,
-      color: '#ef4444',
-      badge: '🌍 Top Rated',
-      destinationAirport: 'IST',
-      destinationCity: 'Istanbul',
-      destinationCountry: 'Turkey',
-    },
-    {
-      id: 3,
       title: 'Saudi Arabia - Umrah',
       description: 'Spiritual journey to the holy cities of Makkah and Madinah with premium services and comfortable accommodations.',
       duration: '7-14 Days',
       image: 'https://zamzam.com/blog/wp-content/uploads/2021/05/history-of-Umrah.jpg',
-      features: ['5-Star Hotels', '24/7 Support', 'Visa Assistance', 'Ziyarat Tours', 'Group Discounts'],
+      features: ['5-Star Hotels', '24/7 Support', 'Visa Assistance'],
       icon: <Umbrella size={32} />,
       color: '#10b981',
       badge: '⭐ Best Seller',
-      destinationAirport: 'JED',
-      destinationCity: 'Jeddah',
-      destinationCountry: 'Saudi Arabia',
+      filterType: 'travelType',   // Uses travelType filter
+      filterValue: 'umrah',
     },
+    // 2. UAE Packages - Uses country filter
+    {
+      id: 2,
+      title: 'Dubai - UAE',
+      description: 'Experience the ultimate luxury in Dubai with private tours, 5-star hotels, and exclusive access to top attractions.',
+      duration: '5-7 Days',
+      image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80',
+      features: ['Burj Khalifa', 'Desert Safari', 'Private Yacht'],
+      icon: <Building size={32} />,
+      color: '#8b5cf6',
+      badge: '🌟 Top Rated',
+      filterType: 'country',
+      filterValue: 'UAE',
+    },
+    // 3. Oman Packages - Uses country filter
+    {
+      id: 3,
+      title: 'Oman - Muscat',
+      description: 'Discover the hidden gems of Oman with stunning landscapes, rich culture, and warm hospitality.',
+      duration: '6-10 Days',
+      image: omanImage,
+      features: ['Grand Mosque', 'Wadi Shab', 'Desert Safari'],
+      icon: <Compass size={32} />,
+      color: '#d4af37',
+      badge: '🌅 Hidden Gem',
+      filterType: 'country',
+      filterValue: 'Oman',
+    },
+    // 4. Bahrain Packages - Uses country filter
     {
       id: 4,
-      title: 'Bahrain Getaway',
-      description: 'Discover the charm of Bahrain with its rich culture, modern attractions, and beautiful waterfront experiences.',
+      title: 'Bahrain - Manama',
+      description: 'Explore the pearl of the Gulf with modern architecture, ancient forts, and vibrant culture.',
       duration: '4-7 Days',
-      image: bahrainImage, // ✅ Fixed Bahrain image
-      features: ['Waterfront Views', 'Cultural Tours', 'Shopping', 'Fine Dining', 'Relaxation'],
-      icon: <Compass size={32} />,
-      color: '#f59e0b',
-      badge: '✨ Hidden Gem',
-      destinationAirport: 'BAH',
-      destinationCity: 'Manama',
-      destinationCountry: 'Bahrain',
+      image: bahrainImage,
+      features: ['Bahrain Fort', 'Pearl Diving', 'Shopping Malls'],
+      icon: <Globe size={32} />,
+      color: '#e74c3c',
+      badge: '🏝️ Gulf Pearl',
+      filterType: 'country',
+      filterValue: 'Bahrain',
     },
+    // 5. Saudi Arabia - Other Cities (not Umrah) - Uses country filter
     {
       id: 5,
-      title: 'Oman Adventure',
-      description: 'Explore the stunning landscapes of Oman from the mountains to the coast with guided tours and cultural experiences.',
-      duration: '6-10 Days',
-      image: omanImage, // ✅ Fixed Oman image
-      features: ['Mountain Tours', 'Coastal Adventures', 'Cultural Sites', 'Local Cuisine', 'Shopping'],
-      icon: <Package size={32} />,
-      color: '#6366f1',
-      badge: '🏔️ Adventure',
-      destinationAirport: 'MCT',
-      destinationCity: 'Muscat',
-      destinationCountry: 'Oman',
+      title: 'Saudi Arabia - Riyadh',
+      description: 'Experience the modern capital of Saudi Arabia with its stunning architecture, rich history, and vibrant culture.',
+      duration: '5-10 Days',
+      image: saudiphoto,
+      features: ['Kingdom Tower', 'Diriyah', 'Shopping Malls'],
+      icon: <Building size={32} />,
+      color: '#2ecc71',
+      badge: '🏙️ Modern Capital',
+      filterType: 'country',
+      filterValue: 'Saudi Arabia',
     },
+    // 6. USA Packages - Uses country filter
     {
       id: 6,
       title: 'USA - New York',
-      description: 'Experience the energy of New York City with guided tours, iconic landmarks, and world-class entertainment.',
-      duration: '7-10 Days',
+      description: 'Experience the city that never sleeps with iconic landmarks, world-class entertainment, and endless opportunities.',
+      duration: '8-14 Days',
       image: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&w=800&q=80',
-      features: ['Statue of Liberty', 'Times Square', 'Broadway Shows', 'Museums', 'Shopping'],
-      icon: <Globe size={32} />,
-      color: '#3b82f6',
-      badge: '🗽 Iconic',
-      destinationAirport: 'JFK',
-      destinationCity: 'New York',
-      destinationCountry: 'USA',
+      features: ['Times Square', 'Statue of Liberty', 'Broadway Shows'],
+      icon: <MapPin size={32} />,
+      color: '#3498db',
+      badge: '🗽 Iconic City',
+      filterType: 'country',
+      filterValue: 'USA',
     },
   ];
-  // ✅ Handle tour package click - navigate to flights with destination airport code
-  const handleTourPackageClick = (destinationAirport, destinationCity, destinationCountry) => {
-    console.log(`📍 Navigating to flights for: ${destinationCity}, ${destinationCountry} (${destinationAirport})`);
-    // Use the airport code for the API
-    navigate(`/flights?destination=${destinationAirport}`);
-  };
 
-  // Shuffle array function
   const shuffleArray = (array) => {
     const shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
@@ -141,7 +349,6 @@ export default function Home() {
     return shuffled;
   };
 
-  // Helper function to get airline logo/color
   const getAirlineColor = (airline) => {
     const colors = {
       'Pak Qatar': '#8B0000',
@@ -156,20 +363,18 @@ export default function Home() {
       'American Airlines': '#0078D2',
       'Delta': '#003366',
       'United': '#002244',
+      'Air Sial': '#1a3a6a',
+      'Salam Air': '#d4af37',
+      'Fly Dubai': '#d71921',
     };
     return colors[airline] || '#667eea';
   };
 
-  // Fetch random flights from API
   const fetchRandomFlights = async () => {
     setLoading(true);
     setError(null);
     try {
-      const params = {
-        page: 1,
-        limit: 100,
-      };
-
+      const params = { page: 1, limit: 100 };
       const response = await flightService.search(params);
 
       let flights = [];
@@ -177,8 +382,6 @@ export default function Home() {
         flights = response.data;
       } else if (response.data && response.data.data) {
         flights = response.data.data;
-      } else {
-        flights = [];
       }
 
       if (flights.length === 0) {
@@ -188,7 +391,7 @@ export default function Home() {
       }
 
       const shuffledFlights = shuffleArray(flights);
-      const selectedFlights = shuffledFlights.slice(0, Math.min(3, shuffledFlights.length));
+      const selectedFlights = shuffledFlights.slice(0, Math.min(6, shuffledFlights.length));
 
       const featured = selectedFlights.map(flight => ({
         id: flight._id,
@@ -196,9 +399,9 @@ export default function Home() {
         flightNumber: flight.flightNumber || 'N/A',
         aircraft: flight.aircraft || 'Unknown',
         origin: flight.origin?.city || 'Unknown',
-        originCode: flight.origin?.airportCode || flight.origin?.code || 'N/A',
+        originCode: flight.origin?.airportCode || 'N/A',
         destination: flight.destination?.city || 'Unknown',
-        destinationCode: flight.destination?.airportCode || flight.destination?.code || 'N/A',
+        destinationCode: flight.destination?.airportCode || 'N/A',
         departureTime: flight.departureTime,
         arrivalTime: flight.arrivalTime,
         status: flight.status || 'scheduled',
@@ -207,6 +410,7 @@ export default function Home() {
         baggageAllowance: flight.baggageAllowance,
         tripType: flight.tripType || 'one_way',
         travelTypes: flight.travelTypes || [],
+        price: flight.cabins?.economy?.price || 'Contact',
       }));
 
       setFeaturedFlights(featured);
@@ -219,53 +423,126 @@ export default function Home() {
     }
   };
 
-  const getFallbackFlights = () => {
-    return [
-      {
-        id: '1',
-        airline: 'Pak Qatar',
-        flightNumber: 'PK232',
-        aircraft: 'Boeing 737',
-        origin: 'Karachi',
-        originCode: 'KHI',
-        destination: 'Dubai',
-        destinationCode: 'DXB',
-        color: '#8B0000',
-        status: 'scheduled',
-        tripType: 'one_way',
-      },
-      {
-        id: '2',
-        airline: 'Emirates',
-        flightNumber: 'EK508',
-        aircraft: 'Airbus A380',
-        origin: 'Dubai',
-        originCode: 'DXB',
-        destination: 'London',
-        destinationCode: 'LHR',
-        color: '#D71921',
-        status: 'boarding',
-        tripType: 'round_trip',
-      },
-      {
-        id: '3',
-        airline: 'Qatar Airways',
-        flightNumber: 'QR601',
-        aircraft: 'Boeing 787',
-        origin: 'Doha',
-        originCode: 'DOH',
-        destination: 'Singapore',
-        destinationCode: 'SIN',
-        color: '#8A1538',
-        status: 'departed',
-        tripType: 'one_way',
-      },
-    ];
-  };
+  const getFallbackFlights = () => [
+    {
+      id: '1',
+      airline: 'Pak Qatar',
+      flightNumber: 'PK232',
+      aircraft: 'Boeing 737',
+      origin: 'Islamabad',
+      originCode: 'ISB',
+      destination: 'Muscat',
+      destinationCode: 'MCT',
+      color: '#8B0000',
+      status: 'scheduled',
+      tripType: 'one_way',
+      price: 30000,
+    },
+    {
+      id: '2',
+      airline: 'Emirates',
+      flightNumber: 'EK508',
+      aircraft: 'Airbus A380',
+      origin: 'Dubai',
+      originCode: 'DXB',
+      destination: 'London',
+      destinationCode: 'LHR',
+      color: '#D71921',
+      status: 'boarding',
+      tripType: 'round_trip',
+      price: 85000,
+    },
+    {
+      id: '3',
+      airline: 'Qatar Airways',
+      flightNumber: 'QR601',
+      aircraft: 'Boeing 787',
+      origin: 'Doha',
+      originCode: 'DOH',
+      destination: 'Singapore',
+      destinationCode: 'SIN',
+      color: '#8A1538',
+      status: 'departed',
+      tripType: 'one_way',
+      price: 120000,
+    },
+    {
+      id: '4',
+      airline: 'Air Sial',
+      flightNumber: 'PF734',
+      aircraft: 'Airbus A320',
+      origin: 'Sialkot',
+      originCode: 'SKT',
+      destination: 'Muscat',
+      destinationCode: 'MCT',
+      color: '#1a3a6a',
+      status: 'scheduled',
+      tripType: 'one_way',
+      price: 71000,
+    },
+    {
+      id: '5',
+      airline: 'Salam Air',
+      flightNumber: 'OV522',
+      aircraft: 'Airbus A320neo',
+      origin: 'Lahore',
+      originCode: 'LHE',
+      destination: 'Muscat',
+      destinationCode: 'MCT',
+      color: '#d4af37',
+      status: 'scheduled',
+      tripType: 'one_way',
+      price: 66000,
+    },
+    {
+      id: '6',
+      airline: 'Fly Dubai',
+      flightNumber: 'FZ334',
+      aircraft: 'Boeing 737-800',
+      origin: 'Karachi',
+      originCode: 'KHI',
+      destination: 'Dubai',
+      destinationCode: 'DXB',
+      color: '#d71921',
+      status: 'scheduled',
+      tripType: 'one_way',
+      price: 55000,
+    },
+  ];
 
   useEffect(() => {
     fetchRandomFlights();
   }, []);
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    const params = new URLSearchParams();
+    if (searchParams.origin) params.append('origin', searchParams.origin.toUpperCase());
+    if (searchParams.destination) params.append('destination', searchParams.destination.toUpperCase());
+    if (searchParams.departureDate) params.append('departureDate', searchParams.departureDate);
+    if (searchParams.returnDate) params.append('returnDate', searchParams.returnDate);
+    params.append('tripType', tripType);
+    params.append('passengers', searchParams.passengers);
+    navigate(`/flights?${params.toString()}`);
+  };
+
+  // ============================================================
+  // UPDATED: handleTourClick - Different filtering based on package type
+  // ============================================================
+  const handleTourClick = (pkg) => {
+    const params = new URLSearchParams();
+
+    if (pkg.filterType === 'travelType') {
+      // Umrah: Only apply travelType filter
+      if (pkg.filterValue) params.append('travelType', pkg.filterValue);
+    } else if (pkg.filterType === 'country') {
+      // Country-based filter: Pass the country name as a parameter
+      // UserFlights.jsx will handle the logic to find all airports in that country
+      params.append('country', pkg.filterValue);
+    }
+
+    navigate(`/flights?${params.toString()}`);
+  };
 
   const getStatusBadge = (status) => {
     const statusMap = {
@@ -278,7 +555,6 @@ export default function Home() {
     return statusMap[status] || statusMap.scheduled;
   };
 
-  // Helper to get trip type display
   const getTripTypeDisplay = (tripType) => {
     const map = {
       'one_way': 'One Way',
@@ -288,374 +564,562 @@ export default function Home() {
     return map[tripType] || 'One Way';
   };
 
+  const doubledFlights = featuredFlights.length > 0 ? [...featuredFlights, ...featuredFlights] : [];
+
+  // All airports for dropdowns
+  const allAirports = [...DOMESTIC_AIRPORTS, ...INTERNATIONAL_AIRPORTS];
+
   return (
     <div className="home">
-      {/* Hero Section */}
-      <section className="home-hero">
-        <div className="home-hero-background">
-          <div className="home-hero-overlay"></div>
-        </div>
-        <div className="container">
-          <div className="home-hero-content">
-            <div className="home-hero-badge">
-              <Sparkles size={16} />
-              <span>✈️ Premium Travel Partner</span>
-            </div>
-            <h1 className="home-hero-title">
-              Explore the World with
-              <span className="gradient-text"> Rohan Travels</span>
-            </h1>
-            <p className="home-hero-subtitle">
-              Your trusted partner for seamless flight bookings, exclusive deals,
-              and unforgettable travel experiences across the globe.
-            </p>
-            <div className="home-hero-actions">
-              {isAuthenticated ? (
-                <Link to="/flights" className="btn btn--primary btn--lg">
-                  <Search size={20} />
-                  Search Flights
-                  <ChevronRight size={20} />
-                </Link>
-              ) : (
-                <>
-                  <Link to="/register" className="btn btn--primary btn--lg">
-                    Get Started
-                    <ChevronRight size={20} />
-                  </Link>
-                  <Link to="/flights" className="btn btn--outline btn--lg">
-                    Browse Flights
-                  </Link>
-                </>
-              )}
-            </div>
-            <div className="home-hero-stats">
-              <div className="stat-item">
-                <div className="stat-number">500+</div>
-                <div className="stat-label">Airlines Partnered</div>
-              </div>
-              <div className="stat-divider"></div>
-              <div className="stat-item">
-                <div className="stat-number">50K+</div>
-                <div className="stat-label">Happy Travelers</div>
-              </div>
-              <div className="stat-divider"></div>
-              <div className="stat-item">
-                <div className="stat-number">100+</div>
-                <div className="stat-label">Countries Covered</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* ============================================================
+          HERO SECTION - With Video Background
+          ============================================================ */}
+      <section className="hero-section">
+        <video autoPlay muted loop playsInline className="hero-video">
+          <source src={heroVideo} type="video/mp4" />
+        </video>
+        <div className="hero-overlay"></div>
+        <div className="hero-gradient"></div>
 
-      {/* Tour Packages Section */}
-      <section className="home-tour-packages">
-        <div className="container">
-          <div className="section-header">
-            <h2>Special Ticket Packages</h2>
-            <p>Explore our curated travel experiences for every destination</p>
+        <div className="hero-content">
+          <div className="hero-badge">
+            <Sparkles className="sparkle" />
+            <span>Pakistan's Premier Travel Portal</span>
           </div>
-          <div className="tour-packages-grid">
-            {tourPackages.map((pkg) => (
-              <div
-                key={pkg.id}
-                className="tour-package-card"
-                onClick={() => handleTourPackageClick(pkg.destinationAirport, pkg.destinationCity, pkg.destinationCountry)}
-                style={{ cursor: 'pointer' }}
-              >
-                <div
-                  className="tour-package-image"
-                  style={{ backgroundImage: `url(${pkg.image})` }}
+
+          <h1 className="hero-title">
+            Explore the World with{' '}
+            <span className="highlight">Rohan Travels</span>
+          </h1>
+
+          <p className="hero-subtitle">
+            Your trusted partner for seamless flight bookings, exclusive deals,
+            and unforgettable travel experiences across the globe.
+          </p>
+
+          <div className="hero-divider">
+            <span className="hero-divider-line"></span>
+            <span className="hero-divider-dot"></span>
+            <span className="hero-divider-text">Make your journey special with us</span>
+            <span className="hero-divider-dot"></span>
+            <span className="hero-divider-line"></span>
+          </div>
+
+          <div className="hero-search-wrapper">
+            <div className="hero-search-glow"></div>
+            <div className="hero-search-form">
+              {/* Search Tabs - Trip Type */}
+              <div className="search-tabs">
+                <button
+                  className={`search-tab ${tripType === 'round_trip' ? 'active' : ''}`}
+                  onClick={() => setTripType('round_trip')}
                 >
-                  <div className="tour-package-badge">{pkg.badge}</div>
-                  <div className="tour-package-overlay">
-                    <div className="tour-package-price">{pkg.price}</div>
-                  </div>
-                </div>
-                <div className="tour-package-content">
-                  <div className="tour-package-header">
-                    <div className="tour-package-icon" style={{ backgroundColor: pkg.color }}>
-                      {pkg.icon}
+                  Round Trip
+                </button>
+                <button
+                  className={`search-tab ${tripType === 'one_way' ? 'active' : ''}`}
+                  onClick={() => setTripType('one_way')}
+                >
+                  One Way
+                </button>
+                <button
+                  className={`search-tab ${tripType === 'multi_city' ? 'active' : ''}`}
+                  onClick={() => setTripType('multi_city')}
+                >
+                  Multi-City
+                </button>
+              </div>
+
+              <form onSubmit={handleSearchSubmit}>
+                <div className="search-grid">
+                  {/* Origin & Destination */}
+                  <div className="search-field-group">
+                    <label className="label">From (Origin)</label>
+                    <div className="origin-destination-row">
+                      <div className="field-wrapper">
+                        <Plane className="icon" />
+                        <AirportSelect
+                          id="origin"
+                          placeholder="Search departure airport..."
+                          value={searchParams.origin}
+                          onChange={(value) => setSearchParams({ ...searchParams, origin: value })}
+                          airports={allAirports}
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        className="swap-btn"
+                        onClick={() => {
+                          setSearchParams({
+                            ...searchParams,
+                            origin: searchParams.destination,
+                            destination: searchParams.origin,
+                          });
+                        }}
+                        aria-label="Swap cities"
+                      >
+                        <ArrowRight />
+                      </button>
+                      <div className="field-wrapper">
+                        <MapPin className="icon" />
+                        <AirportSelect
+                          id="destination"
+                          placeholder="Search arrival airport..."
+                          value={searchParams.destination}
+                          onChange={(value) => setSearchParams({ ...searchParams, destination: value })}
+                          airports={allAirports}
+                        />
+                      </div>
                     </div>
-                    <h3>{pkg.title}</h3>
                   </div>
-                  <p className="tour-package-description">{pkg.description}</p>
-                  <div className="tour-package-features">
-                    {pkg.features.slice(0, 3).map((feature, index) => (
-                      <span key={index} className="tour-package-feature">
-                        <CheckCircle size={14} />
-                        {feature}
-                      </span>
-                    ))}
-                    {pkg.features.length > 3 && (
-                      <span className="tour-package-feature more">+{pkg.features.length - 3} more</span>
-                    )}
-                  </div>
-                  <div className="tour-package-footer">
-                    <div className="tour-package-duration">
-                      <Clock size={16} />
-                      <span>{pkg.duration}</span>
+
+                  {/* Dates */}
+                  <div className="search-field-group">
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="label">Departure</label>
+                        <div className="date-input-wrapper">
+                          <Calendar className="icon" />
+                          <input
+                            type="date"
+                            className="search-date-input"
+                            min={new Date().toISOString().split('T')[0]}
+                            value={searchParams.departureDate}
+                            onChange={(e) => setSearchParams({ ...searchParams, departureDate: e.target.value })}
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="label">Return</label>
+                        <div className="date-input-wrapper">
+                          <Calendar className="icon" />
+                          <input
+                            type="date"
+                            className="search-date-input"
+                            min={new Date().toISOString().split('T')[0]}
+                            value={searchParams.returnDate}
+                            onChange={(e) => setSearchParams({ ...searchParams, returnDate: e.target.value })}
+                            disabled={tripType === 'one_way' || tripType === 'multi_city'}
+                            style={tripType === 'one_way' || tripType === 'multi_city' ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
+                          />
+                        </div>
+                      </div>
                     </div>
-                    <button
-                      className="tour-package-btn"
-                      style={{ backgroundColor: pkg.color }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleTourPackageClick(pkg.destinationAirport, pkg.destinationCity, pkg.destinationCountry);
-                      }}
-                    >
-                      View Flights
-                      <ChevronRight size={16} />
+                  </div>
+
+                  {/* Search Button */}
+                  <div className="search-field-group" style={{ justifyContent: 'flex-end' }}>
+                    <button type="submit" className="search-submit-btn">
+                      <Search size={18} />
+                      Explore Flights
+                      <ArrowRight size={16} />
                     </button>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-          <div className="tour-packages-cta">
-            <Link to="/flights" className="btn btn--outline-primary">
-              View All Flights
-              <ChevronRight size={18} />
-            </Link>
-          </div>
-        </div>
-      </section>
+              </form>
 
-      {/* Features Section */}
-      <section className="home-features">
-        <div className="container">
-          <div className="section-header">
-            <h2>Why Choose Rohan Travels?</h2>
-            <p>We make your travel experience seamless and enjoyable</p>
-          </div>
-          <div className="features-grid">
-            <div className="feature-card">
-              <div className="feature-icon">
-                <Plane size={32} />
+              {/* Popular Routes */}
+              <div className="popular-routes">
+                <span className="popular-routes-label">Popular:</span>
+                <button
+                  type="button"
+                  className="popular-route-btn"
+                  onClick={() => setSearchParams({ ...searchParams, origin: 'LHE', destination: 'JED' })}
+                >
+                  LHE ✈️ JED
+                </button>
+                <button
+                  type="button"
+                  className="popular-route-btn"
+                  onClick={() => setSearchParams({ ...searchParams, origin: 'KHI', destination: 'DXB' })}
+                >
+                  KHI ✈️ DXB
+                </button>
+                <button
+                  type="button"
+                  className="popular-route-btn"
+                  onClick={() => setSearchParams({ ...searchParams, origin: 'ISB', destination: 'RUH' })}
+                >
+                  ISB ✈️ RUH
+                </button>
+                <button
+                  type="button"
+                  className="popular-route-btn"
+                  onClick={() => setSearchParams({ ...searchParams, origin: 'PEW', destination: 'SHJ' })}
+                >
+                  PEW ✈️ SHJ
+                </button>
               </div>
-              <h3>Best Flight Deals</h3>
-              <p>
-                Get access to exclusive discounts and the best prices
-                on flights from top airlines worldwide.
-              </p>
-            </div>
-            <div className="feature-card">
-              <div className="feature-icon">
-                <Clock size={32} />
-              </div>
-              <h3>24/7 Support</h3>
-              <p>
-                Our dedicated team is available around the clock to assist
-                you with bookings and travel queries.
-              </p>
-            </div>
-            <div className="feature-card">
-              <div className="feature-icon">
-                <Shield size={32} />
-              </div>
-              <h3>Secure Booking</h3>
-              <p>
-                Your payments and personal information are protected with
-                enterprise-grade security.
-              </p>
-            </div>
-            <div className="feature-card">
-              <div className="feature-icon">
-                <Users size={32} />
-              </div>
-              <h3>Group Discounts</h3>
-              <p>
-                Special rates for group bookings, corporate travel,
-                and family vacations.
-              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Featured Flights Section */}
-      <section className="home-featured-flights">
-        <div className="container">
-          <div className="section-header">
-            <h2>✈️ Featured Flights</h2>
-            <p>Discover amazing deals on these popular routes</p>
+      {/* ============================================================
+          FEATURES SECTION
+          ============================================================ */}
+      <section className="section features-section">
+        <div className="section-header">
+          <span className="eyebrow">Platform Capabilities</span>
+          <h2>Everything to Run Your Agency</h2>
+          <p>Simplify your booking operations, manage cash flow, and track visa files inside a single workspace.</p>
+        </div>
+
+        <div className="features-grid">
+          <div className="feature-card">
+            <span className="feature-number">1</span>
+            <div className="icon-wrapper">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1" /><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" /></svg>
+            </div>
+            <h3>Agency Wallet</h3>
+            <p>Instant top-ups and balance distribution across your agent network.</p>
           </div>
 
-          {loading ? (
-            <div className="loading-container">
-              <Loader size={48} className="spinner" />
-              <p>Loading featured flights...</p>
+          <div className="feature-card">
+            <span className="feature-number">2</span>
+            <div className="icon-wrapper">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z" /></svg>
             </div>
-          ) : error ? (
-            <div className="error-container">
-              <p className="error-message">{error}</p>
-              <button onClick={fetchRandomFlights} className="btn btn--primary">
-                Retry
-              </button>
+            <h3>Global Inventory</h3>
+            <p>Real-time rates on flights, hotels, and transport with zero markup.</p>
+          </div>
+
+          <div className="feature-card">
+            <span className="feature-number">3</span>
+            <div className="icon-wrapper">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /><path d="m9 12 2 2 4-4" /></svg>
             </div>
-          ) : featuredFlights.length === 0 ? (
-            <div className="empty-state">
-              <div className="empty-state-icon">
-                <Plane size={48} />
+            <h3>Visa Tracking</h3>
+            <p>Submit visa requests online and monitor case status live.</p>
+          </div>
+
+          <div className="feature-card">
+            <span className="feature-number">4</span>
+            <div className="icon-wrapper">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+            </div>
+            <h3>Sub-Agent Control</h3>
+            <p>Manage branch accounts, staff permissions, and commission splits.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================
+          UMRAH PACKAGES SECTION - UPDATED WITH PROPER FILTERING
+          ============================================================ */}
+      <section className="umrah-section">
+        <div className="section-header">
+          <span className="eyebrow">Spiritual Journey, Premium Experience</span>
+          <h2>UMRAH PACKAGES</h2>
+          <p>Carefully curated Umrah packages with premium accommodations, seamless transfers, and exceptional service.</p>
+        </div>
+
+        <div className="umrah-grid">
+          {tourPackages.map((pkg, index) => (
+            <div key={pkg.id} className={`umrah-card ${index === 0 ? 'featured' : ''}`}>
+              <div className="umrah-card-image">
+                <img src={pkg.image} alt={pkg.title} />
+                <div className="umrah-card-badge">
+                  <Star size={12} />
+                  <span>{pkg.badge}</span>
+                </div>
               </div>
-              <h3>No Flights Available</h3>
-              <p>We're currently updating our flight inventory. Please check back later.</p>
-              <Link to="/flights" className="btn btn--primary">
-                Browse All Flights
-              </Link>
+              <div className="umrah-card-body">
+                <div className="umrah-card-header">
+                  <div>
+                    <h4>{pkg.title}</h4>
+                    <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)' }}>{pkg.duration}</p>
+                  </div>
+                  <div className="price">
+                    <div className="from">From</div>
+                    <div className="amount">$899</div>
+                    <div className="per-person">/ PER PERSON</div>
+                  </div>
+                </div>
+
+                <div className="umrah-features">
+                  <div className="umrah-feature">
+                    <div className="icon"><Plane size={16} /></div>
+                    <span className="label">Return Flights</span>
+                  </div>
+                  <div className="umrah-feature">
+                    <div className="icon"><Building size={16} /></div>
+                    <span className="label">3 Star Hotel</span>
+                    <span className="sub">300M from Haram</span>
+                  </div>
+                  <div className="umrah-feature">
+                    <div className="icon"><Calendar size={16} /></div>
+                    <span className="label">7 Nights</span>
+                    <span className="sub">Makkah</span>
+                  </div>
+                  <div className="umrah-feature">
+                    <div className="icon"><Compass size={16} /></div>
+                    <span className="label">Shared Transfers</span>
+                  </div>
+                </div>
+
+                <button
+                  className="btn-view"
+                  onClick={() => handleTourClick(pkg)}
+                >
+                  View Details <ArrowRight size={16} />
+                </button>
+              </div>
             </div>
-          ) : (
-            <>
-              <div className="featured-flights-grid">
-                {featuredFlights.map((flight) => {
+          ))}
+        </div>
+
+        <div className="umrah-trust">
+          <div className="umrah-trust-item">
+            <div className="icon"><Shield size={20} /></div>
+            <div className="text"><span className="title">ATOL Protected</span><span className="sub">Your Money is Safe</span></div>
+          </div>
+          <div className="umrah-trust-item">
+            <div className="icon"><Users size={20} /></div>
+            <div className="text"><span className="title">24/7 Support</span><span className="sub">We're Here to Help</span></div>
+          </div>
+          <div className="umrah-trust-item">
+            <div className="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1" /><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" /></svg>
+            </div>
+            <div className="text"><span className="title">Flexible Payments</span><span className="sub">Easy Installments</span></div>
+          </div>
+          <div className="umrah-trust-item">
+            <div className="icon"><Award size={20} /></div>
+            <div className="text"><span className="title">Trusted by Agents</span><span className="sub">Preferred Partner</span></div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================
+          FEATURED FLIGHTS / DEALS SECTION
+          ============================================================ */}
+      <section className="section deals-section-wrapper">
+        <div className="section-header">
+          <span className="eyebrow">✈️ Featured Flights</span>
+          <h2>Check Our Deals</h2>
+          <p>Fresh travel offers, packages, and limited-time promotions from Rohan Travels.</p>
+        </div>
+
+        {loading ? (
+          <div className="deals-loading">
+            <Loader size={48} className="spinner" />
+            <p>Loading featured flights...</p>
+          </div>
+        ) : error ? (
+          <div className="deals-error">
+            <p>{error}</p>
+            <button onClick={fetchRandomFlights} className="btn-gold">Retry</button>
+          </div>
+        ) : featuredFlights.length === 0 ? (
+          <div className="deals-empty">
+            <Plane size={48} />
+            <h3>No Flights Available</h3>
+            <p>We're currently updating our flight inventory.</p>
+            <Link to="/flights" className="btn-gold">Browse All Flights</Link>
+          </div>
+        ) : (
+          <div className="deals-section">
+            <div className="marquee-container">
+              <div className="marquee-track">
+                {doubledFlights.map((flight, index) => {
                   const statusInfo = getStatusBadge(flight.status);
-                  const flightLink = isAuthenticated
-                    ? `/flights/${flight.id}/book`
-                    : `/flights/${flight.id}`;
-                  const buttonText = isAuthenticated ? 'Book Now' : 'View Details';
-
                   return (
-                    <div key={flight.id} className="featured-flight-card">
-                      <div className="featured-flight-header" style={{ backgroundColor: flight.color }}>
-                        <div className="featured-flight-airline">
-                          <Plane size={20} color="white" />
-                          <span>{flight.airline}</span>
-                        </div>
-                        <span className="featured-flight-status" style={{ backgroundColor: statusInfo.color }}>
-                          {statusInfo.label}
-                        </span>
-                      </div>
-
-                      <div className="featured-flight-body">
-                        <div className="featured-flight-route">
-                          <div className="featured-flight-origin">
-                            <div className="featured-flight-code">{flight.originCode}</div>
-                            <div className="featured-flight-city">{flight.origin}</div>
+                    <div key={`${flight.id}-${index}`} className="deal-card">
+                      <div className="deal-card-image" style={{ background: flight.color || '#667eea' }}>
+                        <div style={{
+                          padding: '16px 20px',
+                          color: 'white',
+                          height: '100%',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'space-between',
+                          position: 'relative',
+                          zIndex: 1
+                        }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                              <Plane size={18} color="white" />
+                              <span style={{ fontWeight: 700, fontSize: '13px' }}>{flight.airline}</span>
+                            </div>
+                            <span style={{
+                              padding: '2px 12px',
+                              borderRadius: '9999px',
+                              background: statusInfo.color,
+                              color: 'white',
+                              fontSize: '9px',
+                              fontWeight: 600,
+                              textTransform: 'uppercase'
+                            }}>
+                              {statusInfo.label}
+                            </span>
                           </div>
-                          <div className="featured-flight-arrow">
-                            <div className="flight-path">
-                              <div className="flight-line"></div>
-                              <div className="flight-plane-icon">
-                                <Plane size={16} />
+                          <div style={{ textAlign: 'center', padding: '4px 0' }}>
+                            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px' }}>
+                              <div>
+                                <div style={{ fontSize: '22px', fontWeight: 800 }}>{flight.originCode}</div>
+                                <div style={{ fontSize: '11px', opacity: 0.85 }}>{flight.origin}</div>
+                              </div>
+                              <div style={{ textAlign: 'center' }}>
+                                <div style={{ fontSize: '10px', fontWeight: 600, opacity: 0.8 }}>{getTripTypeDisplay(flight.tripType)}</div>
+                                <Clock size={14} style={{ margin: '2px auto', opacity: 0.7 }} />
+                              </div>
+                              <div>
+                                <div style={{ fontSize: '22px', fontWeight: 800 }}>{flight.destinationCode}</div>
+                                <div style={{ fontSize: '11px', opacity: 0.85 }}>{flight.destination}</div>
                               </div>
                             </div>
-                            <div className="flight-duration">
-                              <Clock size={12} />
-                              <span>{getTripTypeDisplay(flight.tripType)}</span>
-                            </div>
-                          </div>
-                          <div className="featured-flight-destination">
-                            <div className="featured-flight-code">{flight.destinationCode}</div>
-                            <div className="featured-flight-city">{flight.destination}</div>
-                          </div>
-                        </div>
-
-                        <div className="featured-flight-details">
-                          <div className="featured-flight-info">
-                            <span className="featured-flight-label">Aircraft</span>
-                            <span className="featured-flight-value">{flight.aircraft}</span>
-                          </div>
-                          <div className="featured-flight-info">
-                            <span className="featured-flight-label">Trip Type</span>
-                            <span className="featured-flight-value">{getTripTypeDisplay(flight.tripType)}</span>
                           </div>
                         </div>
                       </div>
 
-                      <div className="featured-flight-footer">
-                        <div className="featured-flight-price">
-                          <span className="price-label">Starting from</span>
-                          <span className="price-value">{flight.price || 'Contact'}</span>
+                      <div className="deal-card-body">
+                        <div className="airline-row">
+                          <span className="airline-name">{flight.airline}</span>
                         </div>
-                        <Link
-                          to={flightLink}
-                          className="featured-flight-book"
-                        >
-                          <span className="book-text">{buttonText}</span>
-                          <ChevronRight size={16} />
+                        <div className="flight-info">{flight.flightNumber} · {flight.aircraft || 'Unknown'}</div>
+                      </div>
+
+                      <div className="deal-card-footer">
+                        <div>
+                          <div className="price-label">Starting from</div>
+                          <div className="price">{typeof flight.price === 'number' ? `PKR ${flight.price.toLocaleString()}` : flight.price}</div>
+                        </div>
+                        <Link to={isAuthenticated ? `/flights/${flight.id}/book` : `/flights/${flight.id}`} className="view-link">
+                          {isAuthenticated ? 'Book Now' : 'View'}
+                          <ArrowRight size={14} />
                         </Link>
                       </div>
                     </div>
                   );
                 })}
               </div>
+            </div>
 
-              <div className="featured-flights-cta">
-                <Link to="/flights" className="btn btn--outline-primary">
-                  View All Flights
-                  <ChevronRight size={18} />
+            <div style={{ textAlign: 'center', marginTop: '32px' }}>
+              <Link to="/flights" className="btn-gold" style={{ display: 'inline-flex' }}>
+                View All Flights <ArrowRight size={16} />
+              </Link>
+            </div>
+          </div>
+        )}
+      </section>
+
+      {/* ============================================================
+          CONTACT / LOCATION SECTION
+          ============================================================ */}
+      <section className="contact-location-section">
+        <div className="contact-location-inner">
+          <div className="contact-info-column">
+            <div className="section-header" style={{ textAlign: 'left', marginBottom: '32px' }}>
+              <span className="eyebrow">Get in Touch</span>
+              <h2>Visit Our Office</h2>
+              <p>We're here to help you with all your travel needs.</p>
+            </div>
+
+            <div className="contact-details">
+              <div className="contact-detail-item">
+                <div className="contact-detail-icon"><MapPin size={20} /></div>
+                <div>
+                  <h4>Address</h4>
+                  <p>{BUSINESS_INFO.address}</p>
+                </div>
+              </div>
+
+              <div className="contact-detail-item">
+                <div className="contact-detail-icon"><Phone size={20} /></div>
+                <div>
+                  <h4>Phone</h4>
+                  <p><a href={`tel:${BUSINESS_INFO.phone.replace(/\s/g, '')}`}>{BUSINESS_INFO.phone}</a></p>
+                </div>
+              </div>
+
+              <div className="contact-detail-item">
+                <div className="contact-detail-icon"><Mail size={20} /></div>
+                <div>
+                  <h4>Email</h4>
+                  <p><a href={`mailto:${BUSINESS_INFO.email}`}>{BUSINESS_INFO.email}</a></p>
+                </div>
+              </div>
+
+              <div className="contact-detail-item">
+                <div className="contact-detail-icon"><Clock size={20} /></div>
+                <div>
+                  <h4>Business Hours</h4>
+                  <p>Mon - Sat: 9:00 AM - 9:00 PM</p>
+                  <p style={{ fontSize: '13px', color: '#94a3b8' }}>Sunday: Closed</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="social-links">
+              <h4>Follow Us</h4>
+              <div className="social-icons">
+                <a href={BUSINESS_INFO.facebook} target="_blank" rel="noopener noreferrer" className="social-icon facebook" aria-label="Facebook">
+                  <FaFacebook size={24} />
+                </a>
+                <a href={BUSINESS_INFO.tiktok} target="_blank" rel="noopener noreferrer" className="social-icon tiktok" aria-label="TikTok">
+                  <FaTiktok size={24} />
+                </a>
+                <a href={BUSINESS_INFO.whatsapp} target="_blank" rel="noopener noreferrer" className="social-icon whatsapp" aria-label="WhatsApp">
+                  <FaWhatsapp size={24} />
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="map-column">
+            <div className="map-container">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27094.594246822095!2d73.4916027!3d32.5657597!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39216cb5c5c8fefb%3A0xd7e38ec4a802185!2sMandi%20Bahauddin%2C%20Punjab%2C%20Pakistan!5e0!3m2!1sen!2s!4v1700000000000"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Rohan Travels Location"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================
+          CTA SECTION
+          ============================================================ */}
+      <section className="cta-section">
+        <div className="cta-bg"></div>
+        <div className="cta-content">
+          <div className="cta-text">
+            <div className="badge">
+              <Sparkles size={14} />
+              <span>Join Our Network</span>
+            </div>
+            <h2>
+              Partner With Us.<br />
+              Grow Your <span className="highlight">Travel Business.</span>
+            </h2>
+            <p>
+              Get access to exclusive B2B fares, real-time availability, visa solutions,
+              and dedicated support — all in one powerful portal.
+            </p>
+          </div>
+          <div className="cta-actions">
+            {isAuthenticated ? (
+              <Link to="/flights" className="btn-gold-lg">
+                Search Flights <ArrowRight size={18} />
+              </Link>
+            ) : (
+              <>
+                <Link to="/register" className="btn-gold-lg">
+                  Join Portal <ArrowRight size={18} />
                 </Link>
-              </div>
-            </>
-          )}
-        </div>
-      </section>
-
-      {/* How It Works Section */}
-      <section className="home-how-it-works">
-        <div className="container">
-          <div className="section-header">
-            <h2>How It Works</h2>
-            <p>Book your dream trip in just 3 simple steps</p>
-          </div>
-          <div className="steps-grid">
-            <div className="step-card">
-              <div className="step-number">1</div>
-              <div className="step-icon">
-                <Search size={32} />
-              </div>
-              <h3>Search Flights</h3>
-              <p>
-                Enter your destination, dates, and preferences to find
-                the perfect flight.
-              </p>
-            </div>
-            <div className="step-card">
-              <div className="step-number">2</div>
-              <div className="step-icon">
-                <Calendar size={32} />
-              </div>
-              <h3>Select & Book</h3>
-              <p>
-                Choose from available flights and complete your booking
-                with ease.
-              </p>
-            </div>
-            <div className="step-card">
-              <div className="step-number">3</div>
-              <div className="step-icon">
-                <Plane size={32} />
-              </div>
-              <h3>Travel & Explore</h3>
-              <p>
-                Get your e-ticket, pack your bags, and embark on your
-                journey.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Trust Indicators */}
-      <section className="home-trust">
-        <div className="container">
-          <div className="trust-grid">
-            <div className="trust-item">
-              <Shield size={24} />
-              <span>Secure Payments</span>
-            </div>
-            <div className="trust-item">
-              <Award size={24} />
-              <span>Trusted Service</span>
-            </div>
-            <div className="trust-item">
-              <Globe size={24} />
-              <span>Global Coverage</span>
-            </div>
-            <div className="trust-item">
-              <Headphones size={24} />
-              <span>24/7 Support</span>
-            </div>
+                <Link to="/flights" className="btn-outline-white">
+                  Browse Flights
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </section>

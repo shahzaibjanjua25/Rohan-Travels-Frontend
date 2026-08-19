@@ -1,31 +1,43 @@
-/* UserFlights.css - Table Layout with Hero Image */
+/* UserFlights.css - Updated with Gold/Navy Theme */
 
 /* ============================================
-   ROOT VARIABLES
+   ROOT VARIABLES - Gold/Navy Theme
    ============================================ */
 
 :root {
-  --primary: #6366f1;
-  --primary-dark: #4f46e5;
-  --primary-light: #eef2ff;
-  --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
-  --secondary: #f59e0b;
-  --secondary-light: #fef3c7;
-  --success: #10b981;
-  --success-light: #d1fae5;
-  --danger: #ef4444;
-  --danger-light: #fee2e2;
-  --info: #3b82f6;
-  --info-light: #dbeafe;
+  --brand: #ffa10b;
+  --brand-strong: #e08e09;
+  --brand-soft: #fff8e7;
+  --accent: #f7a122;
+  --accent-strong: #e2890f;
+  --accent-soft: #fff4de;
+  --shell-night: #030d22;
+  --shell-panel: #09152e;
+  --marketing-strip-start: #103d67;
+  --marketing-strip-end: #0b2d50;
+
+  --primary: #0a2463;
+  --primary-dark: #061a4a;
+  --primary-light: #e8edf7;
+  --primary-gradient: linear-gradient(135deg, #0a2463 0%, #1a4a8a 50%, #2a6aaa 100%);
+  --secondary: #d4af37;
+  --secondary-light: #f5e6b8;
+  --success: #2ecc71;
+  --success-light: #eafaf1;
+  --danger: #e74c3c;
+  --danger-light: #fdedec;
+  --info: #3498db;
+  --info-light: #ebf5fb;
+  
   --text: #0f172a;
   --text-secondary: #475569;
   --text-light: #94a3b8;
-  --bg: #f1f5f9;
+  --bg: #f4f6f9;
   --bg-card: #ffffff;
   --bg-hover: #f8fafc;
-  --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.08);
+  --shadow: 0 1px 3px rgba(10, 36, 99, 0.06);
+  --shadow-md: 0 4px 16px rgba(10, 36, 99, 0.08);
+  --shadow-lg: 0 10px 40px rgba(10, 36, 99, 0.12);
   --radius: 16px;
   --radius-sm: 10px;
   --radius-full: 9999px;
@@ -55,7 +67,7 @@
 }
 
 /* ============================================
-   HERO / BANNER IMAGE
+   HERO / BANNER IMAGE - Gold/Navy Theme
    ============================================ */
 
 .flights-hero {
@@ -98,9 +110,9 @@
   right: 0;
   bottom: 0;
   background: linear-gradient(135deg, 
-    rgba(99, 102, 241, 0.15) 0%,
-    rgba(139, 92, 246, 0.05) 50%,
-    rgba(168, 85, 247, 0.1) 100%
+    rgba(10, 36, 99, 0.15) 0%,
+    rgba(26, 74, 138, 0.05) 50%,
+    rgba(42, 106, 170, 0.1) 100%
   );
   display: flex;
   flex-direction: column;
@@ -151,7 +163,7 @@
 }
 
 /* ============================================
-   HEADER
+   HEADER - Gold Accent
    ============================================ */
 
 .user-flights-header {
@@ -169,7 +181,7 @@
   color: var(--text);
   margin: 0;
   letter-spacing: -0.5px;
-  background: var(--primary-gradient);
+  background: linear-gradient(135deg, #0a2463 0%, #1a4a8a 50%, #ffa10b 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -198,8 +210,12 @@
   white-space: nowrap;
 }
 
+.count-badge span {
+  color: var(--primary);
+}
+
 /* ============================================
-   FILTERS - ALWAYS VISIBLE
+   FILTERS - Gold/Navy Theme
    ============================================ */
 
 .user-flights-filters {
@@ -213,7 +229,7 @@
 }
 
 .user-flights-filters:hover {
-  border-color: var(--primary);
+  border-color: var(--brand);
   box-shadow: var(--shadow-lg);
 }
 
@@ -236,6 +252,39 @@
   color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.8px;
+}
+
+.filter-group .field {
+  width: 100%;
+  padding: 0.65rem 0.9rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  font-family: var(--font);
+  background: var(--bg-card);
+  color: var(--text);
+  min-height: 44px;
+  transition: var(--transition);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.filter-group .field:hover {
+  border-color: var(--primary);
+}
+
+.filter-group .field:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgba(255, 161, 11, 0.15);
+}
+
+.filter-group .field--select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%230a2463' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.9rem center;
+  padding-right: 2.5rem;
+  cursor: pointer;
 }
 
 .filter-actions {
@@ -269,11 +318,11 @@
 
 .table-container:hover {
   box-shadow: var(--shadow-lg);
-  border-color: var(--primary);
+  border-color: var(--brand);
 }
 
 /* ============================================
-   FLIGHTS TABLE
+   FLIGHTS TABLE - Gold/Navy Theme
    ============================================ */
 
 .flights-table {
@@ -284,19 +333,30 @@
 }
 
 .flights-table thead {
-  background: linear-gradient(135deg, var(--primary-light), var(--bg));
-  border-bottom: 3px solid #cbd5e1;
+  background: linear-gradient(135deg, #0a2463 0%, #1a4a8a 50%, #2a6aaa 100%);
+  border-bottom: none;
 }
 
-.flights-table th {
-  text-align: left;
+.flights-table thead th {
   padding: 0.85rem 1rem;
+  text-align: left;
+  font-weight: 700;
   font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.8px;
-  color: var(--text-secondary);
-  font-weight: 700;
+  color: #ffffff;
   white-space: nowrap;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.flights-table thead th:first-child {
+  border-radius: 8px 0 0 0;
+  padding-left: 1.25rem;
+}
+
+.flights-table thead th:last-child {
+  border-radius: 0 8px 0 0;
+  padding-right: 1.25rem;
 }
 
 .flights-table td {
@@ -318,8 +378,16 @@
   border-bottom: none;
 }
 
+.flights-table tbody tr:nth-child(even) {
+  background: #fafbfc;
+}
+
+.flights-table tbody tr:nth-child(even):hover {
+  background: var(--bg-hover);
+}
+
 /* ============================================
-   ROUTE GROUP HEADER
+   ROUTE GROUP HEADER - Gold/Navy Theme
    ============================================ */
 
 .route-group {
@@ -345,10 +413,14 @@
   gap: 1rem;
   flex-wrap: wrap;
   padding: 0.85rem 1.25rem;
-  background: var(--primary-gradient);
+  background: linear-gradient(135deg, #0a2463 0%, #1a4a8a 50%, #2a6aaa 100%);
   border-radius: var(--radius) var(--radius) 0 0;
   color: white;
   box-shadow: var(--shadow-md);
+}
+
+.route-group__header:hover {
+  background: linear-gradient(135deg, #061a4a 0%, #0a2463 50%, #1a4a8a 100%);
 }
 
 .route-group__title {
@@ -382,7 +454,7 @@
 .route-group__arrow {
   font-size: 1.5rem;
   font-weight: 300;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--brand);
   flex-shrink: 0;
 }
 
@@ -410,7 +482,7 @@
 }
 
 .route-group__from strong {
-  color: white;
+  color: var(--brand);
   font-size: 0.95rem;
 }
 
@@ -449,7 +521,7 @@
   color: var(--text-light);
 }
 
-/* Trip Badge */
+/* Trip Badge - Gold Theme */
 .trip-badge {
   display: inline-flex;
   align-items: center;
@@ -517,7 +589,7 @@
 }
 
 .segment-arrow {
-  color: var(--primary);
+  color: var(--brand);
   margin: 0 2px;
 }
 
@@ -593,15 +665,15 @@
 .travel-type-tag.more {
   background: var(--primary-light);
   color: var(--primary);
-  border-color: rgba(99, 102, 241, 0.2);
+  border-color: rgba(10, 36, 99, 0.2);
 }
 
-/* Price */
+/* Price - Gold Accent */
 .price-value {
   font-weight: 700;
-  color: var(--text);
   font-size: 0.95rem;
-  background: var(--primary-gradient);
+  color: var(--brand);
+  background: linear-gradient(135deg, #ffa10b 0%, #e08e09 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -632,7 +704,7 @@
 }
 
 /* ============================================
-   BUTTONS
+   BUTTONS - Gold Theme
    ============================================ */
 
 .btn {
@@ -687,20 +759,33 @@
 }
 
 .btn--primary {
-  background: var(--primary-gradient);
+  background: linear-gradient(135deg, #0a2463 0%, #1a4a8a 50%, #2a6aaa 100%);
   color: white;
   border-color: var(--primary);
-  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 4px 16px rgba(10, 36, 99, 0.3);
 }
 
 .btn--primary:hover {
   transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 6px 30px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 6px 30px rgba(10, 36, 99, 0.4);
   border-color: var(--primary-dark);
 }
 
 .btn--primary:active {
   transform: translateY(0) scale(0.98);
+}
+
+.btn--gold {
+  background: linear-gradient(135deg, #ffa10b 0%, #e08e09 100%);
+  color: #0f172a;
+  border-color: var(--brand);
+  box-shadow: 0 4px 16px rgba(255, 161, 11, 0.3);
+}
+
+.btn--gold:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 30px rgba(255, 161, 11, 0.4);
+  border-color: var(--brand-strong);
 }
 
 .btn--ghost {
@@ -711,8 +796,8 @@
 
 .btn--ghost:hover {
   background: var(--bg-hover);
-  border-color: var(--primary);
-  color: var(--primary);
+  border-color: var(--brand);
+  color: var(--brand);
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
@@ -769,20 +854,62 @@
   margin-top: 1rem;
 }
 
+.pagination button {
+  padding: 0.4rem 0.9rem;
+  border: 2px solid #94a3b8;
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: var(--font);
+  min-height: 40px;
+  min-width: 40px;
+}
+
+.pagination button:hover:not(:disabled) {
+  background: var(--primary-light);
+  border-color: var(--brand);
+  color: var(--brand);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 161, 11, 0.15);
+}
+
+.pagination button.active {
+  background: linear-gradient(135deg, #0a2463 0%, #1a4a8a 50%, #2a6aaa 100%);
+  color: white;
+  border-color: var(--primary);
+  box-shadow: 0 4px 12px rgba(10, 36, 99, 0.3);
+}
+
+.pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.pagination .page-info {
+  color: var(--text-light);
+  font-size: 0.85rem;
+  padding: 0 0.5rem;
+}
+
 /* ============================================
-   ACTIVE FILTER BADGE
+   ACTIVE FILTER BADGE - Gold Theme
    ============================================ */
 
 .active-filter-badge {
   display: inline-block;
   margin-top: 8px;
   padding: 6px 16px;
-  background: var(--primary-light);
-  color: var(--primary);
+  background: var(--brand-soft);
+  color: var(--brand-strong);
   border-radius: var(--radius-full);
   font-size: 14px;
   font-weight: 500;
-  border: 1px solid rgba(99, 102, 241, 0.2);
+  border: 1px solid rgba(255, 161, 11, 0.2);
 }
 
 .active-filter-badge strong {
@@ -1056,7 +1183,7 @@
 }
 
 /* ============================================
-   DARK MODE
+   DARK MODE - Gold/Navy Theme
    ============================================ */
 
 @media (prefers-color-scheme: dark) {
@@ -1082,15 +1209,15 @@
 
   .flights-hero-overlay {
     background: linear-gradient(135deg, 
-      rgba(99, 102, 241, 0.25) 0%,
-      rgba(139, 92, 246, 0.1) 50%,
-      rgba(168, 85, 247, 0.15) 100%
+      rgba(10, 36, 99, 0.25) 0%,
+      rgba(26, 74, 138, 0.1) 50%,
+      rgba(255, 161, 11, 0.15) 100%
     );
   }
 
   .flights-hero-badge {
     background: rgba(30, 41, 59, 0.95);
-    color: var(--primary);
+    color: var(--brand);
     border-color: rgba(255, 255, 255, 0.1);
   }
 
@@ -1100,7 +1227,7 @@
   }
 
   .user-flights-filters:hover {
-    border-color: var(--primary);
+    border-color: var(--brand);
   }
 
   .filter-actions {
@@ -1113,16 +1240,17 @@
   }
 
   .table-container:hover {
-    border-color: var(--primary);
+    border-color: var(--brand);
   }
 
   .flights-table thead {
-    background: rgba(99, 102, 241, 0.05);
-    border-bottom-color: #475569;
+    background: linear-gradient(135deg, #061a4a 0%, #0a2463 50%, #1a4a8a 100%);
+    border-bottom: none;
   }
 
-  .flights-table th {
-    color: var(--text-secondary);
+  .flights-table thead th {
+    color: #ffffff;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
   }
 
   .flights-table td {
@@ -1132,6 +1260,14 @@
 
   .flights-table tbody tr:hover {
     background: rgba(255, 255, 255, 0.02);
+  }
+
+  .flights-table tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .flights-table tbody tr:nth-child(even):hover {
+    background: rgba(255, 255, 255, 0.04);
   }
 
   .flight-number {
@@ -1147,7 +1283,7 @@
   }
 
   .price-value {
-    background: var(--primary-gradient);
+    background: linear-gradient(135deg, #ffa10b 0%, #e08e09 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -1166,8 +1302,12 @@
 
   .btn--ghost:hover {
     background: rgba(255, 255, 255, 0.05);
-    border-color: var(--primary);
-    color: var(--primary);
+    border-color: var(--brand);
+    color: var(--brand);
+  }
+
+  .btn--primary {
+    background: linear-gradient(135deg, #061a4a 0%, #0a2463 50%, #1a4a8a 100%);
   }
 
   .trip-badge--one_way {
@@ -1201,9 +1341,9 @@
   }
 
   .travel-type-tag.more {
-    background: rgba(99, 102, 241, 0.15);
+    background: rgba(10, 36, 99, 0.15);
     color: #a5b4fc;
-    border-color: rgba(99, 102, 241, 0.2);
+    border-color: rgba(10, 36, 99, 0.2);
   }
 
   .seats-value {
@@ -1228,18 +1368,26 @@
   }
 
   .route-group .flights-table thead {
-    background: rgba(99, 102, 241, 0.06);
-    border-bottom-color: #475569;
+    background: linear-gradient(135deg, #061a4a 0%, #0a2463 50%, #1a4a8a 100%);
+    border-bottom: none;
   }
 
   .active-filter-badge {
-    background: rgba(99, 102, 241, 0.15);
-    color: #a5b4fc;
-    border-color: rgba(99, 102, 241, 0.2);
+    background: rgba(255, 161, 11, 0.15);
+    color: #ffa10b;
+    border-color: rgba(255, 161, 11, 0.2);
   }
 
   .route-group__header {
-    background: linear-gradient(135deg, #1a3a6a 0%, #2a5a8a 50%, #3a7aaa 100%);
+    background: linear-gradient(135deg, #061a4a 0%, #0a2463 50%, #1a4a8a 100%);
+  }
+
+  .route-group__header:hover {
+    background: linear-gradient(135deg, #030d1a 0%, #061a4a 50%, #0a2463 100%);
+  }
+
+  .route-group__from strong {
+    color: var(--brand);
   }
 
   .multi-city-route {
@@ -1273,6 +1421,43 @@
   .multi-city-label {
     color: var(--text-light);
   }
+
+  .filter-group .field {
+    background: var(--bg-card);
+    border-color: #475569;
+    color: var(--text);
+  }
+
+  .filter-group .field:hover {
+    border-color: var(--brand);
+  }
+
+  .filter-group .field:focus {
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px rgba(255, 161, 11, 0.15);
+  }
+
+  .filter-group .field--select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffa10b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  }
+
+  .pagination button {
+    background: var(--bg-card);
+    border-color: #475569;
+    color: var(--text-secondary);
+  }
+
+  .pagination button:hover:not(:disabled) {
+    background: rgba(255, 161, 11, 0.1);
+    border-color: var(--brand);
+    color: var(--brand);
+  }
+
+  .pagination button.active {
+    background: linear-gradient(135deg, #061a4a 0%, #0a2463 50%, #1a4a8a 100%);
+    color: white;
+    border-color: var(--primary);
+  }
 }
 
 /* ============================================
@@ -1289,10 +1474,63 @@
 }
 
 .table-container::-webkit-scrollbar-thumb {
-  background: var(--primary-gradient);
+  background: linear-gradient(135deg, #ffa10b 0%, #e08e09 100%);
   border-radius: 3px;
 }
 
 .table-container::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-dark);
+  background: linear-gradient(135deg, #e08e09 0%, #d47a05 100%);
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  .user-flights-wrapper {
+    padding: 0;
+  }
+
+  .flights-hero {
+    display: none;
+  }
+
+  .user-flights-filters {
+    display: none;
+  }
+
+  .table-container {
+    border: 1px solid #ddd;
+    box-shadow: none;
+  }
+
+  .flights-table thead {
+    background: #f1f5f9 !important;
+  }
+
+  .flights-table thead th {
+    color: #0f172a !important;
+    border-bottom: 2px solid #ddd !important;
+  }
+
+  .btn {
+    display: none !important;
+  }
+
+  .route-group__header {
+    background: #f1f5f9 !important;
+    color: #0f172a !important;
+  }
+
+  .route-group__header .route-group__city {
+    color: #0f172a !important;
+  }
+
+  .route-group__header .route-group__from strong {
+    color: #0a2463 !important;
+  }
+
+  .pagination {
+    display: none !important;
+  }
 }

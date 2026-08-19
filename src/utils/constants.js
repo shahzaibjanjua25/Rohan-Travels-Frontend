@@ -37,10 +37,19 @@ export const TRAVEL_TYPES = [
 ];
 
 // Helper to check if a flight matches a travel type filter
+// frontend/src/utils/constants.js
+// frontend/src/utils/constants.js
+
+// frontend/src/utils/constants.js
+
 export const flightMatchesTravelType = (flight, filterTravelType) => {
+  // If no filter, return true (show all flights)
   if (!filterTravelType || filterTravelType === '') return true;
+  
+  // If flight has no travelTypes, it doesn't match any filter
   if (!flight.travelTypes || flight.travelTypes.length === 0) return false;
-  // If flight has 'generic', it matches all filters
-  if (flight.travelTypes.includes('generic')) return true;
+  
+  // STRICT: Only match the exact travel type
+  // Generic flights are NOT included in filtered results
   return flight.travelTypes.includes(filterTravelType);
 };

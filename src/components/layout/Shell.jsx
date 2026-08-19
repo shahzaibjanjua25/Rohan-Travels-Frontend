@@ -1,5 +1,4 @@
 // frontend/src/components/layout/Shell.jsx
-
 import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
@@ -27,14 +26,16 @@ import {
   Mail,
   Clock,
   Globe,
+  Sparkles,
+  ArrowRight,
+  MapPin,
 } from 'lucide-react';
-// Import FaFacebook, FaWhatsapp, FaTiktok from react-icons
 import { FaFacebook, FaWhatsapp, FaTiktok } from 'react-icons/fa';
 
 const MOBILE_BREAKPOINT = 768;
 
 const linkClass = ({ isActive }) =>
-  `shell__link${isActive ? ' shell__link--active' : ''}`;
+  `nav-link${isActive ? ' active' : ''}`;
 
 const mobileLinkClass = ({ isActive }) =>
   `shell__mobile-link${isActive ? ' shell__mobile-link--active' : ''}`;
@@ -52,9 +53,17 @@ export default function Shell({ children }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // ============================================================
+  // Business Contact Info
+  const BUSINESS_INFO = {
+    phone: '+92 348 7839237',
+    email: 'mrohantraveltour@gmail.com',
+    address: 'Old Rasul Road, Usmania Mohallah Usmani Mohalla, Mandi Bahauddin, Pakistan',
+    facebook: 'https://www.facebook.com/share/1GccNRa3SP/',
+    tiktok: 'https://www.tiktok.com/@m_rohan_travels_tours?_r=1&_t=ZN-98xOcwAp770',
+    whatsapp: 'https://wa.me/qr/Y5PW7NQXWGTLP1',
+  };
+
   // Viewport tracking
-  // ============================================================
   useEffect(() => {
     const handleResize = () => {
       const mobile = window.innerWidth < MOBILE_BREAKPOINT;
@@ -66,17 +75,13 @@ export default function Shell({ children }) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // ============================================================
   // Close mobile menu when navigating
-  // ============================================================
   useEffect(() => {
     setIsMobileMenuOpen(false);
     setUserMenuOpen(false);
   }, [location.pathname]);
 
-  // ============================================================
   // Lock body scroll when mobile menu is open
-  // ============================================================
   useEffect(() => {
     if (!isMobile || !isMobileMenuOpen) {
       document.body.style.overflow = '';
@@ -88,9 +93,7 @@ export default function Shell({ children }) {
     };
   }, [isMobile, isMobileMenuOpen]);
 
-  // ============================================================
   // ESC key closes menus
-  // ============================================================
   useEffect(() => {
     const onKeyDown = (event) => {
       if (event.key !== 'Escape') return;
@@ -101,9 +104,7 @@ export default function Shell({ children }) {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, []);
 
-  // ============================================================
   // Click outside user menu closes it
-  // ============================================================
   useEffect(() => {
     if (!userMenuOpen) return;
     const onPointerDown = (event) => {
@@ -119,9 +120,7 @@ export default function Shell({ children }) {
     };
   }, [userMenuOpen]);
 
-  // ============================================================
   // Unread badge polling
-  // ============================================================
   useEffect(() => {
     if (!isAuthenticated) {
       setUnread(0);
@@ -153,12 +152,10 @@ export default function Shell({ children }) {
     navigate('/login');
   };
 
-  // ============================================================
   // Navigation config
-  // ============================================================
   const navItems = [
     { to: '/', label: 'Home', icon: Home, end: true, show: true },
-    { to: '/flights', label: 'Flights', icon: Plane, show: true },
+    { to: '/flights', label: 'Explore Flights', icon: Plane, show: true },
     {
       to: isAdmin ? '/admin/bookings' : '/bookings',
       label: isAdmin ? 'Bookings' : 'Bookings',
@@ -180,12 +177,15 @@ export default function Shell({ children }) {
     },
     ...(isAdmin
       ? [
-        { to: '/admin/flights', label: 'Add or Edit Flights', icon: Plane, show: true },
-        { to: '/admin/users', label: 'Users', icon: Users, show: true },
-        { to: '/admin/settings', label: 'Settings', icon: Settings, show: true }
-      ]
+          { to: '/admin/flights', label: 'Manage Flights', icon: Plane, show: true },
+          { to: '/admin/users', label: 'Users', icon: Users, show: true },
+          { to: '/admin/settings', label: 'Settings', icon: Settings, show: true }
+        ]
       : [])
   ];
+
+  // Check if maintenance banner should be shown
+  const showMaintenanceBanner = isAdmin && maintenanceMode;
 
   if (loading) {
     return (
@@ -195,72 +195,74 @@ export default function Shell({ children }) {
     );
   }
 
-  const showMaintenanceBanner = isAdmin && maintenanceMode;
   const initial = user?.name?.charAt(0)?.toUpperCase() || 'U';
 
   return (
-    <div className="shell">
+    <div className="marketing-shell flex min-h-screen flex-col bg-canvas">
       {/* ============================================================
-          TOP NAVBAR
+          MARKETING STRIP - Top Bar
           ============================================================ */}
-      <header className="shell__bar">
-        <div className="shell__bar-inner">
-          {/* Left: Logo + Hamburger */}
-          <div className="shell__bar-left">
-            {isMobile && (
-              <button
-                type="button"
-                className="shell__mobile-toggle"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
-                aria-expanded={isMobileMenuOpen}
-              >
-                {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
-              </button>
-            )}
-
-            <Link to="/" className="shell__brand">
-              <div className="shell__brand-icon">
-                <img src={logo} alt="" className="shell__brand-logo" />
-              </div>
-              <div className="shell__brand-text">
-                <span className="shell__brand-name">Rohan Travels</span>
-                <span className="shell__brand-tagline">&amp; Tours</span>
-              </div>
-            </Link>
+      <div className="marketing-strip">
+        <div className="marketing-strip-inner">
+          <div className="marketing-strip-left">
+            <a href={`tel:${BUSINESS_INFO.phone.replace(/\s/g, '')}`} className="hidden sm:inline-flex group">
+              <Phone className="icon" />
+              <span>{BUSINESS_INFO.phone}</span>
+            </a>
+            <span className="marketing-strip-divider"></span>
+            <a href={`mailto:${BUSINESS_INFO.email}`} className="inline-flex group">
+              <Mail className="icon" />
+              <span className="truncate">{BUSINESS_INFO.email}</span>
+            </a>
           </div>
+          <div className="marketing-strip-right">
+            <a href="/contact">Support Desk</a>
+            <a href="/about">About Us</a>
+            <span className="marketing-strip-divider"></span>
+            <a href="/login">Agent Login</a>
+          </div>
+        </div>
+      </div>
 
-          {/* Center: Desktop Navigation */}
-          <nav className="shell__nav">
-            <div className="shell__nav-scroll">
-              {navItems
-                .filter((item) => item.show)
-                .map((item) => {
-                  const Icon = item.icon;
-                  return (
-                    <NavLink
-                      key={item.to}
-                      to={item.to}
-                      className={linkClass}
-                      end={item.end}
-                    >
-                      <Icon />
-                      <span className="shell__nav-label">{item.label}</span>
-                      {item.badge > 0 && (
-                        <span className="shell__badge">{item.badge > 99 ? '99+' : item.badge}</span>
-                      )}
-                    </NavLink>
-                  );
-                })}
-              <NavLink to="/contact" className={linkClass}>
-                <Phone />
-                <span className="shell__nav-label">Contact</span>
-              </NavLink>
-            </div>
+      {/* ============================================================
+          MAIN NAVBAR
+          ============================================================ */}
+      <header className="main-navbar">
+        <div className="main-navbar-inner">
+          {/* Logo */}
+          <Link to="/" className="navbar-logo">
+            <img src={logo} alt="Rohan Travels & Tours" />
+          </Link>
+
+          {/* Navigation Links */}
+          <nav className="nav-links">
+            {navItems
+              .filter((item) => item.show)
+              .map((item) => {
+                const Icon = item.icon;
+                return (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    className={linkClass}
+                    end={item.end}
+                  >
+                    <Icon size={16} />
+                    <span>{item.label}</span>
+                    {item.badge > 0 && (
+                      <span className="shell__badge">{item.badge > 99 ? '99+' : item.badge}</span>
+                    )}
+                  </NavLink>
+                );
+              })}
+            <NavLink to="/contact" className={linkClass}>
+              <Phone size={16} />
+              <span>Contact</span>
+            </NavLink>
           </nav>
 
-          {/* Right: User Actions */}
-          <div className="shell__actions">
+          {/* Actions */}
+          <div className="navbar-actions">
             {isAuthenticated ? (
               <div className="shell__user-menu" ref={userMenuRef}>
                 <button
@@ -330,16 +332,28 @@ export default function Shell({ children }) {
                 )}
               </div>
             ) : (
-              <div className="shell__auth-buttons">
-                <Link to="/login" className="btn btn--ghost btn--sm">
-                  Sign in
+              <>
+                <Link to="/login" className="btn-outline-light">
+                  Agent Login
                 </Link>
-                <Link to="/register" className="btn btn--primary btn--sm">
-                  Sign up
+                <Link to="/register" className="btn-gold">
+                  Join Portal
+                  <ArrowRight className="arrow" size={16} />
                 </Link>
-              </div>
+              </>
             )}
           </div>
+
+          {/* Mobile Toggle */}
+          <button
+            type="button"
+            className="mobile-toggle"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={isMobileMenuOpen}
+          >
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
       </header>
 
@@ -432,7 +446,8 @@ export default function Shell({ children }) {
       {/* ============================================================
           MAIN CONTENT
           ============================================================ */}
-      <main className="shell__main">
+      <main className="relative flex-grow">
+        {/* Maintenance Banner */}
         {showMaintenanceBanner && (
           <div className="maintenance-banner">
             <span>Maintenance mode is on. Only admins can reach the system.</span>
@@ -450,114 +465,200 @@ export default function Shell({ children }) {
       </main>
 
       {/* ============================================================
-          FOOTER
+          FOOTER - UPDATED WITH BUSINESS INFO
           ============================================================ */}
-      <footer className="shell__foot">
-        <div className="shell__foot-inner">
-          {/* Brand Column */}
-          <div className="shell__foot-brand">
-            <div className="shell__foot-brand-header">
-              <img src={logo} alt="Rohan Travels" className="shell__foot-logo" />
-              <span className="shell__foot-name">Rohan Travels &amp; Tours</span>
+      <footer className="footer">
+        <div className="footer-top-border"></div>
+        <div className="footer-inner">
+          <div className="footer-grid">
+            {/* Brand Column */}
+            <div className="footer-brand">
+              <Link to="/" className="logo">
+                <img src={logo} alt="Rohan Travels & Tours" />
+              </Link>
+              <p>
+                Your trusted partner for seamless flight bookings and unforgettable
+                travel experiences across the globe.
+              </p>
+              <div className="tags">
+                <span>Rohan Travels</span>
+                <span>&amp; Tours</span>
+              </div>
             </div>
-            <p className="shell__foot-description">
-              Your trusted partner for seamless flight bookings and unforgettable travel experiences across the globe.
-            </p>
-            <div className="shell__foot-social">
-              <a
-                href="https://www.facebook.com/share/1GccNRa3SP/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="shell__foot-social-link"
-                aria-label="Facebook"
+
+            {/* Services Column */}
+            <div>
+              <h3 className="footer-heading">Services</h3>
+              <ul className="footer-links">
+                <li>
+                  <Link to="/flights">
+                    <span className="dot"></span>
+                    Explore Flights
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/umrah">
+                    <span className="dot"></span>
+                    Umrah Packages
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Company Column */}
+            <div>
+              <h3 className="footer-heading">Company</h3>
+              <ul className="footer-links">
+                <li>
+                  <Link to="/about">
+                    <span className="dot"></span>
+                    About Us
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/blogs">
+                    <span className="dot"></span>
+                    Blogs &amp; Guides
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/contact">
+                    <span className="dot"></span>
+                    Contact Us
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Access Column */}
+            <div>
+              <h3 className="footer-heading">Access</h3>
+              <ul className="footer-links">
+                <li>
+                  <Link to="/login">
+                    <span className="dot"></span>
+                    Agent Login
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/register">
+                    <span className="dot"></span>
+                    Create Account
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Contact Column - UPDATED WITH BUSINESS INFO */}
+            <div>
+              <h3 className="footer-heading">Contact Info</h3>
+              <div className="footer-contact">
+                <div className="footer-contact-item">
+                  <div className="icon">
+                    <MapPin size={16} />
+                  </div>
+                  <span className="text-xs">{BUSINESS_INFO.address}</span>
+                </div>
+                <div className="footer-contact-item">
+                  <div className="icon">
+                    <Phone size={16} />
+                  </div>
+                  <a href={`tel:${BUSINESS_INFO.phone.replace(/\s/g, '')}`} className="text-xs font-semibold">
+                    {BUSINESS_INFO.phone}
+                  </a>
+                </div>
+                <div className="footer-contact-item">
+                  <div className="icon">
+                    <Mail size={16} />
+                  </div>
+                  <a href={`mailto:${BUSINESS_INFO.email}`} className="text-xs font-semibold">
+                    {BUSINESS_INFO.email}
+                  </a>
+                </div>
+              </div>
+
+              {/* Social Links in Footer */}
+              <div style={{ marginTop: '16px' }}>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <a
+                    href={BUSINESS_INFO.facebook}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      padding: '8px',
+                      borderRadius: '8px',
+                      background: 'rgba(255,255,255,0.05)',
+                      color: 'rgba(255,255,255,0.8)',
+                      transition: 'all 0.3s ease',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                    aria-label="Facebook"
+                  >
+                    <FaFacebook size={18} />
+                  </a>
+                  <a
+                    href={BUSINESS_INFO.tiktok}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      padding: '8px',
+                      borderRadius: '8px',
+                      background: 'rgba(255,255,255,0.05)',
+                      color: 'rgba(255,255,255,0.8)',
+                      transition: 'all 0.3s ease',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                    aria-label="TikTok"
+                  >
+                    <FaTiktok size={18} />
+                  </a>
+                  <a
+                    href={BUSINESS_INFO.whatsapp}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      padding: '8px',
+                      borderRadius: '8px',
+                      background: 'rgba(255,255,255,0.05)',
+                      color: 'rgba(255,255,255,0.8)',
+                      transition: 'all 0.3s ease',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                    aria-label="WhatsApp"
+                  >
+                    <FaWhatsapp size={18} />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Bar */}
+          <div className="footer-bottom">
+            <div>
+              <p>Copyright © {new Date().getFullYear()} Rohan Travels &amp; Tours. All rights reserved.</p>
+              <p className="dev-by">
+                Developed by <a href="https://motivesolutions.tech" target="_blank" rel="noopener noreferrer">Motive Solutions</a> · 0311-1105009
+              </p>
+            </div>
+            <div className="footer-bottom-links">
+              <Link to="/about">About</Link>
+              <Link to="/contact">Contact</Link>
+              <Link to="/login">Agent Login</Link>
+              <button
+                className="scroll-top-btn"
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                aria-label="Scroll to top"
               >
-                <FaFacebook size={20} />
-              </a>
-              <a
-                href="https://www.tiktok.com/@m_rohan_travels_tours?_r=1&_t=ZN-98xOcwAp770"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="shell__foot-social-link"
-                aria-label="TikTok"
-              >
-                <FaTiktok size={20} />
-              </a>
-              <a
-                href="https://wa.me/qr/Y5PW7NQXWGTLP1"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="shell__foot-social-link shell__foot-social-link--whatsapp"
-                aria-label="WhatsApp"
-              >
-                <FaWhatsapp size={20} />
-              </a>
+                <ArrowRight size={16} style={{ transform: 'rotate(-90deg)' }} />
+              </button>
             </div>
-          </div>
-
-          {/* Quick Links Column */}
-          <div className="shell__foot-links-column">
-            <h4 className="shell__foot-heading">Quick Links</h4>
-            <ul className="shell__foot-links-list">
-              <li><Link to="/flights" className="shell__foot-link">Search Flights</Link></li>
-              {isAuthenticated && (
-                <>
-                  <li><Link to="/bookings" className="shell__foot-link">My Bookings</Link></li>
-                  <li><Link to="/dashboard" className="shell__foot-link">Dashboard</Link></li>
-                </>
-              )}
-              <li><Link to="/contact" className="shell__foot-link">Contact Us</Link></li>
-            </ul>
-          </div>
-
-          {/* Contact Column */}
-          <div className="shell__foot-contact">
-            <h4 className="shell__foot-heading">Get In Touch</h4>
-            <div className="shell__foot-contact-item">
-              <FaWhatsapp size={16} />
-              <a href="https://wa.me/qr/Y5PW7NQXWGTLP1" target="_blank" rel="noopener noreferrer">
-                WhatsApp
-              </a>
-            </div>
-            <div className="shell__foot-contact-item">
-              <FaFacebook size={16} />
-              <a href="https://www.facebook.com/share/1GccNRa3SP/" target="_blank" rel="noopener noreferrer">
-                Facebook
-              </a>
-            </div>
-            <div className="shell__foot-contact-item">
-              <Mail size={16} />
-              <a href="mailto:mrohantraveltour@gmail.com">mrohantraveltour@gmail.com</a>
-            </div>
-          </div>
-
-          {/* Hours Column */}
-          <div className="shell__foot-hours">
-            <h4 className="shell__foot-heading">Support Hours</h4>
-            <div className="shell__foot-hours-item">
-              <Clock size={16} />
-              <span>24/7 Customer Support</span>
-            </div>
-            <div className="shell__foot-hours-item">
-              <Globe size={16} />
-              <span>Available Worldwide</span>
-            </div>
-            <div className="shell__foot-copy">
-              &copy; {new Date().getFullYear()} Rohan Travels &amp; Tours
-              <br />
-              <span className="shell__foot-rights">All rights reserved</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom Bar */}
-        <div className="shell__foot-bottom">
-          <div className="shell__foot-bottom-inner">
-            <span className="shell__foot-bottom-text">
-              Made with <span className="shell__foot-heart">❤️</span> for travelers everywhere
-            </span>
-            <span className="shell__foot-date">
-              <span className="mono">{new Date().toLocaleDateString()}</span>
-            </span>
           </div>
         </div>
       </footer>
@@ -566,7 +667,7 @@ export default function Shell({ children }) {
           FLOATING WHATSAPP BUTTON
           ============================================================ */}
       <a
-        href="https://wa.me/qr/Y5PW7NQXWGTLP1"
+        href={BUSINESS_INFO.whatsapp}
         target="_blank"
         rel="noopener noreferrer"
         className="whatsapp-float"

@@ -10,6 +10,31 @@ import { date, time, money } from '../utils/format';
 import { TRIP_TYPES, TRAVEL_TYPES, flightMatchesTravelType } from '../utils/constants';
 import './UserFlights.css';
 
+// Country to airport codes mapping (same as in Home.jsx)
+const COUNTRY_AIRPORT_MAP = {
+  'UAE': ['DXB', 'AUH', 'SHJ'],
+  'Saudi Arabia': ['JED', 'RUH', 'MED', 'DMM'],
+  'Oman': ['MCT', 'SLL'],
+  'Bahrain': ['BAH'],
+  'Qatar': ['DOH'],
+  'Kuwait': ['KWI'],
+  'Turkey': ['IST', 'SAW'],
+  'UK': ['LHR', 'LGW', 'MAN'],
+  'USA': ['JFK', 'LAX'],
+  'France': ['CDG'],
+  'Germany': ['FRA'],
+  'Netherlands': ['AMS'],
+  'Singapore': ['SIN'],
+  'Malaysia': ['KUL'],
+  'Thailand': ['BKK'],
+  'Japan': ['NRT'],
+  'South Korea': ['ICN'],
+  'Hong Kong': ['HKG'],
+  'Lebanon': ['BEY'],
+  'Jordan': ['AMM'],
+  'Pakistan': ['ISB', 'LHE', 'KHI', 'PEW', 'MUX', 'SKT', 'UET', 'LYP', 'GWD', 'KDU', 'GIL', 'CJL', 'DSK', 'RYK', 'TUK', 'PAJ', 'DBA', 'SGI', 'MWD', 'ZIA'],
+};
+
 const FLIGHT_TYPES = [
   { value: 'domestic', label: 'Domestic' },
   { value: 'international', label: 'International' },
@@ -72,6 +97,7 @@ export default function UserFlights() {
     tripType: searchParams.get('tripType') || '',
     minPrice: '',
     maxPrice: '',
+    country: searchParams.get('country') || '', // New filter for country
   });
 
   // ------------------------------------------------------------------
@@ -93,6 +119,11 @@ export default function UserFlights() {
         }
       });
 
+      // If travelType is selected, pass it to the API
+      if (active.travelType) {
+        params.travelType = active.travelType;
+      }
+
       const response = await flightService.search(params);
 
       let data = [];
@@ -106,22 +137,24 @@ export default function UserFlights() {
         meta = response.data.pagination || null;
       }
 
-      // Filter by destination city/country (from URL params)
-      const destinationParam = active.destination || searchParams.get('destination');
-      if (destinationParam) {
-        const destLower = destinationParam.toLowerCase().trim();
+      // ============================================================
+      // COUNTRY FILTER LOGIC - Client-side filtering
+      // ============================================================
+      // If country filter is active, filter flights by destination country
+      // This uses the COUNTRY_AIRPORT_MAP to find all airports in that country
+      // ============================================================
+      const countryFilter = active.country || searchParams.get('country');
+      if (countryFilter) {
+        const airportCodes = COUNTRY_AIRPORT_MAP[countryFilter] || [];
+        
+        // Filter flights where destination airport code is in the country's airport list
         data = data.filter(flight => {
-          const city = flight.destination?.city?.toLowerCase() || '';
-          const country = flight.destination?.country?.toLowerCase() || '';
-          const airportCode = flight.destination?.airportCode?.toLowerCase() || '';
-          
-          return city.includes(destLower) || 
-                 country.includes(destLower) || 
-                 airportCode.includes(destLower);
+          const destCode = flight.destination?.airportCode;
+          return destCode && airportCodes.includes(destCode);
         });
       }
 
-      // Filter by travel type if needed (including generic support)
+      // STRICT FILTER: Apply client-side travel type filter (excludes generic)
       if (active.travelType) {
         data = data.filter(flight => flightMatchesTravelType(flight, active.travelType));
       }
@@ -148,10 +181,11 @@ export default function UserFlights() {
     const travelType = searchParams.get('travelType') || '';
     const tripType = searchParams.get('tripType') || '';
     const destination = searchParams.get('destination') || '';
-    
+    const country = searchParams.get('country') || ''; // New: country param
+
     const newFilters = { ...filters };
     let hasChanges = false;
-    
+
     if (travelType !== filters.travelType) {
       newFilters.travelType = travelType;
       hasChanges = true;
@@ -164,7 +198,11 @@ export default function UserFlights() {
       newFilters.destination = destination;
       hasChanges = true;
     }
-    
+    if (country !== filters.country) {
+      newFilters.country = country;
+      hasChanges = true;
+    }
+
     if (hasChanges) {
       setFilters(newFilters);
       setPage(1);
@@ -225,6 +263,7 @@ export default function UserFlights() {
       tripType: '',
       minPrice: '',
       maxPrice: '',
+      country: '',
     };
     setFilters(cleared);
     setPage(1);
@@ -331,6 +370,35 @@ export default function UserFlights() {
 
   const totalCount = pagination?.total ?? flights.length;
   const destinationFilter = searchParams.get('destination') || filters.destination;
+  const countryFilter = searchParams.get('country') || filters.country;
+
+  // Get country display name from filter value
+  const getCountryDisplayName = (countryKey) => {
+    const countryNames = {
+      'UAE': 'United Arab Emirates',
+      'Saudi Arabia': 'Saudi Arabia',
+      'Oman': 'Oman',
+      'Bahrain': 'Bahrain',
+      'Qatar': 'Qatar',
+      'Kuwait': 'Kuwait',
+      'Turkey': 'Turkey',
+      'UK': 'United Kingdom',
+      'USA': 'United States',
+      'France': 'France',
+      'Germany': 'Germany',
+      'Netherlands': 'Netherlands',
+      'Singapore': 'Singapore',
+      'Malaysia': 'Malaysia',
+      'Thailand': 'Thailand',
+      'Japan': 'Japan',
+      'South Korea': 'South Korea',
+      'Hong Kong': 'Hong Kong',
+      'Lebanon': 'Lebanon',
+      'Jordan': 'Jordan',
+      'Pakistan': 'Pakistan',
+    };
+    return countryNames[countryKey] || countryKey;
+  };
 
   return (
     <div className="user-flights-wrapper">
@@ -351,9 +419,10 @@ export default function UserFlights() {
         <div>
           <h1>Available Flights</h1>
           <p className="faint">Grouped by route — every departure on a route in one table</p>
-          
-          {destinationFilter && (
-            <span className="active-filter-badge" style={{ 
+
+          {/* Country filter badge */}
+          {countryFilter && (
+            <span className="active-filter-badge" style={{
               display: 'inline-block',
               marginTop: '8px',
               padding: '6px 16px',
@@ -364,8 +433,41 @@ export default function UserFlights() {
               fontWeight: '500',
               border: '1px solid rgba(99, 102, 241, 0.2)'
             }}>
+              🌍 Destination Country: <strong>{getCountryDisplayName(countryFilter)}</strong>
+              <button
+                onClick={() => {
+                  handleClearFilter('country');
+                  setSearchParams({});
+                }}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'var(--danger)',
+                  cursor: 'pointer',
+                  marginLeft: '8px',
+                  fontWeight: '600'
+                }}
+              >
+                ✕
+              </button>
+            </span>
+          )}
+
+          {destinationFilter && (
+            <span className="active-filter-badge" style={{
+              display: 'inline-block',
+              marginTop: '8px',
+              padding: '6px 16px',
+              background: 'var(--primary-light)',
+              color: 'var(--primary)',
+              borderRadius: 'var(--radius-full)',
+              fontSize: '14px',
+              fontWeight: '500',
+              border: '1px solid rgba(99, 102, 241, 0.2)',
+              marginLeft: (countryFilter || destinationFilter) ? '8px' : '0'
+            }}>
               📍 Destination: <strong>{destinationFilter}</strong>
-              <button 
+              <button
                 onClick={() => handleClearFilter('destination')}
                 style={{
                   background: 'none',
@@ -380,14 +482,13 @@ export default function UserFlights() {
               </button>
             </span>
           )}
-          
+
           {(filters.travelType || filters.tripType) && (
-            <span className="active-filter-badge" style={{ marginLeft: destinationFilter ? '8px' : '0' }}>
+            <span className="active-filter-badge" style={{ marginLeft: (countryFilter || destinationFilter) ? '8px' : '0' }}>
               {filters.travelType && (
                 <>
                   Purpose: <strong>{travelTypeLabel(filters.travelType)}</strong>
-                  {filters.travelType !== 'generic' && ' (generic itineraries included)'}
-                  <button 
+                  <button
                     onClick={() => handleClearFilter('travelType')}
                     style={{
                       background: 'none',
@@ -406,7 +507,7 @@ export default function UserFlights() {
               {filters.tripType && (
                 <>
                   Trip: <strong>{tripTypeMeta(filters.tripType).label}</strong>
-                  <button 
+                  <button
                     onClick={() => handleClearFilter('tripType')}
                     style={{
                       background: 'none',
@@ -614,9 +715,11 @@ export default function UserFlights() {
           <div className="empty-icon">✈️</div>
           <h3>No flights found</h3>
           <p className="faint">
-            {destinationFilter 
-              ? `No flights found to "${destinationFilter}". Try widening your filters or check back later.`
-              : 'Try widening your filters or check back later.'
+            {countryFilter
+              ? `No flights found to "${getCountryDisplayName(countryFilter)}". Try widening your filters or check back later.`
+              : destinationFilter
+                ? `No flights found to "${destinationFilter}". Try widening your filters or check back later.`
+                : 'Try widening your filters or check back later.'
             }
           </p>
           <button className="btn btn--primary" onClick={handleResetFilters}>
@@ -761,7 +864,7 @@ export default function UserFlights() {
                           <td data-label="Purpose">
                             <div className="travel-types">
                               {isGeneric ? (
-                                <span className="travel-type-tag generic">All purposes</span>
+                                <span className="travel-type-tag generic">Generic (All purposes)</span>
                               ) : (
                                 <>
                                   {purposes.slice(0, 2).map((t) => (

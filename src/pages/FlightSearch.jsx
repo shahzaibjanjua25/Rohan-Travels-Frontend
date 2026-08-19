@@ -7,6 +7,8 @@ import { CABIN_CLASSES, MAX_PASSENGERS, TRIP_TYPES, TRAVEL_TYPES } from '../util
 import { duration, inputDate, money, plural, time } from '../utils/format';
 import Field from '../components/ui/Field';
 import Alert from '../components/ui/Alert';
+import { flightMatchesTravelType } from '../utils/constants';
+
 import Pagination from '../components/ui/Pagination';
 import './FlightSearch.css';
 
@@ -200,7 +202,7 @@ export default function FlightSearch() {
     try {
       const response = await flightService.getFilters();
       const allAirports = [];
-      
+
       if (response.data?.origins) {
         response.data.origins.forEach(airport => {
           if (!allAirports.find(a => a.airportCode === airport.airportCode)) {
@@ -215,7 +217,7 @@ export default function FlightSearch() {
           }
         });
       }
-      
+
       setAirports(allAirports);
     } catch (err) {
       console.error('Failed to load airports:', err);
@@ -247,7 +249,9 @@ export default function FlightSearch() {
       setStatus('error');
     }
   }, []);
-
+  if (form.travelType) {
+    flights = flights.filter(flight => flightMatchesTravelType(flight, form.travelType));
+  }
   useEffect(() => {
     const query = Object.fromEntries([...params].filter(([, v]) => v !== ''));
     runSearch({ limit: 20, ...query });
