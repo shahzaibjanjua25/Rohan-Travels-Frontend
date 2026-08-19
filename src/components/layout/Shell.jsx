@@ -1,6 +1,6 @@
 // frontend/src/components/layout/Shell.jsx
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { notificationService } from '../../services/misc';
@@ -28,12 +28,10 @@ import {
   MessageCircle,
   Globe,
   Mail,
-  MapPin,
   Clock,
-  HelpCircle,
 } from 'lucide-react';
 
-const MOBILE_BREAKPOINT = 1024;
+const MOBILE_BREAKPOINT = 768;
 
 const linkClass = ({ isActive }) =>
   `shell__link${isActive ? ' shell__link--active' : ''}`;
@@ -163,45 +161,31 @@ export default function Shell({ children }) {
     { to: '/flights', label: 'Flights', icon: Plane, show: true },
     {
       to: isAdmin ? '/admin/bookings' : '/bookings',
-      label: isAdmin ? 'All Bookings' : 'Bookings',
+      label: isAdmin ? 'Bookings' : 'Bookings',
       icon: Calendar,
       show: isAuthenticated
     },
     {
       to: isAdmin ? '/admin/notifications' : '/notifications',
-      label: 'Notifications',
+      label: 'Alerts',
       icon: Bell,
       show: isAuthenticated,
       badge: unread
     },
     {
       to: '/dashboard',
-      label: isAdmin ? 'Overview' : 'My Travel',
+      label: isAdmin ? 'Overview' : 'Dashboard',
       icon: LayoutDashboard,
       show: isAuthenticated
     },
     ...(isAdmin
       ? [
-        { to: '/admin/flights', label: 'Manage Flights', icon: Settings, show: true },
-        { to: '/admin/users', label: 'People', icon: Users, show: true },
+        { to: '/admin/flights', label: 'Flights', icon: Plane, show: true },
+        { to: '/admin/users', label: 'Users', icon: Users, show: true },
         { to: '/admin/settings', label: 'Settings', icon: Settings, show: true }
       ]
       : [])
   ];
-
-  // Contact page link
-  const contactLink = { to: '/contact', label: 'Contact', icon: Phone, show: true };
-
-  const getCurrentTitle = () => {
-    if (isBlocked) return 'Maintenance';
-    const match = navItems
-      .filter((item) => item.show)
-      .filter((item) =>
-        item.end ? location.pathname === item.to : location.pathname.startsWith(item.to)
-      )
-      .sort((a, b) => b.to.length - a.to.length)[0];
-    return match?.label || 'Dashboard';
-  };
 
   if (loading) {
     return (
@@ -217,7 +201,7 @@ export default function Shell({ children }) {
   return (
     <div className="shell">
       {/* ============================================================
-          TOP NAVBAR (ALWAYS VISIBLE)
+          TOP NAVBAR
           ============================================================ */}
       <header className="shell__bar">
         <div className="shell__bar-inner">
@@ -231,7 +215,7 @@ export default function Shell({ children }) {
                 aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
                 aria-expanded={isMobileMenuOpen}
               >
-                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
               </button>
             )}
 
@@ -260,7 +244,7 @@ export default function Shell({ children }) {
                       className={linkClass}
                       end={item.end}
                     >
-                      <Icon size={16} />
+                      <Icon />
                       <span className="shell__nav-label">{item.label}</span>
                       {item.badge > 0 && (
                         <span className="shell__badge">{item.badge > 99 ? '99+' : item.badge}</span>
@@ -268,9 +252,8 @@ export default function Shell({ children }) {
                     </NavLink>
                   );
                 })}
-              {/* Contact link in nav */}
               <NavLink to="/contact" className={linkClass}>
-                <Phone size={16} />
+                <Phone />
                 <span className="shell__nav-label">Contact</span>
               </NavLink>
             </div>
@@ -297,11 +280,10 @@ export default function Shell({ children }) {
                   <div className="shell__user-info">
                     <span className="shell__user-name">{user?.name}</span>
                     <span className="shell__user-role">
-                      {isAdmin ? 'Administrator' : 'Agent'}
+                      {isAdmin ? 'Admin' : 'Agent'}
                     </span>
                   </div>
                   <ChevronDown
-                    size={16}
                     className={`shell__chevron${userMenuOpen ? ' shell__chevron--open' : ''}`}
                   />
                 </button>
@@ -332,10 +314,6 @@ export default function Shell({ children }) {
                       <CreditCard size={18} />
                       <span>Ledger</span>
                     </Link>
-                    <Link to="/contact" className="shell__dropdown-item" role="menuitem">
-                      <Phone size={18} />
-                      <span>Contact Us</span>
-                    </Link>
 
                     <div className="shell__dropdown-divider" />
 
@@ -357,7 +335,7 @@ export default function Shell({ children }) {
                   Sign in
                 </Link>
                 <Link to="/register" className="btn btn--primary btn--sm">
-                  Get started
+                  Sign up
                 </Link>
               </div>
             )}
@@ -472,7 +450,7 @@ export default function Shell({ children }) {
       </main>
 
       {/* ============================================================
-          FOOTER - BEAUTIFIED
+          FOOTER
           ============================================================ */}
       <footer className="shell__foot">
         <div className="shell__foot-inner">
@@ -502,9 +480,8 @@ export default function Shell({ children }) {
                 className="shell__foot-social-link"
                 aria-label="TikTok"
               >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M19.077 4.928C17.191 3.041 14.683 2 12.006 2 6.518 2 2 6.518 2 12.006c0 1.735.463 3.437 1.342 4.918L2 22l5.129-1.341c1.446.798 3.081 1.222 4.758 1.222h.004c5.487 0 10.006-4.518 10.006-10.006 0-2.675-1.041-5.188-2.93-7.076l.11-.071zM12.006 20.416h-.003c-1.47 0-2.922-.392-4.2-1.133l-.301-.178-3.045.796.812-2.969-.196-.317c-.79-1.246-1.208-2.667-1.208-4.122 0-4.632 3.77-8.402 8.405-8.402 2.243 0 4.351.875 5.937 2.461s2.462 3.695 2.462 5.938c-.001 4.632-3.771 8.403-8.402 8.403l-.001-.001z" />
-                  <path d="M16.999 13.273c-.305-.152-1.795-.874-2.073-.974-.278-.1-.481-.149-.685.15-.204.299-.78.966-.956 1.166-.176.2-.352.226-.65.128-.299-.099-1.271-.467-2.418-1.482-.893-.789-1.497-1.761-1.671-2.058-.174-.297-.019-.457.128-.605.136-.132.303-.345.455-.519.151-.174.202-.297.303-.496.101-.198.051-.37-.025-.519-.076-.149-.681-1.611-.932-2.205-.247-.579-.498-.5-.683-.511-.185-.011-.378-.011-.583-.011-.205 0-.532.076-.812.373-.281.297-1.071 1.017-1.071 2.479 0 1.462 1.086 2.874 1.237 3.073.151.198 2.135 3.197 5.174 4.484.723.306 1.287.489 1.727.625.728.226 1.39.194 1.913.118.584-.086 1.793-.718 2.046-1.412.253-.694.253-1.289.176-1.413-.076-.124-.277-.198-.583-.347z" />
+                <svg width="20" height="20" viewBox="-2.73 0 1225.016 1225.016" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1041.858 178.02C927.206 63.289 774.753.07 612.325 0 277.617 0 5.232 272.298 5.098 606.991c-.039 106.986 27.915 211.42 81.048 303.476L0 1225.016l321.898-84.406c88.689 48.368 188.547 73.855 290.166 73.896h.258.003c334.654 0 607.08-272.346 607.222-607.023.056-162.208-63.052-314.724-177.689-429.463zm-429.533 933.963h-.197c-90.578-.048-179.402-24.366-256.878-70.339l-18.438-10.93-191.021 50.083 51-186.176-12.013-19.087c-50.525-80.336-77.198-173.175-77.16-268.504.111-278.186 226.507-504.503 504.898-504.503 134.812.056 261.519 52.604 356.814 147.965 95.289 95.36 147.728 222.128 147.688 356.948-.118 278.195-226.522 504.543-504.693 504.543z" />
                 </svg>
               </a>
               <a
@@ -598,7 +575,7 @@ export default function Shell({ children }) {
         aria-label="Chat on WhatsApp"
         title="Chat with us on WhatsApp"
       >
-        <MessageCircle size={32} />
+        <MessageCircle size={30} />
         <span className="whatsapp-float-tooltip">Chat with us!</span>
       </a>
     </div>
