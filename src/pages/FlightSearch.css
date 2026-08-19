@@ -785,3 +785,44 @@ input[type="datetime-local"].field::-webkit-calendar-picker-indicator:hover {
     background: #1e293b;
   }
 }
+/* Add to FlightSearch.css */
+
+.board__trip {
+  font-size: var(--step--1);
+  font-weight: 600;
+  display: block;
+}
+
+.board__seats {
+  font-size: var(--step--1);
+  color: var(--text-muted);
+}
+
+/* Update grid to accommodate new columns */
+.search__grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr 1fr 1fr 1fr 1fr 1fr auto;
+  gap: 0.75rem;
+  align-items: end;
+}
+
+@media (max-width: 1200px) {
+  .search__grid {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+  .search__grid .search__swap {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .search__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .search__grid {
+    grid-template-columns: 1fr;
+  }
+}

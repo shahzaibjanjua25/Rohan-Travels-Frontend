@@ -280,7 +280,7 @@
   width: 100%;
   border-collapse: collapse;
   font-size: 0.9rem;
-  min-width: 900px;
+  min-width: 1100px;
 }
 
 .flights-table thead {
@@ -319,10 +319,114 @@
 }
 
 /* ============================================
+   ROUTE GROUP HEADER
+   ============================================ */
+
+.route-group {
+  margin-bottom: 2rem;
+  animation: routeGroupIn 0.4s ease both;
+}
+
+@keyframes routeGroupIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.route-group__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 0.85rem 1.25rem;
+  background: var(--primary-gradient);
+  border-radius: var(--radius) var(--radius) 0 0;
+  color: white;
+  box-shadow: var(--shadow-md);
+}
+
+.route-group__title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.route-group__endpoint {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.route-group__city {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: -0.2px;
+}
+
+.route-group__code {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: rgba(255, 255, 255, 0.75);
+  text-transform: uppercase;
+}
+
+.route-group__arrow {
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.85);
+  flex-shrink: 0;
+}
+
+.route-group__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.route-group__count {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.85rem;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+
+.route-group__from {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap;
+}
+
+.route-group__from strong {
+  color: white;
+  font-size: 0.95rem;
+}
+
+.route-group__trip-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.15rem 0.6rem;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+
+/* ============================================
    TABLE CELL STYLES
    ============================================ */
 
-/* Flight Cell */
 .flight-cell {
   display: flex;
   flex-direction: column;
@@ -345,34 +449,101 @@
   color: var(--text-light);
 }
 
-/* Route Cell */
-.route-cell {
-  display: flex;
+/* Trip Badge */
+.trip-badge {
+  display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-}
-
-.route-origin, .route-destination {
-  display: flex;
-  flex-direction: column;
-}
-
-.route-code {
-  font-weight: 700;
-  color: var(--text);
-  font-size: 0.9rem;
-}
-
-.route-city {
+  gap: 0.3rem;
+  padding: 0.15rem 0.65rem;
+  border-radius: var(--radius-full);
   font-size: 0.7rem;
+  font-weight: 600;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+.trip-badge--one_way {
+  background: var(--bg);
+  color: var(--text-secondary);
+  border-color: #cbd5e1;
+}
+
+.trip-badge--round_trip {
+  background: var(--info-light);
+  color: #1e40af;
+  border-color: rgba(59, 130, 246, 0.25);
+}
+
+.trip-badge--multi_city {
+  background: var(--secondary-light);
+  color: #92400e;
+  border-color: rgba(245, 158, 11, 0.25);
+}
+
+.trip-return {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.65rem;
   color: var(--text-light);
 }
 
-.route-arrow {
+.multi-city-label {
+  display: block;
+  font-size: 0.6rem;
+  color: var(--text-light);
+  margin-top: 0.1rem;
+}
+
+/* Route Details */
+.route-details-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.multi-city-route {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.segment {
+  display: inline-block;
+}
+
+.segment-code {
+  font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.segment-arrow {
   color: var(--primary);
+  margin: 0 2px;
+}
+
+.round-trip-route {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.return-arrow {
+  color: var(--secondary);
   font-weight: 300;
-  font-size: 1rem;
-  padding: 0 0.25rem;
+}
+
+.direct-route {
+  font-weight: 500;
+  color: var(--text);
+  font-size: 0.85rem;
+}
+
+.stops-info {
+  font-size: 0.7rem;
+  color: var(--text-light);
 }
 
 /* Time Cell */
@@ -393,27 +564,6 @@
   color: var(--text-light);
 }
 
-/* Flight Type */
-.flight-type-badge {
-  display: inline-block;
-  padding: 0.15rem 0.6rem;
-  border-radius: var(--radius-full);
-  font-size: 0.7rem;
-  font-weight: 600;
-}
-
-.flight-type-badge.domestic {
-  background: var(--success-light);
-  color: #065f46;
-  border: 1px solid rgba(16, 185, 129, 0.2);
-}
-
-.flight-type-badge.international {
-  background: var(--primary-light);
-  color: var(--primary);
-  border: 1px solid rgba(99, 102, 241, 0.2);
-}
-
 /* Travel Types */
 .travel-types {
   display: flex;
@@ -431,6 +581,13 @@
   background: var(--bg);
   color: var(--text-secondary);
   border: 1px solid #e2e8f0;
+}
+
+.travel-type-tag.generic {
+  background: var(--success-light);
+  color: #065f46;
+  border-color: rgba(16, 185, 129, 0.3);
+  font-weight: 600;
 }
 
 .travel-type-tag.more {
@@ -613,6 +770,26 @@
 }
 
 /* ============================================
+   ACTIVE FILTER BADGE
+   ============================================ */
+
+.active-filter-badge {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 6px 16px;
+  background: var(--primary-light);
+  color: var(--primary);
+  border-radius: var(--radius-full);
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+.active-filter-badge strong {
+  font-weight: 700;
+}
+
+/* ============================================
    RESPONSIVE
    ============================================ */
 
@@ -641,6 +818,10 @@
   
   .flights-hero-overlay h2 {
     font-size: 1.6rem;
+  }
+
+  .flights-table {
+    min-width: 900px;
   }
 }
 
@@ -703,19 +884,12 @@
 
   .flights-table {
     font-size: 0.8rem;
-    min-width: 700px;
+    min-width: 800px;
   }
 
   .flights-table th,
   .flights-table td {
     padding: 0.6rem 0.75rem;
-  }
-
-  .flights-table th:nth-child(3),
-  .flights-table td:nth-child(3),
-  .flights-table th:nth-child(4),
-  .flights-table td:nth-child(4) {
-    display: none;
   }
 
   .flight-number {
@@ -724,10 +898,6 @@
 
   .price-value {
     font-size: 0.85rem;
-  }
-
-  .route-code {
-    font-size: 0.8rem;
   }
 
   .btn--sm {
@@ -745,8 +915,40 @@
     padding: 1rem;
   }
 
-  .travel-types {
+  .route-group__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding: 0.7rem 1rem;
+  }
+
+  .route-group__city {
+    font-size: 0.95rem;
+  }
+
+  .route-group__arrow {
+    font-size: 1.2rem;
+  }
+
+  .route-group__meta {
+    gap: 0.6rem;
+  }
+
+  .route-group__trip-badge {
+    font-size: 0.6rem;
+  }
+
+  .multi-city-route {
+    font-size: 0.7rem;
+  }
+
+  .round-trip-route {
+    font-size: 0.7rem;
     flex-wrap: wrap;
+  }
+
+  .direct-route {
+    font-size: 0.75rem;
   }
 }
 
@@ -792,7 +994,7 @@
   }
 
   .flights-table {
-    min-width: 600px;
+    min-width: 650px;
   }
 
   .flight-number {
@@ -803,16 +1005,7 @@
     font-size: 0.75rem;
   }
 
-  .route-code {
-    font-size: 0.7rem;
-  }
-
   .status-badge {
-    font-size: 0.6rem;
-    padding: 0.1rem 0.4rem;
-  }
-
-  .flight-type-badge {
     font-size: 0.6rem;
     padding: 0.1rem 0.4rem;
   }
@@ -832,6 +1025,33 @@
 
   .empty-state h3 {
     font-size: 1rem;
+  }
+
+  .route-group__header {
+    padding: 0.6rem 0.75rem;
+  }
+
+  .route-group__city {
+    font-size: 0.85rem;
+  }
+
+  .route-group__code {
+    font-size: 0.6rem;
+  }
+
+  .route-group__count,
+  .route-group__from {
+    font-size: 0.65rem;
+  }
+
+  .route-group__trip-badge {
+    font-size: 0.55rem;
+    padding: 0.1rem 0.4rem;
+  }
+
+  .active-filter-badge {
+    font-size: 12px;
+    padding: 4px 12px;
   }
 }
 
@@ -926,22 +1146,6 @@
     color: var(--text-light);
   }
 
-  .route-code {
-    color: var(--text);
-  }
-
-  .route-city {
-    color: var(--text-light);
-  }
-
-  .time-value {
-    color: var(--text);
-  }
-
-  .date-value {
-    color: var(--text-light);
-  }
-
   .price-value {
     background: var(--primary-gradient);
     -webkit-background-clip: text;
@@ -966,22 +1170,34 @@
     color: var(--primary);
   }
 
-  .flight-type-badge.domestic {
-    background: rgba(16, 185, 129, 0.15);
-    color: #6ee7b7;
-    border-color: rgba(16, 185, 129, 0.2);
+  .trip-badge--one_way {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+    border-color: #475569;
   }
 
-  .flight-type-badge.international {
-    background: rgba(99, 102, 241, 0.15);
-    color: #a5b4fc;
-    border-color: rgba(99, 102, 241, 0.2);
+  .trip-badge--round_trip {
+    background: rgba(59, 130, 246, 0.15);
+    color: #93c5fd;
+    border-color: rgba(59, 130, 246, 0.25);
+  }
+
+  .trip-badge--multi_city {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+    border-color: rgba(245, 158, 11, 0.25);
   }
 
   .travel-type-tag {
     background: rgba(255, 255, 255, 0.05);
     color: var(--text-secondary);
     border-color: #334155;
+  }
+
+  .travel-type-tag.generic {
+    background: rgba(16, 185, 129, 0.15);
+    color: #6ee7b7;
+    border-color: rgba(16, 185, 129, 0.25);
   }
 
   .travel-type-tag.more {
@@ -1010,6 +1226,53 @@
   .empty-state h3 {
     color: var(--text);
   }
+
+  .route-group .flights-table thead {
+    background: rgba(99, 102, 241, 0.06);
+    border-bottom-color: #475569;
+  }
+
+  .active-filter-badge {
+    background: rgba(99, 102, 241, 0.15);
+    color: #a5b4fc;
+    border-color: rgba(99, 102, 241, 0.2);
+  }
+
+  .route-group__header {
+    background: linear-gradient(135deg, #1a3a6a 0%, #2a5a8a 50%, #3a7aaa 100%);
+  }
+
+  .multi-city-route {
+    color: var(--text-secondary);
+  }
+
+  .direct-route {
+    color: var(--text-secondary);
+  }
+
+  .round-trip-route {
+    color: var(--text-secondary);
+  }
+
+  .return-arrow {
+    color: var(--secondary);
+  }
+
+  .segment-code {
+    color: var(--text-secondary);
+  }
+
+  .stops-info {
+    color: var(--text-light);
+  }
+
+  .trip-return {
+    color: var(--text-light);
+  }
+
+  .multi-city-label {
+    color: var(--text-light);
+  }
 }
 
 /* ============================================
@@ -1032,20 +1295,4 @@
 
 .table-container::-webkit-scrollbar-thumb:hover {
   background: var(--primary-dark);
-}
-/* Active filter badge */
-.active-filter-badge {
-  display: inline-block;
-  margin-top: 8px;
-  padding: 6px 16px;
-  background: var(--primary-light);
-  color: var(--primary);
-  border-radius: var(--radius-full);
-  font-size: 14px;
-  font-weight: 500;
-  border: 1px solid rgba(99, 102, 241, 0.2);
-}
-
-.active-filter-badge strong {
-  font-weight: 700;
 }

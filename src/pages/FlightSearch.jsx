@@ -1,8 +1,9 @@
+// frontend/src/pages/FlightSearch.jsx
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import flightService from '../services/flights';
 import { ApiError } from '../services/api';
-import { CABIN_CLASSES, MAX_PASSENGERS } from '../utils/constants';
+import { CABIN_CLASSES, MAX_PASSENGERS, TRIP_TYPES, TRAVEL_TYPES } from '../utils/constants';
 import { duration, inputDate, money, plural, time } from '../utils/format';
 import Field from '../components/ui/Field';
 import Alert from '../components/ui/Alert';
@@ -13,20 +14,26 @@ const DEFAULTS = {
   origin: '',
   destination: '',
   departureDate: '',
+  returnDate: '',
   cabinClass: 'economy',
   passengers: 1,
   sort: 'departureTime',
+  tripType: '',
+  travelType: '',
 };
 
 /**
  * One row of the departure board.
- *
- * The stagger is capped: past about ten rows the delay stops reading as a
- * board resolving and starts reading as the page being slow.
  */
 function BoardRow({ flight, index, cabin, onSelect }) {
   const seats = flight.cabins?.[cabin]?.availableSeats ?? 0;
   const price = flight.cabins?.[cabin]?.price;
+  const tripTypeMap = {
+    one_way: '→',
+    round_trip: '↔',
+    multi_city: '⇢',
+  };
+  const tripIcon = tripTypeMap[flight.tripType] || '→';
 
   return (
     <button
@@ -43,24 +50,24 @@ function BoardRow({ flight, index, cabin, onSelect }) {
       </span>
 
       <span className="board__port">
-        <span className="board__iata">{flight.origin.airportCode}</span>
-        <span className="board__city">{flight.origin.city}</span>
+        <span className="board__iata">{flight.origin?.airportCode || 'N/A'}</span>
+        <span className="board__city">{flight.origin?.city || ''}</span>
       </span>
 
       <span className="board__port">
-        <span className="board__iata">{flight.destination.airportCode}</span>
-        <span className="board__city">{flight.destination.city}</span>
+        <span className="board__iata">{flight.destination?.airportCode || 'N/A'}</span>
+        <span className="board__city">{flight.destination?.city || ''}</span>
       </span>
 
       <span>
-        <span className="board__time">{time(flight.departureTime)}</span>
+        <span className="board__time">{flight.departureTime ? time(flight.departureTime) : '--:--'}</span>
         <span className="board__duration" style={{ display: 'block' }}>
           {duration(flight.durationMinutes)}
         </span>
       </span>
 
       <span>
-        <span className="board__time">{time(flight.arrivalTime)}</span>
+        <span className="board__time">{flight.arrivalTime ? time(flight.arrivalTime) : '--:--'}</span>
         {flight.status !== 'scheduled' && (
           <span className="board__duration" style={{ display: 'block', color: 'var(--signal)' }}>
             {flight.status}
@@ -69,9 +76,9 @@ function BoardRow({ flight, index, cabin, onSelect }) {
       </span>
 
       <span>
-        <span className="board__price">{price != null ? money(price) : '—'}</span>
+        <span className="board__trip">{tripIcon} {flight.tripType?.replace('_', ' ') || 'One way'}</span>
         <span className="board__seats" style={{ display: 'block' }}>
-          {seats > 0 ? `${plural(seats, 'seat')} left` : 'Sold out'}
+          {price != null ? money(price) : '—'}
         </span>
       </span>
     </button>
@@ -180,7 +187,7 @@ export default function FlightSearch() {
   }));
   const [flights, setFlights] = useState([]);
   const [pagination, setPagination] = useState(null);
-  const [status, setStatus] = useState('idle'); // idle | loading | ready | error
+  const [status, setStatus] = useState('idle');
   const [error, setError] = useState('');
   const [airports, setAirports] = useState([]);
   const [airportsLoading, setAirportsLoading] = useState(false);
@@ -191,11 +198,9 @@ export default function FlightSearch() {
   const loadAirports = useCallback(async () => {
     setAirportsLoading(true);
     try {
-      // Get unique origins and destinations from flights
       const response = await flightService.getFilters();
       const allAirports = [];
       
-      // Extract unique airports from origins and destinations
       if (response.data?.origins) {
         response.data.origins.forEach(airport => {
           if (!allAirports.find(a => a.airportCode === airport.airportCode)) {
@@ -224,8 +229,6 @@ export default function FlightSearch() {
   }, [loadAirports]);
 
   const runSearch = useCallback(async (query) => {
-    // Cancel the previous request so a slow earlier search cannot land after
-    // a faster later one and overwrite the results.
     abortRef.current?.abort();
     const controller = new AbortController();
     abortRef.current = controller;
@@ -277,6 +280,18 @@ export default function FlightSearch() {
 
   const cabin = form.cabinClass || 'economy';
 
+  // Prepare trip type options
+  const tripTypeOptions = [
+    { value: '', label: 'All trip types' },
+    ...TRIP_TYPES.map(t => ({ value: t.value, label: t.label })),
+  ];
+
+  // Prepare travel type options
+  const travelTypeOptions = [
+    { value: '', label: 'All purposes' },
+    ...TRAVEL_TYPES.map(t => ({ value: t.value, label: t.label })),
+  ];
+
   return (
     <div className="wrap">
       <p className="eyebrow">Departures</p>
@@ -325,7 +340,50 @@ export default function FlightSearch() {
             onChange={set('departureDate')}
           />
 
-          <Field id="cabinClass" label="Cabin" as="select" value={form.cabinClass} onChange={set('cabinClass')}>
+          <Field
+            id="returnDate"
+            label="Return (round trip)"
+            type="date"
+            min={inputDate()}
+            value={form.returnDate}
+            onChange={set('returnDate')}
+          />
+
+          <Field
+            id="tripType"
+            label="Trip Type"
+            as="select"
+            value={form.tripType}
+            onChange={set('tripType')}
+          >
+            {tripTypeOptions.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </Field>
+
+          <Field
+            id="travelType"
+            label="Travel Purpose"
+            as="select"
+            value={form.travelType}
+            onChange={set('travelType')}
+          >
+            {travelTypeOptions.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </Field>
+
+          <Field
+            id="cabinClass"
+            label="Cabin"
+            as="select"
+            value={form.cabinClass}
+            onChange={set('cabinClass')}
+          >
             {CABIN_CLASSES.map((c) => (
               <option key={c.value} value={c.value}>
                 {c.label}
@@ -358,7 +416,7 @@ export default function FlightSearch() {
           <span>To</span>
           <span>Departs</span>
           <span>Arrives</span>
-          <span>Fare</span>
+          <span>Trip / Fare</span>
         </div>
 
         {status === 'loading' && (

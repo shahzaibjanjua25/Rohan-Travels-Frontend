@@ -1,7 +1,9 @@
+// frontend/src/pages/Home.jsx
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { flightService } from '../services/flights';
+import { TRAVEL_TYPES } from '../utils/constants';
 import {
   Plane,
   Search,
@@ -17,14 +19,12 @@ import {
   Sparkles,
   Loader,
   Package,
-  Coffee,
-  Heart,
-  Building,
-  MapPin,
-  CheckCircle,
   Umbrella,
   Compass,
+  MapPin,
+  CheckCircle,
   Gift,
+  Building,
 } from 'lucide-react';
 import './Home.css';
 import backgroundImage from '../assests/dubai bakcground.png';
@@ -36,88 +36,97 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Tour packages data with Unsplash images and travel type mapping
+  // Helper to get travel type label
+  const getTravelTypeLabel = (value) => {
+    const found = TRAVEL_TYPES.find(t => t.value === value);
+    return found ? found.label : value;
+  };
+
+  // Tour packages data with travel type mapping
   const tourPackages = [
     {
       id: 1,
       title: 'Umrah Packages',
       description: 'Spiritual journey to the holy cities of Makkah and Madinah with premium services and comfortable accommodations.',
-      //price: '$1,299',
       duration: '7-14 Days',
       image: 'https://zamzam.com/blog/wp-content/uploads/2021/05/history-of-Umrah.jpg',
       features: ['5-Star Hotels', '24/7 Support', 'Visa Assistance', 'Ziyarat Tours', 'Group Discounts'],
       icon: <Umbrella size={32} />,
       color: '#10b981',
       badge: '⭐ Best Seller',
-      travelType: 'umrah' // Maps to travelType filter
+      travelType: 'umrah'
     },
     {
       id: 2,
       title: 'Hajj Packages',
       description: 'Complete Hajj packages with expert guidance, comfortable accommodations, and full support throughout your pilgrimage.',
-      //price: '$4,999',
       duration: '15-21 Days',
       image: 'https://th.bing.com/th/id/R.7380d077e3e948a5c7ec3d8bafb1e2f1?rik=9HP1aSaPaRf%2fFA&pid=ImgRaw&r=0',
       features: ['VIP Services', 'Expert Guides', 'Medical Support', 'Group Iftar', 'Transportation'],
       icon: <Compass size={32} />,
       color: '#f59e0b',
       badge: '👑 Premium',
-      travelType: 'hajj' // Maps to travelType filter
+      travelType: 'hajj'
     },
     {
       id: 3,
       title: 'Family Visit Packages',
       description: 'Create unforgettable memories with your loved ones with our tailored family vacation packages to top destinations.',
-      //price: '$899',
       duration: '5-12 Days',
       image: 'https://images.unsplash.com/photo-1530789253388-582c481c54b0?auto=format&fit=crop&w=800&q=80',
       features: ['Family Activities', 'Child Care', 'Special Meals', 'Photo Sessions', 'Flexible Plans'],
       icon: <Users size={32} />,
       color: '#6366f1',
       badge: '👨‍👩‍👧‍👦 Family Favorite',
-      travelType: 'family' // Maps to travelType filter
+      travelType: 'family'
+    },
+    {
+      id: 4,
+      title: 'Dubai Luxury Tours',
+      description: 'Experience the ultimate luxury in Dubai with private tours, 5-star hotels, and exclusive access to top attractions.',
+      duration: '5-7 Days',
+      image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80',
+      features: ['Burj Khalifa', 'Desert Safari', 'Private Yacht', 'Shopping Tours', 'Fine Dining'],
+      icon: <Building size={32} />,
+      color: '#8b5cf6',
+      badge: '✨ Luxury',
+      travelType: 'tour'
+    },
+    {
+      id: 5,
+      title: 'Turkey Cultural Tours',
+      description: 'Explore the rich history and culture of Turkey with guided tours to Istanbul, Cappadocia, and the Mediterranean coast.',
+      duration: '8-12 Days',
+      image: 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=800&q=80',
+      features: ['Guided Tours', 'Hot Air Balloon', 'Historical Sites', 'Turkish Cuisine', 'Shopping'],
+      icon: <MapPin size={32} />,
+      color: '#ef4444',
+      badge: '🌟 Top Rated',
+      travelType: 'tour'
+    },
+    {
+      id: 6,
+      title: 'Generic Travel',
+      description: 'Find flights for any purpose with our generic travel options. Perfect for business, medical, or any other travel need.',
+      duration: 'Flexible',
+      image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80',
+      features: ['Flexible Booking', 'Best Prices', 'Any Purpose', '24/7 Support', 'Easy Changes'],
+      icon: <Globe size={32} />,
+      color: '#6b7280',
+      badge: '🌐 All Purposes',
+      travelType: 'generic'
     }
-    // ,
-    // {
-    //   id: 4,
-    //   title: 'Dubai Luxury Tours',
-    //   description: 'Experience the ultimate luxury in Dubai with private tours, 5-star hotels, and exclusive access to top attractions.',
-    //   //price: '$2,499',
-    //   duration: '5-7 Days',
-    //   image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80',
-    //   features: ['Burj Khalifa', 'Desert Safari', 'Private Yacht', 'Shopping Tours', 'Fine Dining'],
-    //   icon: <Building size={32} />,
-    //   color: '#8b5cf6',
-    //   badge: '✨ Luxury',
-    //   travelType: 'tour' // Maps to travelType filter
-    // },
-    // {
-    //   id: 5,
-    //   title: 'Turkey Cultural Tours',
-    //   description: 'Explore the rich history and culture of Turkey with guided tours to Istanbul, Cappadocia, and the Mediterranean coast.',
-    //   //price: '$1,899',
-    //   duration: '8-12 Days',
-    //   image: 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=800&q=80',
-    //   features: ['Guided Tours', 'Hot Air Balloon', 'Historical Sites', 'Turkish Cuisine', 'Shopping'],
-    //   icon: <MapPin size={32} />,
-    //   color: '#ef4444',
-    //   badge: '🌟 Top Rated',
-    //   travelType: 'tour' // Maps to travelType filter
-    // },
-    // {
-    //   id: 6,
-    //   title: 'Malaysia Family Tours',
-    //   description: 'Perfect family getaway to Malaysia with visits to Kuala Lumpur, Langkawi, and Penang with kid-friendly activities.',
-    //   //price: '$1,299',
-    //   duration: '7-10 Days',
-    //   image: 'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?auto=format&fit=crop&w=800&q=80',
-    //   features: ['Theme Parks', 'Beach Time', 'Nature Walks', 'Cultural Shows', 'Local Cuisine'],
-    //   icon: <Gift size={32} />,
-    //   color: '#3b82f6',
-    //   badge: '👪 Family Choice',
-    //   travelType: 'family' // Maps to travelType filter
-    // }
   ];
+
+  // Shuffle array function
+  const shuffleArray = (array) => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
 
   // Helper function to get airline logo/color
   const getAirlineColor = (airline) => {
@@ -142,16 +151,6 @@ export default function Home() {
   const handleTourPackageClick = (travelType) => {
     console.log(`📌 Navigating to flights with travelType: ${travelType}`);
     navigate(`/flights?travelType=${travelType}`);
-  };
-
-  // Shuffle array function
-  const shuffleArray = (array) => {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
   };
 
   // Fetch random flights from API
@@ -197,9 +196,10 @@ export default function Home() {
         arrivalTime: flight.arrivalTime,
         status: flight.status || 'scheduled',
         cabins: flight.cabins || [],
-        //price: getPriceFromFlight(flight),
         color: getAirlineColor(flight.airline),
-        baggageAllowance: flight.baggageAllowance
+        baggageAllowance: flight.baggageAllowance,
+        tripType: flight.tripType || 'one_way',
+        travelTypes: flight.travelTypes || [],
       }));
 
       setFeaturedFlights(featured);
@@ -210,30 +210,6 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const getPriceFromFlight = (flight) => {
-    if (flight.cabins) {
-      if (flight.cabins.economy && flight.cabins.economy.price) {
-        return `$${flight.cabins.economy.price}`;
-      }
-      if (Array.isArray(flight.cabins) && flight.cabins.length > 0) {
-        const cheapest = Math.min(...flight.cabins.map(cabin => cabin.price || 0));
-        if (cheapest > 0) {
-          return `$${cheapest}`;
-        }
-      }
-      if (typeof flight.cabins === 'object') {
-        const prices = Object.values(flight.cabins)
-          .filter(cabin => cabin && cabin.price)
-          .map(cabin => cabin.price);
-        if (prices.length > 0) {
-          const cheapest = Math.min(...prices);
-          return `$${cheapest}`;
-        }
-      }
-    }
-    return `$${Math.floor(Math.random() * 300) + 200}`;
   };
 
   const getFallbackFlights = () => {
@@ -247,9 +223,9 @@ export default function Home() {
         originCode: 'KHI',
         destination: 'Dubai',
         destinationCode: 'DXB',
-        //price: '$299',
         color: '#8B0000',
-        status: 'scheduled'
+        status: 'scheduled',
+        tripType: 'one_way',
       },
       {
         id: '2',
@@ -260,9 +236,9 @@ export default function Home() {
         originCode: 'DXB',
         destination: 'London',
         destinationCode: 'LHR',
-        //price: '$599',
         color: '#D71921',
-        status: 'boarding'
+        status: 'boarding',
+        tripType: 'round_trip',
       },
       {
         id: '3',
@@ -273,9 +249,9 @@ export default function Home() {
         originCode: 'DOH',
         destination: 'Singapore',
         destinationCode: 'SIN',
-        //price: '$449',
         color: '#8A1538',
-        status: 'departed'
+        status: 'departed',
+        tripType: 'one_way',
       },
     ];
   };
@@ -293,6 +269,16 @@ export default function Home() {
       'cancelled': { label: 'Cancelled', color: '#6b7280' },
     };
     return statusMap[status] || statusMap.scheduled;
+  };
+
+  // Helper to get trip type display
+  const getTripTypeDisplay = (tripType) => {
+    const map = {
+      'one_way': 'One Way',
+      'round_trip': 'Round Trip',
+      'multi_city': 'Multi-City',
+    };
+    return map[tripType] || 'One Way';
   };
 
   return (
@@ -359,7 +345,7 @@ export default function Home() {
       <section className="home-tour-packages">
         <div className="container">
           <div className="section-header">
-            <h2> Special Tour Packages</h2>
+            <h2>Special Tour Packages</h2>
             <p>Explore our curated travel experiences for every journey</p>
           </div>
           <div className="tour-packages-grid">
@@ -407,7 +393,7 @@ export default function Home() {
                       className="tour-package-btn"
                       style={{ backgroundColor: pkg.color }}
                       onClick={(e) => {
-                        e.stopPropagation(); // Prevent double navigation
+                        e.stopPropagation();
                         handleTourPackageClick(pkg.travelType);
                       }}
                     >
@@ -516,7 +502,6 @@ export default function Home() {
               <div className="featured-flights-grid">
                 {featuredFlights.map((flight) => {
                   const statusInfo = getStatusBadge(flight.status);
-                  // Determine the correct link based on authentication
                   const flightLink = isAuthenticated
                     ? `/flights/${flight.id}/book`
                     : `/flights/${flight.id}`;
@@ -549,7 +534,7 @@ export default function Home() {
                             </div>
                             <div className="flight-duration">
                               <Clock size={12} />
-                              <span>{flight.flightNumber}</span>
+                              <span>{getTripTypeDisplay(flight.tripType)}</span>
                             </div>
                           </div>
                           <div className="featured-flight-destination">
@@ -564,12 +549,8 @@ export default function Home() {
                             <span className="featured-flight-value">{flight.aircraft}</span>
                           </div>
                           <div className="featured-flight-info">
-                            <span className="featured-flight-label">Cabin Classes</span>
-                            <span className="featured-flight-value">
-                              {flight.cabins && typeof flight.cabins === 'object'
-                                ? Object.keys(flight.cabins).filter(key => flight.cabins[key] && flight.cabins[key].availableSeats > 0).join(', ').toUpperCase()
-                                : 'Economy'}
-                            </span>
+                            <span className="featured-flight-label">Trip Type</span>
+                            <span className="featured-flight-value">{getTripTypeDisplay(flight.tripType)}</span>
                           </div>
                         </div>
                       </div>
@@ -577,7 +558,7 @@ export default function Home() {
                       <div className="featured-flight-footer">
                         <div className="featured-flight-price">
                           <span className="price-label">Starting from</span>
-                          <span className="price-value">{flight.price}</span>
+                          <span className="price-value">{flight.price || 'Contact'}</span>
                         </div>
                         <Link
                           to={flightLink}
