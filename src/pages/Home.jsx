@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { flightService } from '../services/flights';
+import bahrainImage from '../assests/bahrain.jpg';
+import omanImage from '../assests/oman.jpg';
 import {
   Plane,
   Search,
@@ -34,6 +36,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Tour packages data with destination airport codes (3-letter IATA codes)
   // Tour packages data with destination airport codes (3-letter IATA codes)
   const tourPackages = [
     {
@@ -83,7 +86,7 @@ export default function Home() {
       title: 'Bahrain Getaway',
       description: 'Discover the charm of Bahrain with its rich culture, modern attractions, and beautiful waterfront experiences.',
       duration: '4-7 Days',
-      image: 'https://images.unsplash.com/photo-1590078363292-8de9af6b8b8b?auto=format&fit=crop&w=800&q=80',
+      image: bahrainImage, // ✅ Fixed Bahrain image
       features: ['Waterfront Views', 'Cultural Tours', 'Shopping', 'Fine Dining', 'Relaxation'],
       icon: <Compass size={32} />,
       color: '#f59e0b',
@@ -97,7 +100,7 @@ export default function Home() {
       title: 'Oman Adventure',
       description: 'Explore the stunning landscapes of Oman from the mountains to the coast with guided tours and cultural experiences.',
       duration: '6-10 Days',
-      image: 'https://images.unsplash.com/photo-1558682457-7c24e268e22e?auto=format&fit=crop&w=800&q=80',
+      image: omanImage, // ✅ Fixed Oman image
       features: ['Mountain Tours', 'Coastal Adventures', 'Cultural Sites', 'Local Cuisine', 'Shopping'],
       icon: <Package size={32} />,
       color: '#6366f1',
@@ -121,7 +124,6 @@ export default function Home() {
       destinationCountry: 'USA',
     },
   ];
-
   // ✅ Handle tour package click - navigate to flights with destination airport code
   const handleTourPackageClick = (destinationAirport, destinationCity, destinationCountry) => {
     console.log(`📍 Navigating to flights for: ${destinationCity}, ${destinationCountry} (${destinationAirport})`);
