@@ -1,6 +1,7 @@
 // frontend/src/pages/Contact.jsx
 import { Link } from 'react-router-dom';
-import { Facebook, MessageCircle, Mail, Phone, MapPin, Clock, Globe } from 'lucide-react';
+import { Facebook, Mail, Phone, Clock, Globe } from 'lucide-react';
+import { FaWhatsapp, FaTiktok } from 'react-icons/fa';
 import './Contact.css';
 
 export default function Contact() {
@@ -22,7 +23,7 @@ export default function Contact() {
           className="contact-card contact-card--whatsapp"
         >
           <div className="contact-card-icon">
-            <MessageCircle size={32} />
+            <FaWhatsapp size={32} />
           </div>
           <h3>WhatsApp</h3>
           <p>Chat with us instantly on WhatsApp</p>
@@ -52,9 +53,7 @@ export default function Contact() {
           className="contact-card contact-card--tiktok"
         >
           <div className="contact-card-icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M16.6 5.82s.51.5 0 0A4.278 4.278 0 0 1 15.54 3h-3.09v12.4a2.592 2.592 0 0 1-2.59 2.5 2.592 2.592 0 0 1 0-5.18 2.57 2.57 0 0 1 1.64.59V9.73a5.69 5.69 0 0 0 5.11 5.07 5.69 5.69 0 0 0 0-11.38v.4z" />
-            </svg>
+            <FaTiktok size={32} />
           </div>
           <h3>TikTok</h3>
           <p>Watch our travel content</p>

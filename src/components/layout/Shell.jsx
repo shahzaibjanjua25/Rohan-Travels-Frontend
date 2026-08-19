@@ -24,12 +24,12 @@ import {
   CreditCard,
   Home,
   Phone,
-  Facebook,
-  MessageCircle,
-  Globe,
   Mail,
   Clock,
+  Globe,
 } from 'lucide-react';
+// Import FaFacebook, FaWhatsapp, FaTiktok from react-icons
+import { FaFacebook, FaWhatsapp, FaTiktok } from 'react-icons/fa';
 
 const MOBILE_BREAKPOINT = 768;
 
@@ -471,7 +471,7 @@ export default function Shell({ children }) {
                 className="shell__foot-social-link"
                 aria-label="Facebook"
               >
-                <Facebook size={20} />
+                <FaFacebook size={20} />
               </a>
               <a
                 href="https://www.tiktok.com/@m_rohan_travels_tours?_r=1&_t=ZN-98xOcwAp770"
@@ -480,9 +480,7 @@ export default function Shell({ children }) {
                 className="shell__foot-social-link"
                 aria-label="TikTok"
               >
-                <svg width="20" height="20" viewBox="-2.73 0 1225.016 1225.016" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1041.858 178.02C927.206 63.289 774.753.07 612.325 0 277.617 0 5.232 272.298 5.098 606.991c-.039 106.986 27.915 211.42 81.048 303.476L0 1225.016l321.898-84.406c88.689 48.368 188.547 73.855 290.166 73.896h.258.003c334.654 0 607.08-272.346 607.222-607.023.056-162.208-63.052-314.724-177.689-429.463zm-429.533 933.963h-.197c-90.578-.048-179.402-24.366-256.878-70.339l-18.438-10.93-191.021 50.083 51-186.176-12.013-19.087c-50.525-80.336-77.198-173.175-77.16-268.504.111-278.186 226.507-504.503 504.898-504.503 134.812.056 261.519 52.604 356.814 147.965 95.289 95.36 147.728 222.128 147.688 356.948-.118 278.195-226.522 504.543-504.693 504.543z" />
-                </svg>
+                <FaTiktok size={20} />
               </a>
               <a
                 href="https://wa.me/qr/Y5PW7NQXWGTLP1"
@@ -491,7 +489,7 @@ export default function Shell({ children }) {
                 className="shell__foot-social-link shell__foot-social-link--whatsapp"
                 aria-label="WhatsApp"
               >
-                <MessageCircle size={20} />
+                <FaWhatsapp size={20} />
               </a>
             </div>
           </div>
@@ -515,13 +513,13 @@ export default function Shell({ children }) {
           <div className="shell__foot-contact">
             <h4 className="shell__foot-heading">Get In Touch</h4>
             <div className="shell__foot-contact-item">
-              <MessageCircle size={16} />
+              <FaWhatsapp size={16} />
               <a href="https://wa.me/qr/Y5PW7NQXWGTLP1" target="_blank" rel="noopener noreferrer">
                 WhatsApp
               </a>
             </div>
             <div className="shell__foot-contact-item">
-              <Facebook size={16} />
+              <FaFacebook size={16} />
               <a href="https://www.facebook.com/share/1GccNRa3SP/" target="_blank" rel="noopener noreferrer">
                 Facebook
               </a>
@@ -575,7 +573,7 @@ export default function Shell({ children }) {
         aria-label="Chat on WhatsApp"
         title="Chat with us on WhatsApp"
       >
-        <MessageCircle size={30} />
+        <FaWhatsapp size={30} />
         <span className="whatsapp-float-tooltip">Chat with us!</span>
       </a>
     </div>
