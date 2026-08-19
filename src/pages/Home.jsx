@@ -352,7 +352,7 @@ export default function Home() {
       <section className="home-tour-packages">
         <div className="container">
           <div className="section-header">
-            <h2>Special Tour Packages</h2>
+            <h2>Special Ticket Packages</h2>
             <p>Explore our curated travel experiences for every destination</p>
           </div>
           <div className="tour-packages-grid">
