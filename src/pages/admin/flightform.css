@@ -1005,3 +1005,167 @@
     transform: none;
   }
 }
+/* Add to flightform.css */
+
+/* ============================================
+   TRIP TYPE BADGE IN FORM
+   ============================================ */
+
+.trip-type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.15rem 0.65rem;
+  border-radius: var(--radius-full);
+  font-size: 0.7rem;
+  font-weight: 600;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+.trip-type-badge--one_way {
+  background: var(--bg);
+  color: var(--text-secondary);
+  border-color: #cbd5e1;
+}
+
+.trip-type-badge--round_trip {
+  background: var(--info-light);
+  color: #1e40af;
+  border-color: rgba(59, 130, 246, 0.25);
+}
+
+.trip-type-badge--multi_city {
+  background: var(--secondary-light);
+  color: #92400e;
+  border-color: rgba(245, 158, 11, 0.25);
+}
+
+/* ============================================
+   SEGMENT SECTION (Multi-City)
+   ============================================ */
+
+.form-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.passenger-section {
+  background: linear-gradient(135deg, var(--bg-hover), var(--bg-card));
+  border-radius: var(--radius-sm);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+  border: 2px solid #e2e8f0;
+  transition: var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+.passenger-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--primary-gradient);
+  opacity: 0;
+  transition: var(--transition-smooth);
+}
+
+.passenger-section:hover::before {
+  opacity: 1;
+}
+
+.passenger-section:last-child {
+  margin-bottom: 0;
+}
+
+.passenger-section:hover {
+  border-color: var(--primary);
+  background: var(--bg-card);
+  transform: translateX(4px);
+  box-shadow: var(--shadow-md);
+}
+
+.passenger-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.passenger-type {
+  font-weight: 400;
+  font-size: 0.75rem;
+  color: var(--text-light);
+  margin-left: 0.5rem;
+  background: linear-gradient(135deg, var(--primary-light), var(--bg));
+  padding: 0.15rem 0.8rem;
+  border-radius: var(--radius-full);
+  border: 1px solid #e2e8f0;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .passenger-section {
+    padding: 1rem;
+  }
+  
+  .passenger-title {
+    font-size: 0.85rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+  
+  .form-section-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .passenger-section {
+    background: rgba(255, 255, 255, 0.02);
+    border-color: #475569;
+  }
+  
+  .passenger-section:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: var(--primary);
+  }
+  
+  .passenger-type {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: #475569;
+  }
+  
+  .trip-type-badge--one_way {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+    border-color: #475569;
+  }
+  
+  .trip-type-badge--round_trip {
+    background: rgba(59, 130, 246, 0.15);
+    color: #93c5fd;
+    border-color: rgba(59, 130, 246, 0.25);
+  }
+  
+  .trip-type-badge--multi_city {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+    border-color: rgba(245, 158, 11, 0.25);
+  }
+}

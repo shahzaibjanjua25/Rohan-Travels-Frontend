@@ -1,7 +1,9 @@
+// frontend/src/pages/admin/FlightForm.jsx
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { flightService } from '../../services/flights';
 import { airportsFor, findAirport } from '../../data/airports';
+import { TRIP_TYPES, TRAVEL_TYPES } from '../../utils/constants';
 import Alert from '../../components/ui/Alert';
 import Spinner from '../../components/ui/Spinner';
 import './flightform.css';
@@ -10,15 +12,6 @@ import './flightform.css';
 // Options
 // ---------------------------------------------------------------------------
 
-const TRIP_TYPES = [
-  { value: 'one_way', label: 'One way', hint: 'A single hop, origin to destination.' },
-  { value: 'round_trip', label: 'Round trip', hint: 'Out and back. The return always flies destination to origin.' },
-  { value: 'multi_city', label: 'Multi-city', hint: 'A chain of legs, e.g. JED → MED → ISB. Route and times are taken from the segments.' },
-];
-
-// `generic` is not a purpose. It marks the itinerary as sellable under every
-// purpose, so it appears in umrah results, hajj results, family results and so
-// on. Listed first because it is the widest net, not the narrowest.
 const GENERIC_OPTION = {
   value: 'generic',
   label: 'Generic — sells under every purpose',
@@ -48,6 +41,13 @@ const INTERNATIONAL_TRAVEL_TYPES = [
 
 const MAX_SEGMENTS = 8;
 
+// Trip type icons for display
+const TRIP_TYPE_ICONS = {
+  one_way: '→',
+  round_trip: '↔',
+  multi_city: '⇢',
+};
+
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
@@ -61,14 +61,11 @@ const blankSegment = () => ({
   arrivalTime: '',
   flightNumber: '',
   airline: '',
+  aircraft: '',
 });
 
 /**
  * Format a date for a datetime-local input.
- *
- * Deliberately not toISOString().slice(0,16): that yields UTC, so an admin in
- * PKT would open an 18:00 departure and see 13:00, then "correct" it and shift
- * the real departure by five hours.
  */
 const toLocalInput = (value) => {
   if (!value) return '';
@@ -149,6 +146,7 @@ export default function FlightForm({ initialData = null, isEdit = false }) {
         arrivalTime: toLocalInput(s.arrivalTime),
         flightNumber: s.flightNumber || '',
         airline: s.airline || '',
+        aircraft: s.aircraft || '',
       })),
       baggageAllowance: {
         cabinKg: initialData.baggageAllowance?.cabinKg ?? 7,
@@ -208,14 +206,17 @@ export default function FlightForm({ initialData = null, isEdit = false }) {
         tripType === 'multi_city' && (!prev.segments || prev.segments.length < 2)
           ? [blankSegment(), blankSegment()]
           : prev.segments,
+      // Clear return segment for non-round-trip
+      returnSegment:
+        tripType === 'round_trip'
+          ? prev.returnSegment || { departureTime: '', arrivalTime: '', flightNumber: '', aircraft: '' }
+          : { departureTime: '', arrivalTime: '', flightNumber: '', aircraft: '' },
     }));
   };
 
   const handleFlightTypeChange = (e) => {
     const flightType = e.target.value;
     setValidationErrors({});
-    // Airport lists differ per flight type, so previously chosen airports may
-    // no longer be selectable. Clearing is safer than leaving a stale code.
     setFormData((prev) => ({
       ...prev,
       flightType,
@@ -247,9 +248,6 @@ export default function FlightForm({ initialData = null, isEdit = false }) {
     setFormData((prev) => {
       const current = prev.travelTypes || [];
 
-      // `generic` already covers every purpose, so pairing it with specific
-      // ones is contradictory. Selecting it clears the rest, and selecting a
-      // specific purpose clears it.
       if (value === 'generic') {
         return { ...prev, travelTypes: current.includes('generic') ? [] : ['generic'] };
       }
@@ -274,9 +272,6 @@ export default function FlightForm({ initialData = null, isEdit = false }) {
       if (segments.length >= MAX_SEGMENTS) return prev;
 
       const next = blankSegment();
-      // The server rejects a gap in the chain, so prefill the new leg's origin
-      // from the previous leg's destination rather than let the admin discover
-      // the mismatch only on submit.
       const prevSeg = segments[segments.length - 1];
       if (prevSeg?.destination?.airportCode) {
         next.origin = { ...prevSeg.destination };
@@ -362,8 +357,6 @@ export default function FlightForm({ initialData = null, isEdit = false }) {
         }
       });
     } else {
-      // Only single-hop itineraries carry top-level route and times. On a
-      // multi-city trip the server derives them from the segment chain.
       if (!formData.origin.airportCode) errors['origin.airportCode'] = 'Origin airport is required';
       if (!formData.destination.airportCode) errors['destination.airportCode'] = 'Destination airport is required';
       if (
@@ -453,9 +446,6 @@ export default function FlightForm({ initialData = null, isEdit = false }) {
       };
 
       if (isMultiCity) {
-        // Origin, destination and the journey times are deliberately omitted:
-        // the model derives them from the chain, so sending our own guess
-        // would create a second source of truth that could drift.
         payload.segments = formData.segments.map((s) => ({
           origin: { ...s.origin },
           destination: { ...s.destination },
@@ -463,6 +453,7 @@ export default function FlightForm({ initialData = null, isEdit = false }) {
           arrivalTime: toIso(s.arrivalTime),
           flightNumber: s.flightNumber?.toUpperCase().trim() || undefined,
           airline: s.airline?.trim() || undefined,
+          aircraft: s.aircraft?.trim() || undefined,
         }));
       } else {
         payload.origin = { ...formData.origin };
@@ -522,6 +513,13 @@ export default function FlightForm({ initialData = null, isEdit = false }) {
     </option>
   ));
 
+  // Trip type options with icons
+  const tripTypeOptions = [
+    { value: 'one_way', label: 'One Way →', hint: 'A single hop, origin to destination.' },
+    { value: 'round_trip', label: 'Round Trip ↔', hint: 'Out and back. The return always flies destination to origin.' },
+    { value: 'multi_city', label: 'Multi-City ⇢', hint: 'A chain of legs, e.g. JED → MED → ISB. Route and times are taken from the segments.' },
+  ];
+
   return (
     <div className="flight-form-wrapper">
       <div className="flight-form-header">
@@ -572,14 +570,14 @@ export default function FlightForm({ initialData = null, isEdit = false }) {
                   className="field"
                   required
                 >
-                  {TRIP_TYPES.map((t) => (
+                  {tripTypeOptions.map((t) => (
                     <option key={t.value} value={t.value}>
                       {t.label}
                     </option>
                   ))}
                 </select>
                 <div className="field-helper">
-                  {TRIP_TYPES.find((t) => t.value === formData.tripType)?.hint}
+                  {tripTypeOptions.find((t) => t.value === formData.tripType)?.hint}
                 </div>
               </div>
             </div>
@@ -749,10 +747,10 @@ export default function FlightForm({ initialData = null, isEdit = false }) {
             </section>
           )}
 
-          {/* ---------------------------------------------- Return leg */}
+          {/* ---------------------------------------------- Return leg (Round Trip) */}
           {isRoundTrip && (
             <section className="form-section">
-              <h3 className="form-section-title">Return Leg</h3>
+              <h3 className="form-section-title">Return Leg (Round Trip)</h3>
               <p className="faint" style={{ marginBottom: 'var(--s-3)' }}>
                 Flies {formData.destination.airportCode || '—'} → {formData.origin.airportCode || '—'}.
                 The route is fixed by the outbound leg; for an open-jaw return, use multi-city instead.
@@ -817,7 +815,7 @@ export default function FlightForm({ initialData = null, isEdit = false }) {
           {isMultiCity && (
             <section className="form-section">
               <div className="form-section-header">
-                <h3 className="form-section-title">Itinerary Segments</h3>
+                <h3 className="form-section-title">Itinerary Segments (Multi-City)</h3>
                 <button
                   type="button"
                   className="btn btn--ghost btn--sm"
