@@ -59,6 +59,8 @@ export default function UserFlights() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  const AUTO_SUBMIT_FILTERS = ['tripType', 'travelType', 'flightType', 'origin', 'destination'];
+
   const [filters, setFilters] = useState({
     search: '',
     origin: '',
@@ -104,6 +106,21 @@ export default function UserFlights() {
         meta = response.data.pagination || null;
       }
 
+      // Filter by destination city/country (from URL params)
+      const destinationParam = active.destination || searchParams.get('destination');
+      if (destinationParam) {
+        const destLower = destinationParam.toLowerCase().trim();
+        data = data.filter(flight => {
+          const city = flight.destination?.city?.toLowerCase() || '';
+          const country = flight.destination?.country?.toLowerCase() || '';
+          const airportCode = flight.destination?.airportCode?.toLowerCase() || '';
+          
+          return city.includes(destLower) || 
+                 country.includes(destLower) || 
+                 airportCode.includes(destLower);
+        });
+      }
+
       // Filter by travel type if needed (including generic support)
       if (active.travelType) {
         data = data.filter(flight => flightMatchesTravelType(flight, active.travelType));
@@ -126,20 +143,99 @@ export default function UserFlights() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
-  // Deep links from the home page tour cards arrive as ?travelType=umrah
+  // Deep links from the home page tour cards
   useEffect(() => {
     const travelType = searchParams.get('travelType') || '';
     const tripType = searchParams.get('tripType') || '';
-    if (travelType !== filters.travelType || tripType !== filters.tripType) {
-      setFilters((prev) => ({ ...prev, travelType, tripType }));
+    const destination = searchParams.get('destination') || '';
+    
+    const newFilters = { ...filters };
+    let hasChanges = false;
+    
+    if (travelType !== filters.travelType) {
+      newFilters.travelType = travelType;
+      hasChanges = true;
+    }
+    if (tripType !== filters.tripType) {
+      newFilters.tripType = tripType;
+      hasChanges = true;
+    }
+    if (destination !== filters.destination) {
+      newFilters.destination = destination;
+      hasChanges = true;
+    }
+    
+    if (hasChanges) {
+      setFilters(newFilters);
       setPage(1);
-      loadFlights({ travelType, tripType });
+      loadFlights(newFilters);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
   // ------------------------------------------------------------------
-  // Grouping - Group flights with same origin and destination
+  // Handlers
+  // ------------------------------------------------------------------
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prev) => ({ ...prev, [name]: value }));
+
+    if (AUTO_SUBMIT_FILTERS.includes(name)) {
+      setPage(1);
+      setTimeout(() => {
+        loadFlights({ ...filters, [name]: value });
+      }, 50);
+    }
+  };
+
+  const handleTextChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleDateChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleFilterSubmit = (e) => {
+    e.preventDefault();
+    setPage(1);
+    loadFlights();
+  };
+
+  const handleClearFilter = (filterName) => {
+    setFilters((prev) => ({ ...prev, [filterName]: '' }));
+    setPage(1);
+    setTimeout(() => {
+      loadFlights({ ...filters, [filterName]: '' });
+    }, 50);
+  };
+
+  const handleResetFilters = () => {
+    const cleared = {
+      search: '',
+      origin: '',
+      destination: '',
+      departureDate: '',
+      returnDate: '',
+      flightType: '',
+      travelType: '',
+      tripType: '',
+      minPrice: '',
+      maxPrice: '',
+    };
+    setFilters(cleared);
+    setPage(1);
+    setSearchParams({});
+    loadFlights(cleared);
+  };
+
+  const handleBookNow = (flightId) => navigate(`/flights/${flightId}/book`);
+
+  // ------------------------------------------------------------------
+  // Memoized route grouping
   // ------------------------------------------------------------------
 
   const routeGroups = useMemo(() => {
@@ -172,7 +268,6 @@ export default function UserFlights() {
         const p = f.cabins?.economy?.price;
         return p != null && (min == null || p < min) ? p : min;
       }, null);
-      // Count trip types in this group
       group.tripTypeCounts = group.flights.reduce((acc, f) => {
         const type = f.tripType || 'one_way';
         acc[type] = (acc[type] || 0) + 1;
@@ -183,42 +278,7 @@ export default function UserFlights() {
     return list.sort((a, b) => new Date(a.earliest || 0) - new Date(b.earliest || 0));
   }, [flights]);
 
-  // ------------------------------------------------------------------
-  // Handlers
-  // ------------------------------------------------------------------
-
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFilters((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleFilterSubmit = (e) => {
-    e.preventDefault();
-    setPage(1);
-    loadFlights();
-  };
-
-  const handleResetFilters = () => {
-    const cleared = {
-      search: '',
-      origin: '',
-      destination: '',
-      departureDate: '',
-      returnDate: '',
-      flightType: '',
-      travelType: '',
-      tripType: '',
-      minPrice: '',
-      maxPrice: '',
-    };
-    setFilters(cleared);
-    setPage(1);
-    setSearchParams({});
-    loadFlights(cleared);
-  };
-
-  const handleBookNow = (flightId) => navigate(`/flights/${flightId}/book`);
-
+  // Airport options for dropdowns
   const airportOptions = useMemo(() => {
     const origins = new Set();
     const destinations = new Set();
@@ -270,6 +330,7 @@ export default function UserFlights() {
   // ------------------------------------------------------------------
 
   const totalCount = pagination?.total ?? flights.length;
+  const destinationFilter = searchParams.get('destination') || filters.destination;
 
   return (
     <div className="user-flights-wrapper">
@@ -290,18 +351,74 @@ export default function UserFlights() {
         <div>
           <h1>Available Flights</h1>
           <p className="faint">Grouped by route — every departure on a route in one table</p>
+          
+          {destinationFilter && (
+            <span className="active-filter-badge" style={{ 
+              display: 'inline-block',
+              marginTop: '8px',
+              padding: '6px 16px',
+              background: 'var(--primary-light)',
+              color: 'var(--primary)',
+              borderRadius: 'var(--radius-full)',
+              fontSize: '14px',
+              fontWeight: '500',
+              border: '1px solid rgba(99, 102, 241, 0.2)'
+            }}>
+              📍 Destination: <strong>{destinationFilter}</strong>
+              <button 
+                onClick={() => handleClearFilter('destination')}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'var(--danger)',
+                  cursor: 'pointer',
+                  marginLeft: '8px',
+                  fontWeight: '600'
+                }}
+              >
+                ✕
+              </button>
+            </span>
+          )}
+          
           {(filters.travelType || filters.tripType) && (
-            <span className="active-filter-badge">
+            <span className="active-filter-badge" style={{ marginLeft: destinationFilter ? '8px' : '0' }}>
               {filters.travelType && (
                 <>
                   Purpose: <strong>{travelTypeLabel(filters.travelType)}</strong>
                   {filters.travelType !== 'generic' && ' (generic itineraries included)'}
+                  <button 
+                    onClick={() => handleClearFilter('travelType')}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: 'var(--danger)',
+                      cursor: 'pointer',
+                      marginLeft: '8px',
+                      fontWeight: '600'
+                    }}
+                  >
+                    ✕
+                  </button>
                 </>
               )}
               {filters.travelType && filters.tripType && ' · '}
               {filters.tripType && (
                 <>
                   Trip: <strong>{tripTypeMeta(filters.tripType).label}</strong>
+                  <button 
+                    onClick={() => handleClearFilter('tripType')}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: 'var(--danger)',
+                      cursor: 'pointer',
+                      marginLeft: '8px',
+                      fontWeight: '600'
+                    }}
+                  >
+                    ✕
+                  </button>
                 </>
               )}
             </span>
@@ -319,18 +436,20 @@ export default function UserFlights() {
       {/* -------------------------------------------------- Filters */}
       <form onSubmit={handleFilterSubmit} className="user-flights-filters">
         <div className="filters-grid">
+          {/* Search - Text input (no auto-submit) */}
           <div className="filter-group">
             <label className="filter-label">Search</label>
             <input
               type="text"
               name="search"
               value={filters.search}
-              onChange={handleFilterChange}
+              onChange={handleTextChange}
               placeholder="Airline, flight #, city..."
               className="field"
             />
           </div>
 
+          {/* Trip Type - Dropdown (auto-submit) */}
           <div className="filter-group">
             <label className="filter-label">Trip Type</label>
             <select
@@ -348,6 +467,7 @@ export default function UserFlights() {
             </select>
           </div>
 
+          {/* Travel Purpose - Dropdown (auto-submit) */}
           <div className="filter-group">
             <label className="filter-label">Travel Purpose</label>
             <select
@@ -365,6 +485,7 @@ export default function UserFlights() {
             </select>
           </div>
 
+          {/* Flight Type - Dropdown (auto-submit) */}
           <div className="filter-group">
             <label className="filter-label">Flight Type</label>
             <select
@@ -382,6 +503,7 @@ export default function UserFlights() {
             </select>
           </div>
 
+          {/* Origin - Dropdown (auto-submit) */}
           <div className="filter-group">
             <label className="filter-label">Origin</label>
             <select
@@ -399,6 +521,7 @@ export default function UserFlights() {
             </select>
           </div>
 
+          {/* Destination - Dropdown (auto-submit) */}
           <div className="filter-group">
             <label className="filter-label">Destination</label>
             <select
@@ -416,50 +539,54 @@ export default function UserFlights() {
             </select>
           </div>
 
+          {/* Departure Date - Date input (no auto-submit) */}
           <div className="filter-group">
             <label className="filter-label">Departure Date</label>
             <input
               type="date"
               name="departureDate"
               value={filters.departureDate}
-              onChange={handleFilterChange}
+              onChange={handleDateChange}
               className="field"
             />
           </div>
 
+          {/* Return Date - Date input (no auto-submit) */}
           <div className="filter-group">
             <label className="filter-label">Return Date</label>
             <input
               type="date"
               name="returnDate"
               value={filters.returnDate}
-              onChange={handleFilterChange}
+              onChange={handleDateChange}
               className="field"
               disabled={filters.tripType === 'one_way' || filters.tripType === 'multi_city'}
             />
             <span className="filter-hint">Round trips only</span>
           </div>
 
+          {/* Min Price - Number input (no auto-submit) */}
           <div className="filter-group">
             <label className="filter-label">Min Price (PKR)</label>
             <input
               type="number"
               name="minPrice"
               value={filters.minPrice}
-              onChange={handleFilterChange}
+              onChange={handleTextChange}
               placeholder="0"
               min="0"
               className="field"
             />
           </div>
 
+          {/* Max Price - Number input (no auto-submit) */}
           <div className="filter-group">
             <label className="filter-label">Max Price (PKR)</label>
             <input
               type="number"
               name="maxPrice"
               value={filters.maxPrice}
-              onChange={handleFilterChange}
+              onChange={handleTextChange}
               placeholder="100000"
               min="0"
               className="field"
@@ -469,7 +596,7 @@ export default function UserFlights() {
 
         <div className="filter-actions">
           <button type="submit" className="btn btn--primary">
-            Search
+            🔍 Search
           </button>
           <button type="button" className="btn btn--ghost" onClick={handleResetFilters}>
             Reset All
@@ -486,7 +613,12 @@ export default function UserFlights() {
         <div className="empty-state">
           <div className="empty-icon">✈️</div>
           <h3>No flights found</h3>
-          <p className="faint">Try widening your filters or check back later.</p>
+          <p className="faint">
+            {destinationFilter 
+              ? `No flights found to "${destinationFilter}". Try widening your filters or check back later.`
+              : 'Try widening your filters or check back later.'
+            }
+          </p>
           <button className="btn btn--primary" onClick={handleResetFilters}>
             Reset Filters
           </button>
@@ -523,7 +655,6 @@ export default function UserFlights() {
                       from <strong>{money(group.cheapest, 'PKR')}</strong>
                     </span>
                   )}
-                  {/* Show trip type counts */}
                   {Object.entries(group.tripTypeCounts).map(([type, count]) => (
                     <span key={type} className="route-group__trip-badge">
                       {tripTypeMeta(type).icon} {count}
@@ -599,8 +730,7 @@ export default function UserFlights() {
                                 </div>
                               ) : (
                                 <span className="direct-route">
-                                  {flight.origin?.airportCode || '?'} → {flight.destination?.airportCode || '?'}
-                                </span>
+                                  {flight.origin?.airportCode || '?'} → {flight.destination?.airportCode || '?'}</span>
                               )}
                               <span className="stops-info">{describeStops(flight)}</span>
                             </div>

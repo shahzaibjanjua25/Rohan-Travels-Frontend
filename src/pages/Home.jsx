@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { flightService } from '../services/flights';
-import { TRAVEL_TYPES } from '../utils/constants';
 import {
   Plane,
   Search,
@@ -27,7 +26,6 @@ import {
   Building,
 } from 'lucide-react';
 import './Home.css';
-import backgroundImage from '../assests/dubai bakcground.png';
 
 export default function Home() {
   const { isAuthenticated } = useAuth();
@@ -36,52 +34,10 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Helper to get travel type label
-  const getTravelTypeLabel = (value) => {
-    const found = TRAVEL_TYPES.find(t => t.value === value);
-    return found ? found.label : value;
-  };
-
-  // Tour packages data with travel type mapping
+  // Tour packages data with destination airport codes (3-letter IATA codes)
   const tourPackages = [
     {
       id: 1,
-      title: 'Umrah Packages',
-      description: 'Spiritual journey to the holy cities of Makkah and Madinah with premium services and comfortable accommodations.',
-      duration: '7-14 Days',
-      image: 'https://zamzam.com/blog/wp-content/uploads/2021/05/history-of-Umrah.jpg',
-      features: ['5-Star Hotels', '24/7 Support', 'Visa Assistance', 'Ziyarat Tours', 'Group Discounts'],
-      icon: <Umbrella size={32} />,
-      color: '#10b981',
-      badge: '⭐ Best Seller',
-      travelType: 'umrah'
-    },
-    {
-      id: 2,
-      title: 'Hajj Packages',
-      description: 'Complete Hajj packages with expert guidance, comfortable accommodations, and full support throughout your pilgrimage.',
-      duration: '15-21 Days',
-      image: 'https://th.bing.com/th/id/R.7380d077e3e948a5c7ec3d8bafb1e2f1?rik=9HP1aSaPaRf%2fFA&pid=ImgRaw&r=0',
-      features: ['VIP Services', 'Expert Guides', 'Medical Support', 'Group Iftar', 'Transportation'],
-      icon: <Compass size={32} />,
-      color: '#f59e0b',
-      badge: '👑 Premium',
-      travelType: 'hajj'
-    },
-    {
-      id: 3,
-      title: 'Family Visit Packages',
-      description: 'Create unforgettable memories with your loved ones with our tailored family vacation packages to top destinations.',
-      duration: '5-12 Days',
-      image: 'https://images.unsplash.com/photo-1530789253388-582c481c54b0?auto=format&fit=crop&w=800&q=80',
-      features: ['Family Activities', 'Child Care', 'Special Meals', 'Photo Sessions', 'Flexible Plans'],
-      icon: <Users size={32} />,
-      color: '#6366f1',
-      badge: '👨‍👩‍👧‍👦 Family Favorite',
-      travelType: 'family'
-    },
-    {
-      id: 4,
       title: 'Dubai Luxury Tours',
       description: 'Experience the ultimate luxury in Dubai with private tours, 5-star hotels, and exclusive access to top attractions.',
       duration: '5-7 Days',
@@ -89,11 +45,13 @@ export default function Home() {
       features: ['Burj Khalifa', 'Desert Safari', 'Private Yacht', 'Shopping Tours', 'Fine Dining'],
       icon: <Building size={32} />,
       color: '#8b5cf6',
-      badge: '✨ Luxury',
-      travelType: 'tour'
+      badge: '🌟 Top Rated',
+      destinationAirport: 'DXB',
+      destinationCity: 'Dubai',
+      destinationCountry: 'UAE',
     },
     {
-      id: 5,
+      id: 2,
       title: 'Turkey Cultural Tours',
       description: 'Explore the rich history and culture of Turkey with guided tours to Istanbul, Cappadocia, and the Mediterranean coast.',
       duration: '8-12 Days',
@@ -101,22 +59,75 @@ export default function Home() {
       features: ['Guided Tours', 'Hot Air Balloon', 'Historical Sites', 'Turkish Cuisine', 'Shopping'],
       icon: <MapPin size={32} />,
       color: '#ef4444',
-      badge: '🌟 Top Rated',
-      travelType: 'tour'
+      badge: '🌍 Top Rated',
+      destinationAirport: 'IST',
+      destinationCity: 'Istanbul',
+      destinationCountry: 'Turkey',
+    },
+    {
+      id: 3,
+      title: 'Saudi Arabia - Umrah',
+      description: 'Spiritual journey to the holy cities of Makkah and Madinah with premium services and comfortable accommodations.',
+      duration: '7-14 Days',
+      image: 'https://zamzam.com/blog/wp-content/uploads/2021/05/history-of-Umrah.jpg',
+      features: ['5-Star Hotels', '24/7 Support', 'Visa Assistance', 'Ziyarat Tours', 'Group Discounts'],
+      icon: <Umbrella size={32} />,
+      color: '#10b981',
+      badge: '⭐ Best Seller',
+      destinationAirport: 'JED',
+      destinationCity: 'Jeddah',
+      destinationCountry: 'Saudi Arabia',
+    },
+    {
+      id: 4,
+      title: 'Bahrain Getaway',
+      description: 'Discover the charm of Bahrain with its rich culture, modern attractions, and beautiful waterfront experiences.',
+      duration: '4-7 Days',
+      image: 'https://images.unsplash.com/photo-1590078363292-8de9af6b8b8b?auto=format&fit=crop&w=800&q=80',
+      features: ['Waterfront Views', 'Cultural Tours', 'Shopping', 'Fine Dining', 'Relaxation'],
+      icon: <Compass size={32} />,
+      color: '#f59e0b',
+      badge: '✨ Hidden Gem',
+      destinationAirport: 'BAH',
+      destinationCity: 'Manama',
+      destinationCountry: 'Bahrain',
+    },
+    {
+      id: 5,
+      title: 'Oman Adventure',
+      description: 'Explore the stunning landscapes of Oman from the mountains to the coast with guided tours and cultural experiences.',
+      duration: '6-10 Days',
+      image: 'https://images.unsplash.com/photo-1558682457-7c24e268e22e?auto=format&fit=crop&w=800&q=80',
+      features: ['Mountain Tours', 'Coastal Adventures', 'Cultural Sites', 'Local Cuisine', 'Shopping'],
+      icon: <Package size={32} />,
+      color: '#6366f1',
+      badge: '🏔️ Adventure',
+      destinationAirport: 'MCT',
+      destinationCity: 'Muscat',
+      destinationCountry: 'Oman',
     },
     {
       id: 6,
-      title: 'Generic Travel',
-      description: 'Find flights for any purpose with our generic travel options. Perfect for business, medical, or any other travel need.',
-      duration: 'Flexible',
-      image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80',
-      features: ['Flexible Booking', 'Best Prices', 'Any Purpose', '24/7 Support', 'Easy Changes'],
+      title: 'USA - New York',
+      description: 'Experience the energy of New York City with guided tours, iconic landmarks, and world-class entertainment.',
+      duration: '7-10 Days',
+      image: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&w=800&q=80',
+      features: ['Statue of Liberty', 'Times Square', 'Broadway Shows', 'Museums', 'Shopping'],
       icon: <Globe size={32} />,
-      color: '#6b7280',
-      badge: '🌐 All Purposes',
-      travelType: 'generic'
-    }
+      color: '#3b82f6',
+      badge: '🗽 Iconic',
+      destinationAirport: 'JFK',
+      destinationCity: 'New York',
+      destinationCountry: 'USA',
+    },
   ];
+
+  // ✅ Handle tour package click - navigate to flights with destination airport code
+  const handleTourPackageClick = (destinationAirport, destinationCity, destinationCountry) => {
+    console.log(`📍 Navigating to flights for: ${destinationCity}, ${destinationCountry} (${destinationAirport})`);
+    // Use the airport code for the API
+    navigate(`/flights?destination=${destinationAirport}`);
+  };
 
   // Shuffle array function
   const shuffleArray = (array) => {
@@ -145,12 +156,6 @@ export default function Home() {
       'United': '#002244',
     };
     return colors[airline] || '#667eea';
-  };
-
-  // Handle tour package click - navigate to flights with travel type filter
-  const handleTourPackageClick = (travelType) => {
-    // console.log This is test debug code(`📌 Navigating to flights with travelType: ${travelType}`);
-    navigate(`/flights?travelType=${travelType}`);
   };
 
   // Fetch random flights from API
@@ -346,14 +351,14 @@ export default function Home() {
         <div className="container">
           <div className="section-header">
             <h2>Special Tour Packages</h2>
-            <p>Explore our curated travel experiences for every journey</p>
+            <p>Explore our curated travel experiences for every destination</p>
           </div>
           <div className="tour-packages-grid">
             {tourPackages.map((pkg) => (
               <div
                 key={pkg.id}
                 className="tour-package-card"
-                onClick={() => handleTourPackageClick(pkg.travelType)}
+                onClick={() => handleTourPackageClick(pkg.destinationAirport, pkg.destinationCity, pkg.destinationCountry)}
                 style={{ cursor: 'pointer' }}
               >
                 <div
@@ -394,7 +399,7 @@ export default function Home() {
                       style={{ backgroundColor: pkg.color }}
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleTourPackageClick(pkg.travelType);
+                        handleTourPackageClick(pkg.destinationAirport, pkg.destinationCity, pkg.destinationCountry);
                       }}
                     >
                       View Flights

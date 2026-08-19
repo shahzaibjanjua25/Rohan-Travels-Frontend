@@ -180,7 +180,7 @@ export default function Shell({ children }) {
     },
     ...(isAdmin
       ? [
-        { to: '/admin/flights', label: 'Flights', icon: Plane, show: true },
+        { to: '/admin/flights', label: 'Add or Edit Flights', icon: Plane, show: true },
         { to: '/admin/users', label: 'Users', icon: Users, show: true },
         { to: '/admin/settings', label: 'Settings', icon: Settings, show: true }
       ]
