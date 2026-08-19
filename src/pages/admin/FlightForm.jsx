@@ -45,7 +45,7 @@ const MAX_SEGMENTS = 8;
 const TRIP_TYPE_ICONS = {
   one_way: '→',
   round_trip: '↔',
-  multi_city: '⇢',
+  multi_city: '⇄',
 };
 
 // ---------------------------------------------------------------------------
@@ -517,7 +517,7 @@ export default function FlightForm({ initialData = null, isEdit = false }) {
   const tripTypeOptions = [
     { value: 'one_way', label: 'One Way →', hint: 'A single hop, origin to destination.' },
     { value: 'round_trip', label: 'Round Trip ↔', hint: 'Out and back. The return always flies destination to origin.' },
-    { value: 'multi_city', label: 'Multi-City ⇢', hint: 'A chain of legs, e.g. JED → MED → ISB. Route and times are taken from the segments.' },
+    { value: 'multi_city', label: 'Multi-City ⇄', hint: 'A chain of legs, e.g. JED → MED → ISB. Route and times are taken from the segments.' },
   ];
 
   return (

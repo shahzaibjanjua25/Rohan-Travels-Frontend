@@ -31,7 +31,7 @@ function BoardRow({ flight, index, cabin, onSelect }) {
   const tripTypeMap = {
     one_way: '→',
     round_trip: '↔',
-    multi_city: '⇢',
+    multi_city: '⇄',
   };
   const tripIcon = tripTypeMap[flight.tripType] || '→';
 

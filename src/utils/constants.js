@@ -19,7 +19,7 @@ export const MAX_PASSENGERS = 9;
 export const TRIP_TYPES = [
   { value: 'one_way', label: 'One Way', icon: '→' },
   { value: 'round_trip', label: 'Round Trip', icon: '↔' },
-  { value: 'multi_city', label: 'Multi-City', icon: '⇢' },
+  { value: 'multi_city', label: 'Multi-City', icon: '⇄' },
 ];
 
 // Travel Types - 'generic' means valid for all purposes
