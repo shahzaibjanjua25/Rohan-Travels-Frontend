@@ -41,7 +41,7 @@ export default function Home() {
   const tourPackages = [
     {
       id: 1,
-      title: 'Dubai Luxury Tours',
+      title: 'Dubai Tickets',
       description: 'Experience the ultimate luxury in Dubai with private tours, 5-star hotels, and exclusive access to top attractions.',
       duration: '5-7 Days',
       image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80',
@@ -55,7 +55,7 @@ export default function Home() {
     },
     {
       id: 2,
-      title: 'Turkey Cultural Tours',
+      title: 'Turkey Cultural Tickets',
       description: 'Explore the rich history and culture of Turkey with guided tours to Istanbul, Cappadocia, and the Mediterranean coast.',
       duration: '8-12 Days',
       image: 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=800&q=80',
