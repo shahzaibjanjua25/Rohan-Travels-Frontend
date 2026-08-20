@@ -152,12 +152,11 @@ export default function Shell({ children }) {
     navigate('/login');
   };
 
-  // Navigation config
+  // Navigation config - UPDATED WITH UMRAAH ADMIN LINKS
   const navItems = [
     { to: '/', label: 'Home', icon: Home, end: true, show: true },
     { to: '/flights', label: 'Explore Flights', icon: Plane, show: true },
-    { to: '/umrah', label: 'Umrah Packages', icon: Calendar, show: true }, // ADD THIS
-
+    { to: '/umrah', label: 'Umrah Packages', icon: Calendar, show: true },
     {
       to: isAdmin ? '/admin/bookings' : '/bookings',
       label: isAdmin ? 'Bookings' : 'Bookings',
@@ -179,10 +178,12 @@ export default function Shell({ children }) {
     },
     ...(isAdmin
       ? [
-        { to: '/admin/flights', label: 'Manage Flights', icon: Plane, show: true },
-        { to: '/admin/users', label: 'Users', icon: Users, show: true },
-        { to: '/admin/settings', label: 'Settings', icon: Settings, show: true }
-      ]
+          { to: '/admin/flights', label: 'Manage Flights', icon: Plane, show: true },
+          { to: '/admin/umrah/packages', label: 'Umrah Packages', icon: Calendar, show: true },
+          { to: '/admin/umrah/bookings', label: 'Umrah Bookings', icon: Calendar, show: true },
+          { to: '/admin/users', label: 'Users', icon: Users, show: true },
+          { to: '/admin/settings', label: 'Settings', icon: Settings, show: true }
+        ]
       : [])
   ];
 
@@ -318,6 +319,32 @@ export default function Shell({ children }) {
                       <CreditCard size={18} />
                       <span>Ledger</span>
                     </Link>
+
+                    {isAdmin && (
+                      <>
+                        <div className="shell__dropdown-divider" />
+                        <Link to="/admin/umrah/packages" className="shell__dropdown-item" role="menuitem">
+                          <Calendar size={18} />
+                          <span>Umrah Packages</span>
+                        </Link>
+                        <Link to="/admin/umrah/bookings" className="shell__dropdown-item" role="menuitem">
+                          <Calendar size={18} />
+                          <span>Umrah Bookings</span>
+                        </Link>
+                        <Link to="/admin/flights" className="shell__dropdown-item" role="menuitem">
+                          <Plane size={18} />
+                          <span>Manage Flights</span>
+                        </Link>
+                        <Link to="/admin/users" className="shell__dropdown-item" role="menuitem">
+                          <Users size={18} />
+                          <span>Users</span>
+                        </Link>
+                        <Link to="/admin/settings" className="shell__dropdown-item" role="menuitem">
+                          <Settings size={18} />
+                          <span>Settings</span>
+                        </Link>
+                      </>
+                    )}
 
                     <div className="shell__dropdown-divider" />
 
@@ -467,7 +494,7 @@ export default function Shell({ children }) {
       </main>
 
       {/* ============================================================
-          FOOTER - UPDATED WITH BUSINESS INFO
+          FOOTER
           ============================================================ */}
       <footer className="footer">
         <div className="footer-top-border"></div>
@@ -499,7 +526,7 @@ export default function Shell({ children }) {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/flights?travelType=umrah">
+                  <Link to="/umrah">
                     <span className="dot"></span>
                     Umrah Packages
                   </Link>
@@ -517,12 +544,6 @@ export default function Shell({ children }) {
                     About Us
                   </Link>
                 </li>
-                {/* <li>
-                  <Link to="/blogs">
-                    <span className="dot"></span>
-                    Blogs &amp; Guides
-                  </Link>
-                </li> */}
                 <li>
                   <Link to="/contact">
                     <span className="dot"></span>
@@ -551,7 +572,7 @@ export default function Shell({ children }) {
               </ul>
             </div>
 
-            {/* Contact Column - UPDATED WITH BUSINESS INFO */}
+            {/* Contact Column */}
             <div>
               <h3 className="footer-heading">Contact Info</h3>
               <div className="footer-contact">

@@ -1,0 +1,497 @@
+/* frontend/src/pages/admin/AdminUmrahBookings.css */
+.admin-umrah-bookings-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.admin-umrah-bookings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.admin-umrah-bookings-header .eyebrow {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #8a94a6;
+  font-weight: 600;
+  margin: 0 0 0.15rem 0;
+}
+
+.admin-umrah-bookings-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  background: linear-gradient(135deg, #0a2463 0%, #1a4a8a 50%, #2a6aaa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.admin-umrah-bookings-header .faint {
+  color: #8a94a6;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.bookings-stats {
+  display: flex;
+  align-items: center;
+}
+
+.stats-badge {
+  background: white;
+  padding: 0.4rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #4a5568;
+  border: 1.5px solid #e2e8f0;
+}
+
+/* Filters */
+.admin-umrah-filters {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.filter-buttons .btn {
+  min-height: 32px;
+  padding: 0.2rem 0.8rem;
+  font-size: 0.7rem;
+}
+
+.search-group {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.search-input {
+  padding: 0.4rem 0.6rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  outline: none;
+  transition: all 0.2s ease;
+  min-width: 200px;
+}
+
+.search-input:focus {
+  border-color: #0a2463;
+  box-shadow: 0 0 0 3px rgba(10,36,99,0.1);
+}
+
+.search-btn {
+  padding: 0.4rem 0.6rem;
+  background: #0a2463;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.search-btn:hover {
+  background: #1a4a8a;
+}
+
+/* Table */
+.table-container {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  overflow-x: auto;
+}
+
+.admin-umrah-bookings-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  min-width: 1000px;
+}
+
+.admin-umrah-bookings-table thead {
+  background: linear-gradient(135deg, #0a2463 0%, #1a4a8a 50%, #2a6aaa 100%);
+}
+
+.admin-umrah-bookings-table thead th {
+  padding: 0.7rem 0.8rem;
+  text-align: left;
+  font-weight: 700;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: white;
+  white-space: nowrap;
+}
+
+.admin-umrah-bookings-table thead th:first-child {
+  padding-left: 1rem;
+}
+
+.admin-umrah-bookings-table thead th:last-child {
+  padding-right: 1rem;
+}
+
+.admin-umrah-bookings-table tbody td {
+  padding: 0.7rem 0.8rem;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.admin-umrah-bookings-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.admin-umrah-bookings-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Cell Styles */
+.booking-ref {
+  font-weight: 700;
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: #0a2463;
+}
+
+.customer-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.customer-name {
+  font-weight: 600;
+}
+
+.customer-email {
+  font-size: 0.7rem;
+  color: #8a94a6;
+}
+
+.package-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.package-name {
+  font-weight: 500;
+}
+
+.package-flight {
+  font-size: 0.7rem;
+  color: #8a94a6;
+}
+
+.room-type {
+  font-weight: 500;
+}
+
+.passenger-count {
+  font-weight: 600;
+  text-align: center;
+}
+
+.amount {
+  font-weight: 700;
+  color: #0a2463;
+}
+
+.booking-date-cell {
+  font-size: 0.8rem;
+  color: #4a5568;
+}
+
+/* Tag */
+.tag {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.tag--warning {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.tag--success {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.tag--danger {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.tag--info {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.tag--secondary {
+  background: #f1f5f9;
+  color: #4a5568;
+}
+
+/* Actions */
+.action-group {
+  display: flex;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.status-select {
+  padding: 0.2rem 0.4rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  background: white;
+  cursor: pointer;
+  outline: none;
+  min-width: 80px;
+}
+
+.status-select:focus {
+  border-color: #0a2463;
+}
+
+.status-select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.75rem;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: inherit;
+}
+
+.btn--primary {
+  background: linear-gradient(135deg, #0a2463 0%, #1a4a8a 50%, #2a6aaa 100%);
+  color: white;
+}
+
+.btn--primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(10,36,99,0.2);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: #4a5568;
+  border: 1.5px solid #e2e8f0;
+}
+
+.btn--ghost:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+
+.btn--danger {
+  background: #ef4444;
+  color: white;
+}
+
+.btn--danger:hover {
+  background: #dc2626;
+}
+
+.btn--sm {
+  padding: 0.15rem 0.5rem;
+  font-size: 0.65rem;
+  min-height: 26px;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+  font-size: 1.25rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.empty-state .faint {
+  color: #8a94a6;
+  margin-bottom: 1.5rem;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1.5rem 0;
+  flex-wrap: wrap;
+}
+
+.pagination .btn {
+  min-height: 34px;
+  min-width: 34px;
+}
+
+.pagination .page-info {
+  color: #8a94a6;
+  font-size: 0.85rem;
+  padding: 0 0.5rem;
+}
+
+/* Alert */
+.alert {
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.alert--success {
+  background: #d1fae5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.alert--error {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .admin-umrah-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-buttons {
+    justify-content: center;
+  }
+
+  .search-group {
+    width: 100%;
+  }
+
+  .search-input {
+    flex: 1;
+    min-width: unset;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-umrah-bookings-wrapper {
+    padding: 1rem;
+  }
+
+  .admin-umrah-bookings-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-umrah-bookings-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .action-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .action-group .btn,
+  .action-group .status-select {
+    width: 100%;
+  }
+
+  .filter-buttons {
+    gap: 0.2rem;
+  }
+
+  .filter-buttons .btn {
+    font-size: 0.6rem;
+    padding: 0.15rem 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-umrah-bookings-table {
+    min-width: 700px;
+  }
+
+  .booking-ref {
+    font-size: 0.7rem;
+  }
+
+  .customer-name {
+    font-size: 0.8rem;
+  }
+
+  .amount {
+    font-size: 0.8rem;
+  }
+}

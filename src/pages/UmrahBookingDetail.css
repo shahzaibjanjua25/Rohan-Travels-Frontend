@@ -1,0 +1,711 @@
+/* frontend/src/pages/UmrahBookingDetail.css */
+.umrah-booking-detail-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem;
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.umrah-booking-detail-wrapper .eyebrow {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #0a2463;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.umrah-booking-detail-wrapper .eyebrow:hover {
+  color: #1a4a8a;
+  transform: translateX(-4px);
+}
+
+.umrah-booking-detail {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+/* Header */
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-bottom: 1px solid #e2e8f0;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.header-left h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a2332;
+  margin: 0 0 0.25rem 0;
+}
+
+.booking-reference {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.booking-reference .ref {
+  font-weight: 700;
+  font-family: monospace;
+  font-size: 1rem;
+  color: #0a2463;
+}
+
+.booking-reference .date {
+  font-size: 0.8rem;
+  color: #8a94a6;
+}
+
+.header-right {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* Sections */
+.detail-section {
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.detail-section:last-of-type {
+  border-bottom: none;
+}
+
+.detail-section h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1a2332;
+  margin: 0 0 1rem 0;
+}
+
+/* Package Section */
+.package-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.package-name h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1a2332;
+  margin: 0 0 0.25rem 0;
+}
+
+.package-meta {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  color: #8a94a6;
+}
+
+.package-meta .airline {
+  font-weight: 600;
+  color: #4a5568;
+}
+
+.package-meta .flight {
+  font-family: monospace;
+}
+
+.package-route {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 0.5rem 0;
+}
+
+.route-point {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.route-point .code {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0a2463;
+}
+
+.route-point .city {
+  font-size: 0.8rem;
+  color: #8a94a6;
+}
+
+.package-route .arrow {
+  font-size: 1.5rem;
+  color: #d4af37;
+}
+
+.package-dates {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: #f8fafc;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.date-item .label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: #8a94a6;
+  font-weight: 600;
+  display: block;
+}
+
+.date-item .value {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Hotels Section */
+.hotels-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.hotel-card {
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+.hotel-card .hotel-city {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: #8a94a6;
+  font-weight: 700;
+}
+
+.hotel-card .hotel-name {
+  font-weight: 700;
+  font-size: 1rem;
+  margin: 0.25rem 0;
+  color: #1a2332;
+}
+
+.hotel-card .hotel-detail {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.8rem;
+  color: #6b7a8f;
+}
+
+/* Pricing Section */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+}
+
+.pricing-item {
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem;
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.pricing-item .label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: #8a94a6;
+  font-weight: 600;
+}
+
+.pricing-item .value {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.pricing-item.total {
+  background: #e8edf7;
+  border: 2px solid #0a2463;
+}
+
+.pricing-item.total .value {
+  color: #0a2463;
+  font-size: 1.2rem;
+}
+
+/* Passengers Table */
+.passengers-table-wrapper {
+  overflow-x: auto;
+}
+
+.passengers-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.passengers-table thead {
+  background: #f8fafc;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.passengers-table thead th {
+  padding: 0.6rem 0.75rem;
+  text-align: left;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #8a94a6;
+  font-weight: 700;
+}
+
+.passengers-table tbody td {
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.passengers-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.passengers-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.passenger-name {
+  font-weight: 600;
+}
+
+.mono {
+  font-family: monospace;
+  font-weight: 500;
+}
+
+.center {
+  text-align: center;
+}
+
+/* Customer Section */
+.customer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.customer-item {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0;
+}
+
+.customer-item .label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: #8a94a6;
+  font-weight: 600;
+}
+
+.customer-item .value {
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.customer-item.full {
+  grid-column: span 3;
+}
+
+/* History Section */
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.history-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background: #f8fafc;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-dot--pending { background: #f59e0b; }
+.status-dot--confirmed { background: #10b981; }
+.status-dot--cancelled { background: #ef4444; }
+.status-dot--completed { background: #3b82f6; }
+
+.history-status {
+  font-weight: 600;
+}
+
+.history-date {
+  color: #8a94a6;
+  font-size: 0.8rem;
+}
+
+.history-note {
+  color: #6b7a8f;
+  font-size: 0.85rem;
+  margin-left: 0.5rem;
+}
+
+/* Actions */
+.detail-actions {
+  padding: 1.5rem 2rem;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.admin-actions h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #4a5568;
+  margin: 0 0 0.5rem 0;
+}
+
+.status-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.cancel-confirm {
+  padding: 1rem;
+  background: #fef2f2;
+  border-radius: 10px;
+  border: 1px solid #fecaca;
+}
+
+.cancel-confirm h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #991b1b;
+  margin: 0 0 0.25rem 0;
+}
+
+.cancel-confirm .muted {
+  color: #6b7a8f;
+  font-size: 0.9rem;
+  margin: 0 0 1rem 0;
+}
+
+.cancel-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cancel-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.cancel-form .label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #4a5568;
+}
+
+.cancel-form textarea {
+  padding: 0.6rem 0.8rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 80px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.cancel-form textarea:focus {
+  border-color: #0a2463;
+  box-shadow: 0 0 0 3px rgba(10,36,99,0.1);
+}
+
+.cancel-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: inherit;
+}
+
+.btn--primary {
+  background: linear-gradient(135deg, #0a2463 0%, #1a4a8a 50%, #2a6aaa 100%);
+  color: white;
+}
+
+.btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(10,36,99,0.25);
+}
+
+.btn--success {
+  background: #10b981;
+  color: white;
+}
+
+.btn--success:hover {
+  background: #059669;
+}
+
+.btn--info {
+  background: #3b82f6;
+  color: white;
+}
+
+.btn--info:hover {
+  background: #2563eb;
+}
+
+.btn--danger {
+  background: #ef4444;
+  color: white;
+}
+
+.btn--danger:hover {
+  background: #dc2626;
+}
+
+.btn--ghost {
+  background: transparent;
+  color: #4a5568;
+  border: 1.5px solid #e2e8f0;
+}
+
+.btn--ghost:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+
+.btn--sm {
+  padding: 0.25rem 0.6rem;
+  font-size: 0.7rem;
+  min-height: 32px;
+}
+
+.btn--gold {
+  background: linear-gradient(135deg, #ffa10b 0%, #e08e09 100%);
+  color: #0f172a;
+  box-shadow: 0 4px 12px rgba(255,161,11,0.25);
+}
+
+.btn--gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255,161,11,0.35);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Tag */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.tag--warning {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.tag--success {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.tag--danger {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.tag--info {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.tag--secondary {
+  background: #f1f5f9;
+  color: #4a5568;
+}
+
+/* Alert */
+.alert {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  border-left: 4px solid;
+}
+
+.alert--info {
+  background: #dbeafe;
+  border-color: #3b82f6;
+  color: #1e40af;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .customer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .umrah-booking-detail-wrapper {
+    padding: 1rem;
+  }
+
+  .detail-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem 1.25rem;
+  }
+
+  .header-left h1 {
+    font-size: 1.2rem;
+  }
+
+  .detail-section {
+    padding: 1rem 1.25rem;
+  }
+
+  .detail-actions {
+    padding: 1rem 1.25rem;
+  }
+
+  .hotels-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .package-dates {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .pricing-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .customer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .customer-item.full {
+    grid-column: span 1;
+  }
+
+  .package-route {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .package-route .arrow {
+    transform: rotate(90deg);
+  }
+
+  .passengers-table {
+    font-size: 0.8rem;
+    min-width: 600px;
+  }
+
+  .status-actions {
+    flex-direction: column;
+  }
+
+  .status-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .cancel-actions {
+    flex-direction: column;
+  }
+
+  .cancel-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .history-item {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .pricing-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .package-dates {
+    grid-template-columns: 1fr;
+  }
+
+  .header-right {
+    width: 100%;
+  }
+}
