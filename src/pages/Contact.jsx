@@ -1,7 +1,8 @@
 // frontend/src/pages/Contact.jsx
 import { Link } from 'react-router-dom';
-import { Facebook, Mail, Phone, Clock, Globe } from 'lucide-react';
+import { Facebook, Mail, Phone, Clock, Globe, User, Building } from 'lucide-react';
 import { FaWhatsapp, FaTiktok } from 'react-icons/fa';
+import { CONTACTS } from '../config/contacts';
 import './Contact.css';
 
 export default function Contact() {
@@ -14,15 +15,50 @@ export default function Contact() {
         </div>
       </div>
 
+      {/* Contact Persons Cards */}
       <div className="contact-grid">
+        {/* Owner Card */}
+        <div className="contact-card contact-card--owner">
+          <div className="contact-card-icon" style={{ background: '#0a2463' }}>
+            <User size={32} />
+          </div>
+          <h3>{CONTACTS.owner.name}</h3>
+          <p style={{ fontSize: '0.8rem', color: '#6b7a8f' }}>{CONTACTS.owner.role}</p>
+          <p style={{ fontWeight: '600', fontSize: '1.1rem', margin: '4px 0' }}>{CONTACTS.owner.phone}</p>
+          <a 
+            href={`tel:${CONTACTS.owner.phone.replace(/\s/g, '')}`}
+            className="contact-card-action"
+            style={{ color: '#0a2463', fontWeight: '600' }}
+          >
+            Call Now →
+          </a>
+        </div>
+
+        {/* Partner Card */}
+        <div className="contact-card contact-card--partner">
+          <div className="contact-card-icon" style={{ background: '#d4af37' }}>
+            <Building size={32} />
+          </div>
+          <h3>{CONTACTS.partner.name}</h3>
+          <p style={{ fontSize: '0.8rem', color: '#6b7a8f' }}>{CONTACTS.partner.role}</p>
+          <p style={{ fontWeight: '600', fontSize: '1.1rem', margin: '4px 0' }}>{CONTACTS.partner.phone}</p>
+          <a 
+            href={`tel:${CONTACTS.partner.phone.replace(/\s/g, '')}`}
+            className="contact-card-action"
+            style={{ color: '#d4af37', fontWeight: '600' }}
+          >
+            Call Now →
+          </a>
+        </div>
+
         {/* WhatsApp Card */}
         <a
-          href="https://wa.me/qr/Y5PW7NQXWGTLP1"
+          href={CONTACTS.social.whatsapp}
           target="_blank"
           rel="noopener noreferrer"
           className="contact-card contact-card--whatsapp"
         >
-          <div className="contact-card-icon">
+          <div className="contact-card-icon" style={{ background: '#25D366' }}>
             <FaWhatsapp size={32} />
           </div>
           <h3>WhatsApp</h3>
@@ -32,12 +68,12 @@ export default function Contact() {
 
         {/* Facebook Card */}
         <a
-          href="https://www.facebook.com/share/1GccNRa3SP/"
+          href={CONTACTS.social.facebook}
           target="_blank"
           rel="noopener noreferrer"
           className="contact-card contact-card--facebook"
         >
-          <div className="contact-card-icon">
+          <div className="contact-card-icon" style={{ background: '#1877F2' }}>
             <Facebook size={32} />
           </div>
           <h3>Facebook</h3>
@@ -47,12 +83,12 @@ export default function Contact() {
 
         {/* TikTok Card */}
         <a
-          href="https://www.tiktok.com/@m_rohan_travels_tours?_r=1&_t=ZN-98xOcwAp770"
+          href={CONTACTS.social.tiktok}
           target="_blank"
           rel="noopener noreferrer"
           className="contact-card contact-card--tiktok"
         >
-          <div className="contact-card-icon">
+          <div className="contact-card-icon" style={{ background: '#000000' }}>
             <FaTiktok size={32} />
           </div>
           <h3>TikTok</h3>
@@ -62,14 +98,14 @@ export default function Contact() {
 
         {/* Email Card */}
         <a
-          href="mailto:mrohantraveltour@gmail.com"
+          href={`mailto:${CONTACTS.email}`}
           className="contact-card contact-card--email"
         >
-          <div className="contact-card-icon">
+          <div className="contact-card-icon" style={{ background: '#6366f1' }}>
             <Mail size={32} />
           </div>
           <h3>Email</h3>
-          <p>mrohantraveltour@gmail.com</p>
+          <p>{CONTACTS.email}</p>
           <span className="contact-card-action">Send email →</span>
         </a>
       </div>

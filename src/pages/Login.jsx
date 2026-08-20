@@ -22,7 +22,7 @@ export default function Login() {
   // ✅ Prime CSRF on page load
   useEffect(() => {
     api.primeCsrf(true).then(() => {
-      console.log('✅ CSRF primed on login page');
+      
     });
   }, []);
 

@@ -87,10 +87,10 @@ export default function AdminUmrahPackages() {
       <div className="admin-umrah-header">
         <div>
           <p className="eyebrow">Administration</p>
-          <h1>Umrah Packages</h1>
+          <h1>Admin Umrah Packages</h1>
           <p className="faint">Manage all Umrah packages</p>
         </div>
-        <Link to="/admin/umrah/packages/create" className="btn btn--primary">
+        <Link to="/admin/umrah/adminpackages/create" className="btn btn--primary">
           + Create Package
         </Link>
       </div>
@@ -103,7 +103,7 @@ export default function AdminUmrahPackages() {
           <div className="empty-icon">🕋</div>
           <h3>No Umrah packages</h3>
           <p className="faint">Create your first Umrah package to get started.</p>
-          <Link to="/admin/umrah/packages/create" className="btn btn--primary">
+          <Link to="/admin/umrah/adminpackages/create" className="btn btn--primary">
             Create Package
           </Link>
         </div>
@@ -172,7 +172,7 @@ export default function AdminUmrahPackages() {
                     <td>
                       <div className="action-group">
                         <Link 
-                          to={`/admin/umrah/packages/${pkg._id}/edit`} 
+                          to={`/admin/umrah/adminpackages/${pkg._id}/edit`} 
                           className="btn btn--primary btn--sm"
                         >
                           Edit

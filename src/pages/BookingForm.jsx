@@ -88,9 +88,9 @@ export default function BookingForm() {
 
   const loadFlight = async () => {
     try {
-      // console.log This is test debug code('📌 Loading flight with ID:', id);
+      
       const response = await flightService.get(id);
-      // console.log This is test debug code('✅ Flight data loaded:', response.data);
+      
       setFlight(response.data);
       setLoading(false);
     } catch (err) {
@@ -335,7 +335,6 @@ export default function BookingForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log This is test debug code('\n🚀 === SUBMITTING BOOKING ===');
 
     setSubmitting(true);
     setError('');
@@ -374,8 +373,6 @@ export default function BookingForm() {
       setSubmitting(false);
       return;
     }
-
-    // console.log This is test debug code('✅ All validations passed');
 
     showLoadingPopup();
 
@@ -418,12 +415,7 @@ export default function BookingForm() {
         specialRequests: specialRequests.trim(),
       };
 
-      // console.log This is test debug code('📦 Full booking data being sent:', JSON.stringify(bookingData, null, 2));
-
       const response = await bookingService.create(bookingData);
-
-      // console.log This is test debug code('✅ Booking successful!');
-      // console.log This is test debug code('📋 Response:', response.data);
 
       // ============================================================
       // 🚀 SEND EMAIL NOTIFICATIONS (NO TEST OTP)
@@ -432,29 +424,27 @@ export default function BookingForm() {
       // 🚀 SEND EMAIL NOTIFICATIONS
       // ============================================================
       try {
-        // console.log This is test debug code('📧 Sending email notifications...');
-        // console.log This is test debug code('📧 Booking data for email:', response.data);
 
         // Send confirmation to customer (Account 2 - Booking)
         const customerEmailResult = await emailService.sendBookingConfirmation(response.data);
         if (customerEmailResult.success) {
-          // console.log This is test debug code('✅ Customer confirmation email sent (Account 2)');
+          
         } else {
-          console.warn('⚠️ Customer email failed:', customerEmailResult.error);
+          
         }
 
         // Send notification to admin (Account 2 - Booking)
         const adminEmailResult = await emailService.sendAdminNotification(response.data);
         if (adminEmailResult.success) {
-          // console.log This is test debug code('✅ Admin notification email sent (Account 2)');
+          
         } else {
-          console.warn('⚠️ Admin email failed:', adminEmailResult.error);
+          
         }
 
       } catch (emailError) {
         // Don't fail the booking if email fails
         console.error('❌ Email sending error:', emailError);
-        console.warn('⚠️ Booking was successful but email notifications failed.');
+        
       }
 
       closeLoadingPopup();

@@ -228,26 +228,26 @@ export default function Ledger() {
 //       setError('');
 //       setUsingSampleData(false);
 
-//       // console.log This is test debug code('🔍 Loading ledger data...');
+//       
 
 //       // Get balance
 //       try {
 //         const balanceRes = await ledgerService.getBalance();
-//         // console.log This is test debug code('💰 Balance response:', balanceRes);
+//         
 //         if (balanceRes.data && balanceRes.data.balance !== undefined) {
 //           setBalance(balanceRes.data.balance);
 //         } else if (balanceRes.data && balanceRes.data.data && balanceRes.data.data.balance !== undefined) {
 //           setBalance(balanceRes.data.data.balance);
 //         }
 //       } catch (balanceErr) {
-//         console.warn('⚠️ Balance API failed:', balanceErr);
+
 //         // Don't set error - continue to try entries
 //       }
 
 //       // Get entries
 //       try {
 //         const entriesRes = await ledgerService.getEntries();
-//         // console.log This is test debug code('📊 Entries response:', entriesRes);
+//         
         
 //         // Extract data from different response formats
 //         let data = [];
@@ -261,12 +261,12 @@ export default function Ledger() {
 //           data = [];
 //         }
 
-//         // console.log This is test debug code('📊 Extracted entries:', data.length);
+//         
 
 //         if (data && data.length > 0) {
 //           setEntries(data);
 //           setUsingSampleData(false);
-//           // console.log This is test debug code('✅ Loaded real ledger entries:', data.length);
+//           
           
 //           // If we got entries but no balance, calculate it
 //           if (balance === 0) {
@@ -279,21 +279,21 @@ export default function Ledger() {
 //           }
 //           return; // Success - exit early
 //         } else {
-//           console.warn('⚠️ No entries found in response');
+
 //         }
 //       } catch (entriesErr) {
-//         console.warn('⚠️ Entries API failed:', entriesErr);
+
 //       }
 
 //       // If we get here, both APIs failed or returned empty
-//       console.warn('⚠️ Using sample data as fallback');
+
 //       setUsingSampleData(true);
 //       setEntries(getSampleEntries());
 //       setBalance(36500);
 //       // setError('Unable to load real data. Showing sample data.'); This is debug code
 
 //     } catch (err) {
-//       console.error('❌ Failed to load ledger:', err);
+
 //       setUsingSampleData(true);
 //       setEntries(getSampleEntries());
 //       setBalance(36500);

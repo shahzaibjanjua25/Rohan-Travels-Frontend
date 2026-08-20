@@ -5,6 +5,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { notificationService } from '../../services/misc';
 import { useMaintenance } from '../../hooks/useMaintenance';
 import MaintenancePage from '../../components/MaintenancePage';
+import { CONTACTS } from '../../config/contacts';
 import './shell.css';
 import logo from '../../assests/logo.png';
 
@@ -29,6 +30,8 @@ import {
   MapPin,
   Ticket,
   Package,
+  Building2,
+  User as UserIcon,
 } from 'lucide-react';
 import { FaFacebook, FaWhatsapp, FaTiktok } from 'react-icons/fa';
 
@@ -49,16 +52,6 @@ export default function Shell({ children }) {
   const userMenuRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
-
-  // Business Contact Info
-  const BUSINESS_INFO = {
-    phone: '+92 348 7839237',
-    email: 'mrohantraveltour@gmail.com',
-    address: 'Old Rasul Road, Usmania Mohallah Usmani Mohalla, Mandi Bahauddin, Pakistan',
-    facebook: 'https://www.facebook.com/share/1GccNRa3SP/',
-    tiktok: 'https://www.tiktok.com/@m_rohan_travels_tours?_r=1&_t=ZN-98xOcwAp770',
-    whatsapp: 'https://wa.me/qr/Y5PW7NQXWGTLP1',
-  };
 
   // Viewport tracking
   useEffect(() => {
@@ -186,7 +179,7 @@ export default function Shell({ children }) {
     ...(isAdmin
       ? [
           { to: '/admin/flights', label: 'Manage Flights', icon: Plane, show: true },
-          { to: '/admin/umrah/packages', label: 'Umrah Packages', icon: Calendar, show: true },
+          { to: '/admin/umrah/adminpackages', label: 'Admin Umrah Packages', icon: Calendar, show: true },
           { to: '/admin/umrah/bookings', label: 'Umrah Bookings', icon: Ticket, show: true },
           { to: '/admin/users', label: 'Users', icon: Users, show: true },
           { to: '/admin/settings', label: 'Settings', icon: Settings, show: true }
@@ -209,19 +202,34 @@ export default function Shell({ children }) {
   return (
     <div className="marketing-shell">
       {/* ============================================================
-          MARKETING STRIP - Top Bar
+          MARKETING STRIP - Top Bar with BOTH Contacts
           ============================================================ */}
       <div className="marketing-strip">
         <div className="marketing-strip-inner">
           <div className="marketing-strip-left">
-            <a href={`tel:${BUSINESS_INFO.phone.replace(/\s/g, '')}`} className="hidden sm:inline-flex group">
+            {/* Owner Contact */}
+            <a href={`tel:${CONTACTS.owner.phone.replace(/\s/g, '')}`} className="hidden sm:inline-flex group">
               <Phone className="icon" size={14} />
-              <span>{BUSINESS_INFO.phone}</span>
+              <span>
+                <span style={{ fontWeight: '600' }}>{CONTACTS.owner.name}</span>
+                <span style={{ opacity: 0.7 }}> ({CONTACTS.owner.label})</span>
+                <span style={{ marginLeft: '4px' }}>{CONTACTS.owner.phone}</span>
+              </span>
             </a>
             <span className="marketing-strip-divider"></span>
-            <a href={`mailto:${BUSINESS_INFO.email}`} className="inline-flex group">
+            {/* Partner Contact */}
+            <a href={`tel:${CONTACTS.partner.phone.replace(/\s/g, '')}`} className="hidden sm:inline-flex group">
+              <Phone className="icon" size={14} />
+              <span>
+                <span style={{ fontWeight: '600' }}>{CONTACTS.partner.name}</span>
+                <span style={{ opacity: 0.7 }}> ({CONTACTS.partner.label})</span>
+                <span style={{ marginLeft: '4px' }}>{CONTACTS.partner.phone}</span>
+              </span>
+            </a>
+            <span className="marketing-strip-divider"></span>
+            <a href={`mailto:${CONTACTS.email}`} className="inline-flex group">
               <Mail className="icon" size={14} />
-              <span className="truncate">{BUSINESS_INFO.email}</span>
+              <span className="truncate">{CONTACTS.email}</span>
             </a>
           </div>
           <div className="marketing-strip-right">
@@ -238,9 +246,7 @@ export default function Shell({ children }) {
           ============================================================ */}
       <header className="main-navbar">
         <div className="main-navbar-inner">
-          {/* LEFT: Hamburger + Logo */}
           <div className="navbar-left">
-            {/* Hamburger Button - ALWAYS VISIBLE */}
             <button
               type="button"
               className="hamburger-btn"
@@ -251,14 +257,12 @@ export default function Shell({ children }) {
               <Menu size={28} />
             </button>
 
-            {/* Logo + Company Name */}
             <Link to="/" className="navbar-logo">
               <img src={logo} alt="Rohan Travels & Tours" />
               <span className="navbar-company-name">M Rohan Travels & Tours</span>
             </Link>
           </div>
 
-          {/* RIGHT: User Actions */}
           <div className="navbar-actions">
             {isAuthenticated ? (
               <div className="shell__user-menu" ref={userMenuRef}>
@@ -322,9 +326,9 @@ export default function Shell({ children }) {
                           <Plane size={18} />
                           <span>Manage Flights</span>
                         </Link>
-                        <Link to="/admin/umrah/packages" className="shell__dropdown-item" role="menuitem">
+                        <Link to="/admin/umrah/adminpackages" className="shell__dropdown-item" role="menuitem">
                           <Package size={18} />
-                          <span>Umrah Packages</span>
+                          <span>Admin Umrah Packages</span>
                         </Link>
                         <Link to="/admin/users" className="shell__dropdown-item" role="menuitem">
                           <Users size={18} />
@@ -367,19 +371,16 @@ export default function Shell({ children }) {
       </header>
 
       {/* ============================================================
-          SIDEBAR - Desktop pushes content, Mobile overlays
+          SIDEBAR
           ============================================================ */}
       <div className={`app-wrapper ${isSidebarOpen ? 'sidebar-open' : ''}`}>
-        {/* Sidebar */}
         <aside className={`sidebar ${isSidebarOpen ? 'sidebar--open' : ''}`}>
           <div className="sidebar-inner">
-            {/* Sidebar Header with Close Button */}
             <div className="sidebar-header">
               <Link to="/" className="sidebar-brand" onClick={closeSidebar}>
                 <img src={logo} alt="" className="sidebar-brand-logo" />
                 <span className="sidebar-brand-name">M Rohan Travels</span>
               </Link>
-              {/* Close Button INSIDE Sidebar */}
               <button
                 type="button"
                 className="sidebar-close-btn"
@@ -429,7 +430,30 @@ export default function Shell({ children }) {
               </NavLink>
             </nav>
 
+            {/* Sidebar Footer with Contact Info */}
             <div className="sidebar-footer">
+              <div style={{ padding: '0 12px', marginBottom: '12px' }}>
+                <p style={{ fontSize: '11px', fontWeight: '700', color: 'var(--text-secondary)', marginBottom: '8px' }}>
+                  Contact Us
+                </p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <a 
+                    href={`tel:${CONTACTS.owner.phone.replace(/\s/g, '')}`}
+                    style={{ fontSize: '12px', color: 'var(--text-secondary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '6px' }}
+                  >
+                    <UserIcon size={12} />
+                    {CONTACTS.owner.name}: {CONTACTS.owner.phone}
+                  </a>
+                  <a 
+                    href={`tel:${CONTACTS.partner.phone.replace(/\s/g, '')}`}
+                    style={{ fontSize: '12px', color: 'var(--text-secondary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '6px' }}
+                  >
+                    <Building2 size={12} />
+                    {CONTACTS.partner.name}: {CONTACTS.partner.phone}
+                  </a>
+                </div>
+              </div>
+
               {isAuthenticated ? (
                 <>
                   <Link to="/account" className="sidebar-footer-link" onClick={closeSidebar}>
@@ -455,7 +479,6 @@ export default function Shell({ children }) {
           </div>
         </aside>
 
-        {/* Overlay - only on mobile */}
         {!isDesktop && isSidebarOpen && (
           <div
             className="sidebar-overlay"
@@ -465,7 +488,6 @@ export default function Shell({ children }) {
           />
         )}
 
-        {/* Main Content */}
         <main className={`main-content ${isSidebarOpen ? 'main-content--pushed' : ''}`}>
           {showMaintenanceBanner && (
             <div className="maintenance-banner">
@@ -485,7 +507,7 @@ export default function Shell({ children }) {
       </div>
 
       {/* ============================================================
-          FOOTER (same as before)
+          FOOTER with BOTH Contacts
           ============================================================ */}
       <footer className="footer">
         <div className="footer-top-border"></div>
@@ -566,22 +588,27 @@ export default function Shell({ children }) {
                   <div className="icon">
                     <MapPin size={16} />
                   </div>
-                  <span className="text-xs">{BUSINESS_INFO.address}</span>
+                  <span className="text-xs">{CONTACTS.address}</span>
                 </div>
                 <div className="footer-contact-item">
                   <div className="icon">
                     <Phone size={16} />
                   </div>
-                  <a href={`tel:${BUSINESS_INFO.phone.replace(/\s/g, '')}`} className="text-xs font-semibold">
-                    {BUSINESS_INFO.phone}
-                  </a>
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <a href={`tel:${CONTACTS.owner.phone.replace(/\s/g, '')}`} className="text-xs font-semibold">
+                      {CONTACTS.owner.name}: {CONTACTS.owner.phone}
+                    </a>
+                    <a href={`tel:${CONTACTS.partner.phone.replace(/\s/g, '')}`} className="text-xs font-semibold" style={{ marginTop: '2px' }}>
+                      {CONTACTS.partner.name}: {CONTACTS.partner.phone}
+                    </a>
+                  </div>
                 </div>
                 <div className="footer-contact-item">
                   <div className="icon">
                     <Mail size={16} />
                   </div>
-                  <a href={`mailto:${BUSINESS_INFO.email}`} className="text-xs font-semibold">
-                    {BUSINESS_INFO.email}
+                  <a href={`mailto:${CONTACTS.email}`} className="text-xs font-semibold">
+                    {CONTACTS.email}
                   </a>
                 </div>
               </div>
@@ -589,7 +616,7 @@ export default function Shell({ children }) {
               <div style={{ marginTop: '16px' }}>
                 <div style={{ display: 'flex', gap: '8px' }}>
                   <a
-                    href={BUSINESS_INFO.facebook}
+                    href={CONTACTS.social.facebook}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
@@ -607,7 +634,7 @@ export default function Shell({ children }) {
                     <FaFacebook size={18} />
                   </a>
                   <a
-                    href={BUSINESS_INFO.tiktok}
+                    href={CONTACTS.social.tiktok}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
@@ -625,7 +652,7 @@ export default function Shell({ children }) {
                     <FaTiktok size={18} />
                   </a>
                   <a
-                    href={BUSINESS_INFO.whatsapp}
+                    href={CONTACTS.social.whatsapp}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
@@ -670,8 +697,9 @@ export default function Shell({ children }) {
         </div>
       </footer>
 
+      {/* WhatsApp Float */}
       <a
-        href={BUSINESS_INFO.whatsapp}
+        href={CONTACTS.social.whatsapp}
         target="_blank"
         rel="noopener noreferrer"
         className="whatsapp-float"

@@ -129,18 +129,18 @@ export default function App() {
             } />
 
 // Admin routes
-            <Route path="/admin/umrah" element={<Navigate to="/admin/umrah/packages" replace />} />
-            <Route path="/admin/umrah/packages" element={
+            <Route path="/admin/umrah" element={<Navigate to="/admin/umrah/adminpackages" replace />} />
+            <Route path="/admin/umrah/adminpackages" element={
               <ProtectedRoute adminOnly>
                 <AdminUmrahPackages />
               </ProtectedRoute>
             } />
-            <Route path="/admin/umrah/packages/create" element={
+            <Route path="/admin/umrah/adminpackages/create" element={
               <ProtectedRoute adminOnly>
                 <AdminUmrahCreatePackage />
               </ProtectedRoute>
             } />
-            <Route path="/admin/umrah/packages/:id/edit" element={
+            <Route path="/admin/umrah/adminpackages/:id/edit" element={
               <ProtectedRoute adminOnly>
                 <AdminUmrahEditPackage />
               </ProtectedRoute>

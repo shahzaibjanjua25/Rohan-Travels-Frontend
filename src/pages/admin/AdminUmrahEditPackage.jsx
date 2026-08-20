@@ -213,7 +213,7 @@ export default function AdminUmrahEditPackage() {
       console.log('📤 Updating payload:', JSON.stringify(payload, null, 2));
 
       await umrahService.updatePackage(id, payload);
-      navigate('/admin/umrah/packages');
+      navigate('/admin/umrah/adminpackages');
     } catch (err) {
       console.error('Error updating package:', err);
       setError(err instanceof ApiError ? err.message : 'Could not update package.');
@@ -236,7 +236,7 @@ export default function AdminUmrahEditPackage() {
     return (
       <div className="admin-umrah-form-wrapper">
         <Alert kind="error">{error || 'Package not found.'}</Alert>
-        <Link to="/admin/umrah/packages" className="btn btn--ghost" style={{ marginTop: '1rem' }}>
+        <Link to="/admin/umrah/adminpackages" className="btn btn--ghost" style={{ marginTop: '1rem' }}>
           ← Back to Packages
         </Link>
       </div>
@@ -251,7 +251,7 @@ export default function AdminUmrahEditPackage() {
           <h1>Edit Umrah Package</h1>
           <p className="faint">Update the package details</p>
         </div>
-        <Link to="/admin/umrah/packages" className="btn btn--ghost">
+        <Link to="/admin/umrah/adminpackages" className="btn btn--ghost">
           ← Back to Packages
         </Link>
       </div>
@@ -740,7 +740,7 @@ export default function AdminUmrahEditPackage() {
 
         {/* Submit */}
         <div className="form-actions">
-          <Link to="/admin/umrah/packages" className="btn btn--ghost">
+          <Link to="/admin/umrah/adminpackages" className="btn btn--ghost">
             Cancel
           </Link>
           <button type="submit" className="btn btn--primary" disabled={saving}>

@@ -20,8 +20,7 @@ const getStatusColor = (status) => {
 };
 
 export default function AdminBookings() {
-  // console.log This is test debug code('🔴🔴🔴 AdminBookings component MOUNTED');
-  
+
   const [params, setParams] = useSearchParams();
   const [bookings, setBookings] = useState([]);
   const [pagination, setPagination] = useState(null);
@@ -29,58 +28,43 @@ export default function AdminBookings() {
   const [error, setError] = useState('');
   const [debugInfo, setDebugInfo] = useState('');
 
-  // console.log This is test debug code('🔴 State initialized:', { loading, bookings: bookings.length, error });
-
   const statusFilter = params.get('status') || '';
   const searchTerm = params.get('search') || '';
 
-  // console.log This is test debug code('🔴 URL params:', { statusFilter, searchTerm });
-
   useEffect(() => {
-    // console.log This is test debug code('🔴🔴🔴 useEffect TRIGGERED');
+    
     let cancelled = false;
     setLoading(true);
     setDebugInfo('Loading bookings...');
 
     const queryParams = Object.fromEntries([...params].filter(([, v]) => v !== ''));
-    // console.log This is test debug code('📌 Loading admin bookings with params:', queryParams);
 
     bookingService
       .list(queryParams)
       .then((res) => {
-        // console.log This is test debug code('🔴🔴🔴 API SUCCESS - Raw response:', res);
+        
         if (cancelled) return;
-        
-        // console.log This is test debug code('🔴 Response structure:', {
-        //   hasData: !!res.data,
-        //   dataKeys: res.data ? Object.keys(res.data) : 'no data',
-        //   dataType: typeof res.data,
-        //   isArray: Array.isArray(res.data),
-        // });
-        
+
         // Try different ways to extract data
         let bookingsData = [];
         let paginationData = null;
         
         if (res.data && res.data.data && Array.isArray(res.data.data)) {
-          // console.log This is test debug code('🔴 Using res.data.data (nested)');
+          
           bookingsData = res.data.data;
           paginationData = res.data.pagination || null;
         } else if (res.data && Array.isArray(res.data)) {
-          // console.log This is test debug code('🔴 Using res.data (direct array)');
+          
           bookingsData = res.data;
         } else if (res.data && res.data.bookings && Array.isArray(res.data.bookings)) {
-          // console.log This is test debug code('🔴 Using res.data.bookings');
+          
           bookingsData = res.data.bookings;
           paginationData = res.data.pagination || null;
         } else {
-          // console.log This is test debug code('🔴 No data found, using empty array');
+          
           bookingsData = [];
         }
-        
-        // console.log This is test debug code('🔴 Extracted bookings:', bookingsData.length);
-        // console.log This is test debug code('🔴 First booking sample:', bookingsData[0]);
-        
+
         setBookings(bookingsData);
         setPagination(paginationData);
         setError('');
@@ -97,18 +81,18 @@ export default function AdminBookings() {
       .finally(() => {
         if (!cancelled) {
           setLoading(false);
-          // console.log This is test debug code('🔴 Loading complete');
+          
         }
       });
 
     return () => {
-      // console.log This is test debug code('🔴 Cleanup: cancelled = true');
+      
       cancelled = true;
     };
   }, [params]);
 
   const setFilter = (status) => {
-    // console.log This is test debug code('🔴 Setting filter:', status);
+    
     const next = Object.fromEntries([...params]);
     if (status) next.status = status;
     else delete next.status;
@@ -118,7 +102,7 @@ export default function AdminBookings() {
 
   const handleSearch = (e) => {
     const value = e.target.value;
-    // console.log This is test debug code('🔴 Searching:', value);
+    
     const next = Object.fromEntries([...params]);
     if (value) next.search = value;
     else delete next.search;
@@ -129,7 +113,7 @@ export default function AdminBookings() {
   // Handle search form submit
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    // console.log This is test debug code('🔴 Search submitted:', searchTerm);
+    
     // The search is already applied via the handleSearch onChange
     // Just refresh the data
     const queryParams = Object.fromEntries([...params].filter(([, v]) => v !== ''));
@@ -161,14 +145,14 @@ export default function AdminBookings() {
   };
 
   const goToPage = (page) => {
-    // console.log This is test debug code('🔴 Going to page:', page);
+    
     const next = Object.fromEntries([...params]);
     next.page = page;
     setParams(next);
   };
 
   const handleStatusUpdate = async (bookingId, newStatus) => {
-    // console.log This is test debug code('🔴 Status update:', { bookingId, newStatus });
+    
     if (!window.confirm(`Change booking status to "${titleCase(newStatus)}"?`)) return;
     
     try {
@@ -196,10 +180,9 @@ export default function AdminBookings() {
 
   // TRY-CATCH around the entire render
   try {
-    // console.log This is test debug code('🔴 Rendering AdminBookings, loading:', loading);
-    
+
     if (loading) {
-      // console.log This is test debug code('🔴 Showing loading spinner');
+      
       return (
         <div className="admin-bookings-wrapper">
           <div className="center" style={{ padding: '48px 0' }}>
@@ -211,8 +194,6 @@ export default function AdminBookings() {
         </div>
       );
     }
-
-    // console.log This is test debug code('🔴 Rendering main content, bookings length:', bookings.length);
 
     return (
       <div className="admin-bookings-wrapper">
@@ -309,7 +290,7 @@ export default function AdminBookings() {
                 </thead>
                 <tbody>
                   {bookings.map((b, index) => {
-                    // console.log This is test debug code(`🔴 Rendering booking ${index}:`, b._id);
+                    
                     return (
                       <tr key={b._id || index}>
                         <td>

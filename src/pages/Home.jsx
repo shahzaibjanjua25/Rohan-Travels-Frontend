@@ -8,6 +8,7 @@ import bahrainImage from '../assests/bahrain.jpg';
 import omanImage from '../assests/oman.jpg';
 import heroVideo from '../assests/hero-vid.mp4';
 import saudiphoto from '../assests/saudia.jpg';
+import { CONTACTS } from '../config/contacts';
 
 // Import Umrah images
 import umrahImage1 from '../assests/umrah.jpg';

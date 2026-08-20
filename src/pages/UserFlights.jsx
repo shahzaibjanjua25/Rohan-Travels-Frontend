@@ -40,6 +40,12 @@ const FLIGHT_TYPES = [
   { value: 'international', label: 'International' },
 ];
 
+// Purpose-based redirect mapping
+const PURPOSE_REDIRECTS = {
+  'umrah': '/umrah',
+  'hajj': '/umrah', // Hajj also goes to Umrah packages page
+};
+
 const tripTypeMeta = (value) =>
   TRIP_TYPES.find((t) => t.value === value) || TRIP_TYPES[0];
 
@@ -97,8 +103,24 @@ export default function UserFlights() {
     tripType: searchParams.get('tripType') || '',
     minPrice: '',
     maxPrice: '',
-    country: searchParams.get('country') || '', // New filter for country
+    country: searchParams.get('country') || '',
   });
+
+  // ============================================================
+  // REDIRECT LOGIC - If Umrah/Hajj is selected, go to Umrah page
+  // ============================================================
+  useEffect(() => {
+    const travelType = filters.travelType || searchParams.get('travelType');
+    if (travelType && PURPOSE_REDIRECTS[travelType]) {
+      const redirectPath = PURPOSE_REDIRECTS[travelType];
+      // Show a brief message before redirect
+      setError(`Redirecting to ${travelType === 'umrah' ? 'Umrah' : 'Hajj'} packages...`);
+      setTimeout(() => {
+        navigate(redirectPath);
+      }, 500);
+      return;
+    }
+  }, [filters.travelType, searchParams, navigate]);
 
   // ------------------------------------------------------------------
   // Data
@@ -109,6 +131,12 @@ export default function UserFlights() {
     setError('');
 
     const active = { ...filters, ...overrides };
+
+    // If travelType is umrah or hajj, redirect instead of loading
+    if (active.travelType && PURPOSE_REDIRECTS[active.travelType]) {
+      setLoading(false);
+      return;
+    }
 
     try {
       const params = { page, limit: 50, sort: 'route' };
@@ -140,14 +168,9 @@ export default function UserFlights() {
       // ============================================================
       // COUNTRY FILTER LOGIC - Client-side filtering
       // ============================================================
-      // If country filter is active, filter flights by destination country
-      // This uses the COUNTRY_AIRPORT_MAP to find all airports in that country
-      // ============================================================
       const countryFilter = active.country || searchParams.get('country');
       if (countryFilter) {
         const airportCodes = COUNTRY_AIRPORT_MAP[countryFilter] || [];
-        
-        // Filter flights where destination airport code is in the country's airport list
         data = data.filter(flight => {
           const destCode = flight.destination?.airportCode;
           return destCode && airportCodes.includes(destCode);
@@ -181,7 +204,14 @@ export default function UserFlights() {
     const travelType = searchParams.get('travelType') || '';
     const tripType = searchParams.get('tripType') || '';
     const destination = searchParams.get('destination') || '';
-    const country = searchParams.get('country') || ''; // New: country param
+    const country = searchParams.get('country') || '';
+
+    // If travelType is umrah or hajj, redirect
+    if (travelType && PURPOSE_REDIRECTS[travelType]) {
+      const redirectPath = PURPOSE_REDIRECTS[travelType];
+      navigate(redirectPath);
+      return;
+    }
 
     const newFilters = { ...filters };
     let hasChanges = false;
@@ -218,6 +248,16 @@ export default function UserFlights() {
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
+
+    // Check if this is a travelType change that requires redirect
+    if (name === 'travelType' && value && PURPOSE_REDIRECTS[value]) {
+      const redirectPath = PURPOSE_REDIRECTS[value];
+      setError(`Redirecting to ${value === 'umrah' ? 'Umrah' : 'Hajj'} packages...`);
+      setTimeout(() => {
+        navigate(redirectPath);
+      }, 300);
+      return;
+    }
 
     if (AUTO_SUBMIT_FILTERS.includes(name)) {
       setPage(1);
@@ -371,6 +411,10 @@ export default function UserFlights() {
   const totalCount = pagination?.total ?? flights.length;
   const destinationFilter = searchParams.get('destination') || filters.destination;
   const countryFilter = searchParams.get('country') || filters.country;
+  const travelTypeFilter = searchParams.get('travelType') || filters.travelType;
+
+  // Check if we're currently redirecting
+  const isRedirecting = travelTypeFilter && PURPOSE_REDIRECTS[travelTypeFilter];
 
   // Get country display name from filter value
   const getCountryDisplayName = (countryKey) => {
@@ -420,8 +464,25 @@ export default function UserFlights() {
           <h1>Available Flights</h1>
           <p className="faint">Grouped by route — every departure on a route in one table</p>
 
+          {/* Redirect Notice */}
+          {isRedirecting && (
+            <span className="active-filter-badge" style={{
+              display: 'inline-block',
+              marginTop: '8px',
+              padding: '6px 16px',
+              background: '#fef3c7',
+              color: '#92400e',
+              borderRadius: 'var(--radius-full)',
+              fontSize: '14px',
+              fontWeight: '500',
+              border: '1px solid #f59e0b'
+            }}>
+              🔄 Redirecting to {travelTypeFilter === 'umrah' ? 'Umrah' : 'Hajj'} packages...
+            </span>
+          )}
+
           {/* Country filter badge */}
-          {countryFilter && (
+          {countryFilter && !isRedirecting && (
             <span className="active-filter-badge" style={{
               display: 'inline-block',
               marginTop: '8px',
@@ -453,7 +514,7 @@ export default function UserFlights() {
             </span>
           )}
 
-          {destinationFilter && (
+          {destinationFilter && !isRedirecting && (
             <span className="active-filter-badge" style={{
               display: 'inline-block',
               marginTop: '8px',
@@ -483,45 +544,41 @@ export default function UserFlights() {
             </span>
           )}
 
-          {(filters.travelType || filters.tripType) && (
+          {(filters.travelType && !PURPOSE_REDIRECTS[filters.travelType] && !isRedirecting) && (
             <span className="active-filter-badge" style={{ marginLeft: (countryFilter || destinationFilter) ? '8px' : '0' }}>
-              {filters.travelType && (
-                <>
-                  Purpose: <strong>{travelTypeLabel(filters.travelType)}</strong>
-                  <button
-                    onClick={() => handleClearFilter('travelType')}
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      color: 'var(--danger)',
-                      cursor: 'pointer',
-                      marginLeft: '8px',
-                      fontWeight: '600'
-                    }}
-                  >
-                    ✕
-                  </button>
-                </>
-              )}
-              {filters.travelType && filters.tripType && ' · '}
-              {filters.tripType && (
-                <>
-                  Trip: <strong>{tripTypeMeta(filters.tripType).label}</strong>
-                  <button
-                    onClick={() => handleClearFilter('tripType')}
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      color: 'var(--danger)',
-                      cursor: 'pointer',
-                      marginLeft: '8px',
-                      fontWeight: '600'
-                    }}
-                  >
-                    ✕
-                  </button>
-                </>
-              )}
+              Purpose: <strong>{travelTypeLabel(filters.travelType)}</strong>
+              <button
+                onClick={() => handleClearFilter('travelType')}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'var(--danger)',
+                  cursor: 'pointer',
+                  marginLeft: '8px',
+                  fontWeight: '600'
+                }}
+              >
+                ✕
+              </button>
+            </span>
+          )}
+
+          {filters.tripType && !isRedirecting && (
+            <span className="active-filter-badge" style={{ marginLeft: '8px' }}>
+              Trip: <strong>{tripTypeMeta(filters.tripType).label}</strong>
+              <button
+                onClick={() => handleClearFilter('tripType')}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'var(--danger)',
+                  cursor: 'pointer',
+                  marginLeft: '8px',
+                  fontWeight: '600'
+                }}
+              >
+                ✕
+              </button>
             </span>
           )}
         </div>
@@ -578,12 +635,19 @@ export default function UserFlights() {
               className="field"
             >
               <option value="">All purposes</option>
-              {TRAVEL_TYPES.map((t) => (
-                <option key={t.value} value={t.value}>
-                  {t.label}
-                </option>
-              ))}
+              {TRAVEL_TYPES.map((t) => {
+                // Add a note for Umrah and Hajj
+                const isUmrahRelated = t.value === 'umrah' || t.value === 'hajj';
+                return (
+                  <option key={t.value} value={t.value}>
+                    {t.label} {isUmrahRelated ? '(View Packages)' : ''}
+                  </option>
+                );
+              })}
             </select>
+            <span className="filter-hint" style={{ fontSize: '11px', color: '#94a3b8', marginTop: '2px' }}>
+              Note: Umrah/Hajj redirects to packages page
+            </span>
           </div>
 
           {/* Flight Type - Dropdown (auto-submit) */}
@@ -706,9 +770,21 @@ export default function UserFlights() {
       </form>
 
       {/* -------------------------------------------------- Results */}
-      {loading ? (
+      {loading && !isRedirecting ? (
         <div className="center" style={{ padding: '4rem 0' }}>
           <Spinner label="Loading flights..." />
+        </div>
+      ) : isRedirecting ? (
+        <div className="center" style={{ padding: '4rem 0' }}>
+          <div className="empty-state">
+            <div className="empty-icon">🔄</div>
+            <h3>Redirecting to Packages</h3>
+            <p className="faint">
+              {filters.travelType === 'umrah' 
+                ? 'Taking you to Umrah packages...' 
+                : 'Taking you to Hajj packages...'}
+            </p>
+          </div>
         </div>
       ) : routeGroups.length === 0 ? (
         <div className="empty-state">

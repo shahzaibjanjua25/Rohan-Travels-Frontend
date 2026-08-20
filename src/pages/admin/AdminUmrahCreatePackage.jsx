@@ -219,7 +219,7 @@ export default function AdminUmrahCreatePackage() {
       const response = await umrahService.createPackage(payload);
       console.log('✅ Package created:', response);
       
-      navigate('/admin/umrah/packages');
+      navigate('/admin/umrah/adminpackages');
     } catch (err) {
       console.error('Error creating package:', err);
       setError(err instanceof ApiError ? err.message : 'Could not create package.');
@@ -257,7 +257,7 @@ export default function AdminUmrahCreatePackage() {
           <h1>Create Umrah Package</h1>
           <p className="faint">Add a new Umrah package with flight and hotel details</p>
         </div>
-        <Link to="/admin/umrah/packages" className="btn btn--ghost">
+        <Link to="/admin/umrah/adminpackages" className="btn btn--ghost">
           ← Back to Packages
         </Link>
       </div>
@@ -755,7 +755,7 @@ export default function AdminUmrahCreatePackage() {
 
         {/* Submit */}
         <div className="form-actions">
-          <Link to="/admin/umrah/packages" className="btn btn--ghost">
+          <Link to="/admin/umrah/adminpackages" className="btn btn--ghost">
             Cancel
           </Link>
           <button type="submit" className="btn btn--primary" disabled={loading}>
