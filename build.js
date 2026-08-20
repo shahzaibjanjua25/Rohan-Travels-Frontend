@@ -15,7 +15,7 @@ try {
             vendor: ['react', 'react-dom', 'react-router-dom'],
           },
         },
-      },
+      },//test
     },
   });
   console.log('✅ Build completed successfully!');
