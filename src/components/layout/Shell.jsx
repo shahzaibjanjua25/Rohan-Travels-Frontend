@@ -159,7 +159,7 @@ export default function Shell({ children }) {
     { to: '/umrah', label: 'Umrah Packages', icon: Calendar, show: true },
     {
       to: isAdmin ? '/admin/bookings' : '/bookings',
-      label: 'Bookings',
+      label: 'Flight Bookings',
       icon: Ticket,
       show: isAuthenticated
     },
