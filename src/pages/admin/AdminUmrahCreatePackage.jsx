@@ -1,5 +1,5 @@
 // frontend/src/pages/admin/AdminUmrahCreatePackage.jsx
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { umrahService } from '../../services/umrah';
 import { ApiError } from '../../services/api';
@@ -49,14 +49,12 @@ const SAMPLE_MAKKAH_HOTELS = [
   { name: 'WEDAM SIX', distance: 'Shuttle', nights: 8 },
   { name: 'WHITE LION', distance: '1200 M', nights: 8 },
   { name: 'MASARAT KHALIL / NADA HIJRA', distance: '750 M', nights: 8 },
-  { name: 'MASARAT GOLDEN', distance: '600 M', nights: 8 },
   { name: 'MASARAT GOLDEN', distance: '600 M', nights: 8 }
 ];
 
 const SAMPLE_MADINAH_HOTELS = [
   { name: 'QADAT AL DIYAFAH / HAMOUDA NEBRAS GOLDEN', distance: 'Shuttle', nights: 6 },
   { name: 'HAMOUDA AL MASI / SIMILAR', distance: '650 M', nights: 6 },
-  { name: 'HAMOUDA NEBRAS 1&2 (OLD BURJ HAKEEM) / SIMILAR', distance: '450 M', nights: 6 },
   { name: 'HAMOUDA NEBRAS 1&2 (OLD BURJ HAKEEM) / SIMILAR', distance: '450 M', nights: 6 }
 ];
 
@@ -68,6 +66,7 @@ export default function AdminUmrahCreatePackage() {
 
   const [formData, setFormData] = useState({
     packageName: '',
+    description: '',
     airline: '',
     airlineCode: '',
     flightNumber: '',
@@ -94,8 +93,7 @@ export default function AdminUmrahCreatePackage() {
     totalSeats: 0,
     isActive: true,
     isFeatured: false,
-    includes: ['Visa', 'Ticket', 'Accommodation', 'Transport'],
-    description: ''
+    includes: ['Visa', 'Ticket', 'Accommodation', 'Transport']
   });
 
   const handleChange = (e) => {
@@ -124,11 +122,24 @@ export default function AdminUmrahCreatePackage() {
     }));
   };
 
-  const handleHotelChange = (city, field, value) => {
-    const hotelKey = city === 'makkah' ? 'makkahHotel' : 'madinahHotel';
+  // ✅ FIX: Properly handle hotel nights with explicit number conversion
+  const handleMakkahHotelChange = (field, value) => {
     setFormData(prev => ({
       ...prev,
-      [hotelKey]: { ...prev[hotelKey], [field]: value }
+      makkahHotel: { 
+        ...prev.makkahHotel, 
+        [field]: field === 'nights' ? parseInt(value) || 0 : value 
+      }
+    }));
+  };
+
+  const handleMadinahHotelChange = (field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      madinahHotel: { 
+        ...prev.madinahHotel, 
+        [field]: field === 'nights' ? parseInt(value) || 0 : value 
+      }
     }));
   };
 
@@ -181,18 +192,36 @@ export default function AdminUmrahCreatePackage() {
     setError('');
 
     try {
+      // ✅ FIX: Ensure nights are properly included as numbers in the payload
       const payload = {
         ...formData,
         departureDate: new Date(formData.departureDate).toISOString(),
         arrivalDate: new Date(formData.arrivalDate).toISOString(),
         returnDate: new Date(formData.returnDate).toISOString(),
         returnArrivalDate: new Date(formData.returnArrivalDate).toISOString(),
-        totalSeats: parseInt(formData.totalSeats) || 0
+        totalSeats: parseInt(formData.totalSeats) || 0,
+        makkahHotel: {
+          name: formData.makkahHotel.name,
+          distance: formData.makkahHotel.distance || '',
+          nights: parseInt(formData.makkahHotel.nights) || 0,
+          rating: 0
+        },
+        madinahHotel: {
+          name: formData.madinahHotel.name,
+          distance: formData.madinahHotel.distance || '',
+          nights: parseInt(formData.madinahHotel.nights) || 0,
+          rating: 0
+        }
       };
 
-      await umrahService.createPackage(payload);
+      console.log('📤 Sending payload:', JSON.stringify(payload, null, 2));
+
+      const response = await umrahService.createPackage(payload);
+      console.log('✅ Package created:', response);
+      
       navigate('/admin/umrah/packages');
     } catch (err) {
+      console.error('Error creating package:', err);
       setError(err instanceof ApiError ? err.message : 'Could not create package.');
     } finally {
       setLoading(false);
@@ -504,7 +533,7 @@ export default function AdminUmrahCreatePackage() {
           </div>
         </div>
 
-        {/* Hotels */}
+        {/* ✅ FIXED: Hotels Section with proper nights handling */}
         <div className="form-section">
           <h3>Hotels</h3>
           <button
@@ -525,7 +554,7 @@ export default function AdminUmrahCreatePackage() {
                   <input
                     type="text"
                     value={formData.makkahHotel.name}
-                    onChange={(e) => handleHotelChange('makkah', 'name', e.target.value)}
+                    onChange={(e) => handleMakkahHotelChange('name', e.target.value)}
                     className={validationErrors['makkahHotel.name'] ? 'error' : ''}
                     placeholder="e.g., WEDAM SIX"
                   />
@@ -538,17 +567,18 @@ export default function AdminUmrahCreatePackage() {
                   <input
                     type="text"
                     value={formData.makkahHotel.distance}
-                    onChange={(e) => handleHotelChange('makkah', 'distance', e.target.value)}
+                    onChange={(e) => handleMakkahHotelChange('distance', e.target.value)}
                     placeholder="e.g., 1200 M or Shuttle"
                   />
                 </div>
                 <div className="field-group">
-                  <label>Nights</label>
+                  <label>Nights *</label>
                   <input
                     type="number"
                     value={formData.makkahHotel.nights}
-                    onChange={(e) => handleHotelChange('makkah', 'nights', parseInt(e.target.value) || 0)}
+                    onChange={(e) => handleMakkahHotelChange('nights', e.target.value)}
                     min="0"
+                    placeholder="Number of nights"
                   />
                 </div>
               </div>
@@ -562,7 +592,7 @@ export default function AdminUmrahCreatePackage() {
                   <input
                     type="text"
                     value={formData.madinahHotel.name}
-                    onChange={(e) => handleHotelChange('madinah', 'name', e.target.value)}
+                    onChange={(e) => handleMadinahHotelChange('name', e.target.value)}
                     className={validationErrors['madinahHotel.name'] ? 'error' : ''}
                     placeholder="e.g., QADAT AL DIYAFAH"
                   />
@@ -575,17 +605,18 @@ export default function AdminUmrahCreatePackage() {
                   <input
                     type="text"
                     value={formData.madinahHotel.distance}
-                    onChange={(e) => handleHotelChange('madinah', 'distance', e.target.value)}
+                    onChange={(e) => handleMadinahHotelChange('distance', e.target.value)}
                     placeholder="e.g., 650 M or Shuttle"
                   />
                 </div>
                 <div className="field-group">
-                  <label>Nights</label>
+                  <label>Nights *</label>
                   <input
                     type="number"
                     value={formData.madinahHotel.nights}
-                    onChange={(e) => handleHotelChange('madinah', 'nights', parseInt(e.target.value) || 0)}
+                    onChange={(e) => handleMadinahHotelChange('nights', e.target.value)}
                     min="0"
+                    placeholder="Number of nights"
                   />
                 </div>
               </div>

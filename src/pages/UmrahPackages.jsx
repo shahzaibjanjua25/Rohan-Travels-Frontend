@@ -5,292 +5,442 @@ import { umrahService } from '../services/umrah';
 import { ApiError } from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
 import { date, money } from '../utils/format';
-import Spinner from '../components/ui/Spinner';
 import Alert from '../components/ui/Alert';
 import './UmrahPackages.css';
 
-export default function UmrahPackages() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const { isAuthenticated } = useAuth();
-  
-  const [packages, setPackages] = useState([]);
-  const [pagination, setPagination] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  
-  const [filters, setFilters] = useState({
-    departureDate: searchParams.get('departureDate') || '',
-    airline: searchParams.get('airline') || '',
-    origin: searchParams.get('origin') || '',
-    minPrice: searchParams.get('minPrice') || '',
-    maxPrice: searchParams.get('maxPrice') || '',
-  });
+const EMPTY_FILTERS = {
+    departureDate: '',
+    airline: '',
+    origin: '',
+    minPrice: '',
+    maxPrice: '',
+};
 
-  useEffect(() => {
-    loadPackages();
-  }, [searchParams]);
+const AIRLINE_MARKS = {
+    'Saudi Arabian Airlines': '#1a6b3c',
+    'Pakistan International Airlines': '#1a5c2a',
+    'Fly Jinnah': '#e31837',
+    'Riyadh Air': '#4a2d7a',
+    Emirates: '#d71921',
+    'Qatar Airways': '#8a1538',
+    'Etihad Airways': '#5c1a2d',
+    'Oman Air': '#8a6a1f',
+    'Gulf Air': '#c8102e',
+    'Kuwait Airways': '#1a3a6a',
+};
 
-  const loadPackages = async () => {
-    setLoading(true);
-    setError('');
-    
-    try {
-      const params = Object.fromEntries([...searchParams]);
-      const response = await umrahService.getPackages(params);
-      
-      setPackages(response.data || []);
-      setPagination(response.pagination || null);
-    } catch (err) {
-      setError(err instanceof ApiError ? err.message : 'Could not load Umrah packages.');
-      setPackages([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+const STATUS_TONE = {
+    scheduled: 'neutral',
+    boarding: 'warn',
+    departed: 'go',
+    arrived: 'go',
+    cancelled: 'stop',
+    delayed: 'stop',
+};
 
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFilters(prev => ({ ...prev, [name]: value }));
-  };
+function initials(name = '') {
+    const words = name.trim().split(/\s+/).filter(Boolean);
+    if (!words.length) return '··';
+    if (words.length === 1) return words[0].substring(0, 2).toUpperCase();
+    return (words[0][0] + words[1][0]).toUpperCase();
+}
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    const params = Object.fromEntries(
-      Object.entries(filters).filter(([, v]) => v !== '')
-    );
-    setSearchParams(params);
-  };
-
-  const handleReset = () => {
-    setFilters({
-      departureDate: '',
-      airline: '',
-      origin: '',
-      minPrice: '',
-      maxPrice: '',
-    });
-    setSearchParams({});
-  };
-
-  const getLowestPrice = (pkg) => {
+function lowestPrice(pkg) {
     const prices = [
-      pkg.sharingPrices?.quad,
-      pkg.sharingPrices?.triple,
-      pkg.sharingPrices?.double,
-      pkg.perPersonPrice
-    ].filter(p => p && p > 0);
+        pkg.sharingPrices?.quad,
+        pkg.sharingPrices?.triple,
+        pkg.sharingPrices?.double,
+        pkg.perPersonPrice,
+    ].filter((p) => p && p > 0);
     return prices.length ? Math.min(...prices) : pkg.perPersonPrice;
-  };
+}
 
-  const getRoomLabel = (type) => {
-    const map = { quad: 'Quad', triple: 'Triple', double: 'Double' };
-    return map[type] || type;
-  };
-
-  if (loading) {
+function PlaneRail({ duration }) {
     return (
-      <div className="umrah-wrapper">
-        <div className="center" style={{ padding: '48px 0' }}>
-          <Spinner label="Loading Umrah packages..." />
+        <div className="pkg-rail" aria-hidden="true">
+            <span className="pkg-rail-nights">{duration ? `${duration} days` : 'Round trip'}</span>
+            <span className="pkg-rail-track">
+                <svg className="pkg-rail-plane" viewBox="0 0 24 24" width="13" height="13">
+                    <path
+                        fill="currentColor"
+                        d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"
+                    />
+                </svg>
+            </span>
         </div>
-      </div>
     );
-  }
+}
 
-  return (
-    <div className="umrah-wrapper">
-      <div className="umrah-hero">
-        <h1>Umrah Packages</h1>
-        <p>Complete Umrah packages with flights, hotels, and transportation</p>
-      </div>
-
-      {/* Filters */}
-      <form className="umrah-filters" onSubmit={handleSearch}>
-        <div className="filter-grid">
-          <div className="filter-group">
-            <label>Departure Date</label>
-            <input
-              type="date"
-              name="departureDate"
-              value={filters.departureDate}
-              onChange={handleFilterChange}
-            />
-          </div>
-          <div className="filter-group">
-            <label>Airline</label>
-            <input
-              type="text"
-              name="airline"
-              placeholder="Search airline..."
-              value={filters.airline}
-              onChange={handleFilterChange}
-            />
-          </div>
-          <div className="filter-group">
-            <label>Origin City</label>
-            <input
-              type="text"
-              name="origin"
-              placeholder="From city..."
-              value={filters.origin}
-              onChange={handleFilterChange}
-            />
-          </div>
-          <div className="filter-group">
-            <label>Min Price</label>
-            <input
-              type="number"
-              name="minPrice"
-              placeholder="0"
-              value={filters.minPrice}
-              onChange={handleFilterChange}
-            />
-          </div>
-          <div className="filter-group">
-            <label>Max Price</label>
-            <input
-              type="number"
-              name="maxPrice"
-              placeholder="500000"
-              value={filters.maxPrice}
-              onChange={handleFilterChange}
-            />
-          </div>
+function SkeletonCard() {
+    return (
+        <div className="pkg-card pkg-card--ghost" aria-hidden="true">
+            <div className="sk sk-head" />
+            <div className="sk sk-route" />
+            <div className="sk sk-row" />
+            <div className="sk sk-row sk-row--short" />
+            <div className="sk sk-price" />
         </div>
-        <div className="filter-actions">
-          <button type="submit" className="btn btn--primary">Search</button>
-          <button type="button" className="btn btn--ghost" onClick={handleReset}>Reset</button>
-        </div>
-      </form>
+    );
+}
 
-      {error && <Alert kind="error">{error}</Alert>}
+export default function UmrahPackages() {
+    const [searchParams, setSearchParams] = useSearchParams();
+    const { isAuthenticated } = useAuth();
 
-      {packages.length === 0 ? (
-        <div className="empty-state">
-          <div className="empty-icon">🕋</div>
-          <h3>No Umrah packages found</h3>
-          <p className="faint">Try adjusting your filters or check back later for new packages.</p>
-        </div>
-      ) : (
-        <div className="umrah-grid">
-          {packages.map((pkg) => {
-            const lowestPrice = getLowestPrice(pkg);
-            return (
-              <div key={pkg._id} className="umrah-card">
-                <div className="umrah-card-header">
-                  <div className="airline-info">
-                    <span className="airline-code">{pkg.airlineCode || pkg.airline.substring(0, 2).toUpperCase()}</span>
-                    <span className="airline-name">{pkg.airline}</span>
-                  </div>
-                  <span className="flight-number">{pkg.flightNumber}</span>
+    const [packages, setPackages] = useState([]);
+    const [pagination, setPagination] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+    const [filters, setFilters] = useState({
+        departureDate: searchParams.get('departureDate') || '',
+        airline: searchParams.get('airline') || '',
+        origin: searchParams.get('origin') || '',
+        minPrice: searchParams.get('minPrice') || '',
+        maxPrice: searchParams.get('maxPrice') || '',
+    });
+
+    // Load packages when search params change
+    useEffect(() => {
+        let cancelled = false;
+
+        const loadPackages = async () => {
+            setLoading(true);
+            setError('');
+            try {
+                // Build params from searchParams
+                const params = {};
+                for (const [key, value] of searchParams.entries()) {
+                    if (value && value !== '') {
+                        params[key] = value;
+                    }
+                }
+
+                // Add default limit
+                params.limit = 20;
+
+                const response = await umrahService.getPackages(params);
+                if (cancelled) return;
+                setPackages(response.data || []);
+                setPagination(response.pagination || null);
+            } catch (err) {
+                if (cancelled) return;
+                console.error('Error loading Umrah packages:', err);
+                setError(
+                    err instanceof ApiError
+                        ? err.message
+                        : 'Packages could not be loaded. Check your connection and search again.'
+                );
+                setPackages([]);
+            } finally {
+                if (!cancelled) setLoading(false);
+            }
+        };
+
+        loadPackages();
+        return () => {
+            cancelled = true;
+        };
+    }, [searchParams]);
+
+    const handleFilterChange = (e) => {
+        const { name, value } = e.target;
+        setFilters((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        // Build params object from filters, filtering out empty values
+        const params = {};
+        Object.entries(filters).forEach(([key, value]) => {
+            if (value && value !== '') {
+                params[key] = value;
+            }
+        });
+        setSearchParams(params);
+    };
+
+    const handleReset = () => {
+        setFilters(EMPTY_FILTERS);
+        setSearchParams({});
+    };
+
+    const goToPage = (page) => {
+        const params = {};
+        for (const [key, value] of searchParams.entries()) {
+            if (key !== 'page') {
+                params[key] = value;
+            }
+        }
+        params.page = page;
+        setSearchParams(params);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const hasFilters = Object.values(filters).some((v) => v !== '');
+
+    return (
+        <div className="umrah-wrapper">
+            <header className="umrah-hero">
+                <div className="umrah-hero-content">
+                    <p className="umrah-eyebrow">Flights · Hotels · Ziyarat transport</p>
+                    <h1>
+                        Umrah <em>packages</em>
+                    </h1>
+                    <p className="umrah-lede">
+                        Every package below is a complete journey — return flight, hotels in Makkah and
+                        Madinah, and ground transport between them.
+                    </p>
+                    <span className="umrah-rule" />
                 </div>
+            </header>
 
-                <div className="umrah-route">
-                  <div className="route-city">
-                    <span className="city-code">{pkg.origin?.airportCode || 'N/A'}</span>
-                    <span className="city-name">{pkg.origin?.city || 'N/A'}</span>
-                  </div>
-                  <span className="route-arrow">→</span>
-                  <div className="route-city">
-                    <span className="city-code">{pkg.destination?.airportCode || 'N/A'}</span>
-                    <span className="city-name">{pkg.destination?.city || 'N/A'}</span>
-                  </div>
+            <form className="umrah-filters" onSubmit={handleSearch}>
+                <div className="filter-grid">
+                    <div className="filter-group">
+                        <label htmlFor="f-date">Departing</label>
+                        <input
+                            id="f-date"
+                            type="date"
+                            name="departureDate"
+                            value={filters.departureDate}
+                            onChange={handleFilterChange}
+                        />
+                    </div>
+                    <div className="filter-group">
+                        <label htmlFor="f-airline">Airline</label>
+                        <input
+                            id="f-airline"
+                            type="text"
+                            name="airline"
+                            placeholder="Any airline"
+                            value={filters.airline}
+                            onChange={handleFilterChange}
+                        />
+                    </div>
+                    <div className="filter-group">
+                        <label htmlFor="f-origin">Leaving from</label>
+                        <input
+                            id="f-origin"
+                            type="text"
+                            name="origin"
+                            placeholder="Any city"
+                            value={filters.origin}
+                            onChange={handleFilterChange}
+                        />
+                    </div>
+                    <div className="filter-group">
+                        <label htmlFor="f-min">Min price</label>
+                        <input
+                            id="f-min"
+                            type="number"
+                            name="minPrice"
+                            placeholder="PKR 0"
+                            value={filters.minPrice}
+                            onChange={handleFilterChange}
+                        />
+                    </div>
+                    <div className="filter-group">
+                        <label htmlFor="f-max">Max price</label>
+                        <input
+                            id="f-max"
+                            type="number"
+                            name="maxPrice"
+                            placeholder="PKR 500,000"
+                            value={filters.maxPrice}
+                            onChange={handleFilterChange}
+                        />
+                    </div>
                 </div>
-
-                <div className="umrah-dates">
-                  <div className="date-group">
-                    <span className="label">Departure</span>
-                    <span className="value">{date(pkg.departureDate)}</span>
-                  </div>
-                  <div className="date-group">
-                    <span className="label">Return</span>
-                    <span className="value">{date(pkg.returnDate)}</span>
-                  </div>
-                  <div className="date-group">
-                    <span className="label">Duration</span>
-                    <span className="value">{pkg.duration} Days</span>
-                  </div>
-                </div>
-
-                <div className="umrah-hotels">
-                  <div className="hotel-item">
-                    <span className="hotel-city">Makkah</span>
-                    <span className="hotel-name">{pkg.makkahHotel?.name || 'N/A'}</span>
-                    <span className="hotel-distance">{pkg.makkahHotel?.distance || ''}</span>
-                    <span className="hotel-nights">{pkg.makkahHotel?.nights || 0} Nights</span>
-                  </div>
-                  <div className="hotel-item">
-                    <span className="hotel-city">Madinah</span>
-                    <span className="hotel-name">{pkg.madinahHotel?.name || 'N/A'}</span>
-                    <span className="hotel-distance">{pkg.madinahHotel?.distance || ''}</span>
-                    <span className="hotel-nights">{pkg.madinahHotel?.nights || 0} Nights</span>
-                  </div>
-                </div>
-
-                <div className="umrah-pricing">
-                  <div className="price-main">
-                    <span className="price-label">Package Price</span>
-                    <span className="price-value">{money(lowestPrice)}</span>
-                    <span className="price-per">Per Person</span>
-                  </div>
-                  <div className="sharing-prices">
-                    {pkg.sharingPrices?.quad > 0 && (
-                      <span>Quad: {money(pkg.sharingPrices.quad)}</span>
+                <div className="filter-actions">
+                    {hasFilters && (
+                        <button type="button" className="btn btn--ghost" onClick={handleReset}>
+                            Clear filters
+                        </button>
                     )}
-                    {pkg.sharingPrices?.triple > 0 && (
-                      <span>Triple: {money(pkg.sharingPrices.triple)}</span>
-                    )}
-                    {pkg.sharingPrices?.double > 0 && (
-                      <span>Double: {money(pkg.sharingPrices.double)}</span>
-                    )}
-                  </div>
-                  {pkg.childWithoutBedPrice > 0 && (
-                    <div className="child-price">Child w/o Bed: {money(pkg.childWithoutBedPrice)}</div>
-                  )}
-                  {pkg.infantPrice > 0 && (
-                    <div className="infant-price">Infant: {money(pkg.infantPrice)}</div>
-                  )}
+                    <button type="submit" className="btn btn--primary">
+                        Search packages
+                    </button>
                 </div>
+            </form>
 
-                <div className="umrah-actions">
-                  <span className="seats-available">
-                    {pkg.totalSeats > 0 ? `${pkg.availableSeats || 0} seats` : 'Unlimited'}
-                  </span>
-                  <Link
-                    to={isAuthenticated ? `/umrah/packages/${pkg._id}/book` : `/login`}
-                    className="btn btn--gold btn--sm"
-                    state={isAuthenticated ? undefined : { from: `/umrah/packages/${pkg._id}/book` }}
-                  >
-                    {isAuthenticated ? 'Book Now' : 'Sign in to Book'}
-                  </Link>
+            {error && <Alert kind="error">{error}</Alert>}
+
+            {!loading && !error && packages.length > 0 && (
+                <p className="umrah-count">
+                    {pagination?.total ?? packages.length} packages
+                    {hasFilters ? ' match your search' : ' available'}
+                </p>
+            )}
+
+            {loading ? (
+                <div className="umrah-grid" aria-busy="true">
+                    {[0, 1, 2, 3].map((i) => (
+                        <SkeletonCard key={i} />
+                    ))}
                 </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
+            ) : packages.length === 0 ? (
+                <div className="empty-state">
+                    <h3>No packages match this search</h3>
+                    <p>Try a wider date range, or clear the filters to see everything on offer.</p>
+                    {hasFilters && (
+                        <button type="button" className="btn btn--primary" onClick={handleReset}>
+                            Clear filters
+                        </button>
+                    )}
+                </div>
+            ) : (
+                <div className="umrah-grid">
+                    {packages.map((pkg) => {
+                        const status = pkg.status || 'scheduled';
+                        const price = lowestPrice(pkg);
+                        const bookHref = `/umrah/packages/${pkg._id}/book`;
 
-      {pagination && pagination.totalPages > 1 && (
-        <div className="pagination">
-          <button
-            className="btn btn--ghost btn--sm"
-            onClick={() => setSearchParams({ ...Object.fromEntries(searchParams), page: pagination.page - 1 })}
-            disabled={pagination.page === 1}
-          >
-            Previous
-          </button>
-          <span className="page-info">
-            Page {pagination.page} of {pagination.totalPages}
-          </span>
-          <button
-            className="btn btn--ghost btn--sm"
-            onClick={() => setSearchParams({ ...Object.fromEntries(searchParams), page: pagination.page + 1 })}
-            disabled={pagination.page === pagination.totalPages}
-          >
-            Next
-          </button>
+                        return (
+                            <article key={pkg._id} className="pkg-card">
+                                {pkg.isFeatured && <p className="pkg-flag">⭐ Featured</p>}
+
+                                <header className="pkg-head">
+                                    <div className="pkg-airline">
+                                        <span
+                                            className="pkg-mark"
+                                            style={{ '--mark': AIRLINE_MARKS[pkg.airline] || '#1F6B58' }}
+                                        >
+                                            {initials(pkg.airline)}
+                                        </span>
+                                        <span className="pkg-airline-text">
+                                            <span className="pkg-airline-name">{pkg.airline || 'Airline TBC'}</span>
+                                            <span className="pkg-flight">{pkg.flightNumber || '—'}</span>
+                                        </span>
+                                    </div>
+                                    <span className="pkg-status" data-tone={STATUS_TONE[status] || 'neutral'}>
+                                        {status}
+                                    </span>
+                                </header>
+
+                                <div className="pkg-route">
+                                    <div className="pkg-port">
+                                        <span className="pkg-code">{pkg.origin?.airportCode || '—'}</span>
+                                        <span className="pkg-city">{pkg.origin?.city || 'Origin TBC'}</span>
+                                        <span className="pkg-when">{date(pkg.departureDate)}</span>
+                                    </div>
+                                    <PlaneRail duration={pkg.duration} />
+                                    <div className="pkg-port pkg-port--end">
+                                        <span className="pkg-code">{pkg.destination?.airportCode || '—'}</span>
+                                        <span className="pkg-city">{pkg.destination?.city || 'Destination TBC'}</span>
+                                        <span className="pkg-when">{date(pkg.returnDate)}</span>
+                                    </div>
+                                </div>
+
+                                <div className="pkg-tear" aria-hidden="true" />
+
+                                // In the package card rendering, update the hotel display:
+                                <ul className="pkg-stays">
+                                    <li>
+                                        <span className="pkg-stay-label">Makkah</span>
+                                        <span className="pkg-stay-name">{pkg.makkahHotel?.name || 'Hotel TBC'}</span>
+                                        <span className="pkg-stay-meta">
+                                            {pkg.makkahHotel?.distance ? `${pkg.makkahHotel.distance} · ` : ''}
+                                            {pkg.makkahHotel?.nights || 0} nights  {/* ← This should now show correctly */}
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span className="pkg-stay-label">Madinah</span>
+                                        <span className="pkg-stay-name">{pkg.madinahHotel?.name || 'Hotel TBC'}</span>
+                                        <span className="pkg-stay-meta">
+                                            {pkg.madinahHotel?.distance ? `${pkg.madinahHotel.distance} · ` : ''}
+                                            {pkg.madinahHotel?.nights || 0} nights  {/* ← This should now show correctly */}
+                                        </span>
+                                    </li>
+                                </ul>
+
+                                <div className="pkg-price">
+                                    <p className="pkg-price-eyebrow">From, per person</p>
+                                    <p className="pkg-price-amount">{money(price)}</p>
+
+                                    {(pkg.sharingPrices?.quad > 0 ||
+                                        pkg.sharingPrices?.triple > 0 ||
+                                        pkg.sharingPrices?.double > 0) && (
+                                            <dl className="pkg-shares">
+                                                {pkg.sharingPrices?.quad > 0 && (
+                                                    <div>
+                                                        <dt>Quad</dt>
+                                                        <dd>{money(pkg.sharingPrices.quad)}</dd>
+                                                    </div>
+                                                )}
+                                                {pkg.sharingPrices?.triple > 0 && (
+                                                    <div>
+                                                        <dt>Triple</dt>
+                                                        <dd>{money(pkg.sharingPrices.triple)}</dd>
+                                                    </div>
+                                                )}
+                                                {pkg.sharingPrices?.double > 0 && (
+                                                    <div>
+                                                        <dt>Double</dt>
+                                                        <dd>{money(pkg.sharingPrices.double)}</dd>
+                                                    </div>
+                                                )}
+                                            </dl>
+                                        )}
+
+                                    {(pkg.childWithoutBedPrice > 0 || pkg.infantPrice > 0) && (
+                                        <p className="pkg-extras">
+                                            {pkg.childWithoutBedPrice > 0 && (
+                                                <span>Child without bed {money(pkg.childWithoutBedPrice)}</span>
+                                            )}
+                                            {pkg.infantPrice > 0 && <span>Infant {money(pkg.infantPrice)}</span>}
+                                        </p>
+                                    )}
+                                </div>
+
+                                <footer className="pkg-foot">
+                                    <span className="pkg-seats">
+                                        {pkg.totalSeats > 0 ? `${pkg.totalSeats} seats left` : 'Seats available'}
+                                    </span>
+                                    <Link
+                                        to={isAuthenticated ? bookHref : '/login'}
+                                        className="pkg-book"
+                                        state={isAuthenticated ? undefined : { from: bookHref }}
+                                    >
+                                        Book now
+                                        <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+                                            <path
+                                                fill="none"
+                                                stroke="currentColor"
+                                                strokeWidth="2.2"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                d="M5 12h13m-5-6 6 6-6 6"
+                                            />
+                                        </svg>
+                                    </Link>
+                                </footer>
+                            </article>
+                        );
+                    })}
+                </div>
+            )}
+
+            {pagination && pagination.totalPages > 1 && (
+                <nav className="pagination" aria-label="Package pages">
+                    <button
+                        className="btn btn--ghost btn--sm"
+                        onClick={() => goToPage(pagination.page - 1)}
+                        disabled={pagination.page === 1}
+                    >
+                        Previous
+                    </button>
+                    <span className="page-info">
+                        Page {pagination.page} of {pagination.totalPages}
+                    </span>
+                    <button
+                        className="btn btn--ghost btn--sm"
+                        onClick={() => goToPage(pagination.page + 1)}
+                        disabled={pagination.page === pagination.totalPages}
+                    >
+                        Next
+                    </button>
+                </nav>
+            )}
         </div>
-      )}
-    </div>
-  );
+    );
 }

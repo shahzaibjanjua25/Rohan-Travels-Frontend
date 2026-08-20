@@ -7,7 +7,6 @@ import Alert from '../../components/ui/Alert';
 import Spinner from '../../components/ui/Spinner';
 import './AdminUmrahPackageForm.css';
 
-// Reuse the same form components and constants
 const AIRLINES = [
   'Saudi Arabian Airlines',
   'Pakistan International Airlines',
@@ -53,7 +52,6 @@ export default function AdminUmrahEditPackage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [validationErrors, setValidationErrors] = useState({});
-
   const [formData, setFormData] = useState(null);
 
   useEffect(() => {
@@ -66,7 +64,6 @@ export default function AdminUmrahEditPackage() {
       const response = await umrahService.getPackage(id);
       const pkg = response.data;
 
-      // Format dates for input fields
       const formatDate = (date) => {
         if (!date) return '';
         const d = new Date(date);
@@ -78,7 +75,15 @@ export default function AdminUmrahEditPackage() {
         departureDate: formatDate(pkg.departureDate),
         arrivalDate: formatDate(pkg.arrivalDate),
         returnDate: formatDate(pkg.returnDate),
-        returnArrivalDate: formatDate(pkg.returnArrivalDate)
+        returnArrivalDate: formatDate(pkg.returnArrivalDate),
+        makkahHotel: {
+          ...pkg.makkahHotel,
+          nights: pkg.makkahHotel?.nights || 0
+        },
+        madinahHotel: {
+          ...pkg.madinahHotel,
+          nights: pkg.madinahHotel?.nights || 0
+        }
       });
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Could not load package.');
@@ -113,11 +118,24 @@ export default function AdminUmrahEditPackage() {
     }));
   };
 
-  const handleHotelChange = (city, field, value) => {
-    const hotelKey = city === 'makkah' ? 'makkahHotel' : 'madinahHotel';
+  // ✅ FIX: Properly handle hotel nights with explicit number conversion
+  const handleMakkahHotelChange = (field, value) => {
     setFormData(prev => ({
       ...prev,
-      [hotelKey]: { ...prev[hotelKey], [field]: value }
+      makkahHotel: { 
+        ...prev.makkahHotel, 
+        [field]: field === 'nights' ? parseInt(value) || 0 : value 
+      }
+    }));
+  };
+
+  const handleMadinahHotelChange = (field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      madinahHotel: { 
+        ...prev.madinahHotel, 
+        [field]: field === 'nights' ? parseInt(value) || 0 : value 
+      }
     }));
   };
 
@@ -170,18 +188,34 @@ export default function AdminUmrahEditPackage() {
     setError('');
 
     try {
+      // ✅ FIX: Ensure nights are properly included as numbers in the payload
       const payload = {
         ...formData,
         departureDate: new Date(formData.departureDate).toISOString(),
         arrivalDate: new Date(formData.arrivalDate).toISOString(),
         returnDate: new Date(formData.returnDate).toISOString(),
         returnArrivalDate: new Date(formData.returnArrivalDate).toISOString(),
-        totalSeats: parseInt(formData.totalSeats) || 0
+        totalSeats: parseInt(formData.totalSeats) || 0,
+        makkahHotel: {
+          name: formData.makkahHotel.name,
+          distance: formData.makkahHotel.distance || '',
+          nights: parseInt(formData.makkahHotel.nights) || 0,
+          rating: formData.makkahHotel.rating || 0
+        },
+        madinahHotel: {
+          name: formData.madinahHotel.name,
+          distance: formData.madinahHotel.distance || '',
+          nights: parseInt(formData.madinahHotel.nights) || 0,
+          rating: formData.madinahHotel.rating || 0
+        }
       };
+
+      console.log('📤 Updating payload:', JSON.stringify(payload, null, 2));
 
       await umrahService.updatePackage(id, payload);
       navigate('/admin/umrah/packages');
     } catch (err) {
+      console.error('Error updating package:', err);
       setError(err instanceof ApiError ? err.message : 'Could not update package.');
     } finally {
       setSaving(false);
@@ -258,7 +292,7 @@ export default function AdminUmrahEditPackage() {
           </div>
         </div>
 
-        {/* Flight Details - Same as Create form */}
+        {/* Flight Details */}
         <div className="form-section">
           <h3>Flight Details</h3>
           <div className="form-row">
@@ -493,7 +527,7 @@ export default function AdminUmrahEditPackage() {
           </div>
         </div>
 
-        {/* Hotels - Same as Create form */}
+        {/* ✅ FIXED: Hotels Section with proper nights handling */}
         <div className="form-section">
           <h3>Hotels</h3>
           <div className="form-row">
@@ -505,7 +539,7 @@ export default function AdminUmrahEditPackage() {
                   <input
                     type="text"
                     value={formData.makkahHotel?.name || ''}
-                    onChange={(e) => handleHotelChange('makkah', 'name', e.target.value)}
+                    onChange={(e) => handleMakkahHotelChange('name', e.target.value)}
                     className={validationErrors['makkahHotel.name'] ? 'error' : ''}
                     placeholder="e.g., WEDAM SIX"
                   />
@@ -518,17 +552,18 @@ export default function AdminUmrahEditPackage() {
                   <input
                     type="text"
                     value={formData.makkahHotel?.distance || ''}
-                    onChange={(e) => handleHotelChange('makkah', 'distance', e.target.value)}
+                    onChange={(e) => handleMakkahHotelChange('distance', e.target.value)}
                     placeholder="e.g., 1200 M or Shuttle"
                   />
                 </div>
                 <div className="field-group">
-                  <label>Nights</label>
+                  <label>Nights *</label>
                   <input
                     type="number"
-                    value={formData.makkahHotel?.nights || 8}
-                    onChange={(e) => handleHotelChange('makkah', 'nights', parseInt(e.target.value) || 0)}
+                    value={formData.makkahHotel?.nights || 0}
+                    onChange={(e) => handleMakkahHotelChange('nights', e.target.value)}
                     min="0"
+                    placeholder="Number of nights"
                   />
                 </div>
               </div>
@@ -542,7 +577,7 @@ export default function AdminUmrahEditPackage() {
                   <input
                     type="text"
                     value={formData.madinahHotel?.name || ''}
-                    onChange={(e) => handleHotelChange('madinah', 'name', e.target.value)}
+                    onChange={(e) => handleMadinahHotelChange('name', e.target.value)}
                     className={validationErrors['madinahHotel.name'] ? 'error' : ''}
                     placeholder="e.g., QADAT AL DIYAFAH"
                   />
@@ -555,17 +590,18 @@ export default function AdminUmrahEditPackage() {
                   <input
                     type="text"
                     value={formData.madinahHotel?.distance || ''}
-                    onChange={(e) => handleHotelChange('madinah', 'distance', e.target.value)}
+                    onChange={(e) => handleMadinahHotelChange('distance', e.target.value)}
                     placeholder="e.g., 650 M or Shuttle"
                   />
                 </div>
                 <div className="field-group">
-                  <label>Nights</label>
+                  <label>Nights *</label>
                   <input
                     type="number"
-                    value={formData.madinahHotel?.nights || 6}
-                    onChange={(e) => handleHotelChange('madinah', 'nights', parseInt(e.target.value) || 0)}
+                    value={formData.madinahHotel?.nights || 0}
+                    onChange={(e) => handleMadinahHotelChange('nights', e.target.value)}
                     min="0"
+                    placeholder="Number of nights"
                   />
                 </div>
               </div>
@@ -573,7 +609,7 @@ export default function AdminUmrahEditPackage() {
           </div>
         </div>
 
-        {/* Pricing - Same as Create form */}
+        {/* Pricing */}
         <div className="form-section">
           <h3>Pricing</h3>
           <div className="form-row">
@@ -630,7 +666,7 @@ export default function AdminUmrahEditPackage() {
           </div>
         </div>
 
-        {/* Seats & Status - Same as Create form */}
+        {/* Seats & Status */}
         <div className="form-section">
           <h3>Seats & Status</h3>
           <div className="form-row">
@@ -676,7 +712,7 @@ export default function AdminUmrahEditPackage() {
           </div>
         </div>
 
-        {/* Includes - Same as Create form */}
+        {/* Includes */}
         <div className="form-section">
           <h3>What's Included</h3>
           <div className="form-row">
