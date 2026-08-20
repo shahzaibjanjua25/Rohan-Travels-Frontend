@@ -8,7 +8,7 @@ export const umrahService = {
   createPackage: (data) => api.post('/umrah/packages', data),
   updatePackage: (id, data) => api.put(`/umrah/packages/${id}`, data),
   deletePackage: (id) => api.delete(`/umrah/packages/${id}`),
-  updatePackageStatus: (id, status) => api.patch(`/umrah/packages/${id}/status`, status),
+  updatePackageStatus: (id, data) => api.patch(`/umrah/packages/${id}/status`, data),
 
   // Bookings
   createBooking: (data) => api.post('/umrah/bookings', data),

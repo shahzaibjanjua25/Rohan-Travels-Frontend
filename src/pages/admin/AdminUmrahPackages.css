@@ -1,5 +1,5 @@
-/* frontend/src/pages/admin/AdminUmrahBookings.css */
-.admin-umrah-bookings-wrapper {
+/* frontend/src/pages/admin/AdminUmrahPackages.css */
+.admin-umrah-wrapper {
   max-width: 1400px;
   margin: 0 auto;
   padding: 2rem;
@@ -17,16 +17,16 @@
   }
 }
 
-.admin-umrah-bookings-header {
+.admin-umrah-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   margin-bottom: 2rem;
   flex-wrap: wrap;
   gap: 1rem;
 }
 
-.admin-umrah-bookings-header .eyebrow {
+.admin-umrah-header .eyebrow {
   font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -35,7 +35,7 @@
   margin: 0 0 0.15rem 0;
 }
 
-.admin-umrah-bookings-header h1 {
+.admin-umrah-header h1 {
   font-size: 2rem;
   font-weight: 700;
   margin: 0;
@@ -45,275 +45,216 @@
   background-clip: text;
 }
 
-.admin-umrah-bookings-header .faint {
+.admin-umrah-header .faint {
   color: #8a94a6;
   font-size: 0.9rem;
   margin: 0;
 }
 
-.bookings-stats {
-  display: flex;
-  align-items: center;
-}
-
-.stats-badge {
-  background: white;
-  padding: 0.4rem 1rem;
-  border-radius: 9999px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #4a5568;
-  border: 1.5px solid #e2e8f0;
-}
-
-/* Filters */
-.admin-umrah-filters {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: white;
-  border-radius: 12px;
-  padding: 0.75rem 1rem;
-  border: 1px solid #e2e8f0;
-  margin-bottom: 1.5rem;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-
-.filter-buttons {
-  display: flex;
-  gap: 0.3rem;
-  flex-wrap: wrap;
-}
-
-.filter-buttons .btn {
-  min-height: 32px;
-  padding: 0.2rem 0.8rem;
-  font-size: 0.7rem;
-}
-
-.search-group {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.search-input {
-  padding: 0.4rem 0.6rem;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  outline: none;
-  transition: all 0.2s ease;
-  min-width: 200px;
-}
-
-.search-input:focus {
-  border-color: #0a2463;
-  box-shadow: 0 0 0 3px rgba(10,36,99,0.1);
-}
-
-.search-btn {
-  padding: 0.4rem 0.6rem;
-  background: #0a2463;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.search-btn:hover {
-  background: #1a4a8a;
-}
-
-/* Table */
+/* Table Container */
 .table-container {
   background: white;
-  border-radius: 12px;
+  border-radius: 16px;
   border: 1px solid #e2e8f0;
   overflow: hidden;
-  overflow-x: auto;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
 
-.admin-umrah-bookings-table {
+.table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.admin-umrah-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.85rem;
-  min-width: 1000px;
+  font-size: 0.9rem;
+  min-width: 1100px;
 }
 
-.admin-umrah-bookings-table thead {
+/* Table Header - Gradient Blue */
+.admin-umrah-table thead {
   background: linear-gradient(135deg, #0a2463 0%, #1a4a8a 50%, #2a6aaa 100%);
 }
 
-.admin-umrah-bookings-table thead th {
-  padding: 0.7rem 0.8rem;
+.admin-umrah-table thead th {
+  padding: 0.85rem 1rem;
   text-align: left;
   font-weight: 700;
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: white;
   white-space: nowrap;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 }
 
-.admin-umrah-bookings-table thead th:first-child {
-  padding-left: 1rem;
+.admin-umrah-table thead th:first-child {
+  padding-left: 1.25rem;
+  border-radius: 8px 0 0 0;
 }
 
-.admin-umrah-bookings-table thead th:last-child {
-  padding-right: 1rem;
+.admin-umrah-table thead th:last-child {
+  padding-right: 1.25rem;
+  border-radius: 0 8px 0 0;
 }
 
-.admin-umrah-bookings-table tbody td {
-  padding: 0.7rem 0.8rem;
-  border-bottom: 1px solid #f1f5f9;
+/* Table Body */
+.admin-umrah-table tbody td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid #e2e8f0;
   vertical-align: middle;
 }
 
-.admin-umrah-bookings-table tbody tr:hover {
+.admin-umrah-table tbody tr {
+  transition: all 0.2s ease;
+}
+
+.admin-umrah-table tbody tr:hover {
   background: #f8fafc;
 }
 
-.admin-umrah-bookings-table tbody tr:last-child td {
+.admin-umrah-table tbody tr.inactive {
+  opacity: 0.6;
+}
+
+.admin-umrah-table tbody tr:last-child td {
   border-bottom: none;
 }
 
 /* Cell Styles */
-.booking-ref {
-  font-weight: 700;
-  font-family: monospace;
-  font-size: 0.8rem;
-  color: #0a2463;
-}
-
-.customer-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.customer-name {
-  font-weight: 600;
-}
-
-.customer-email {
-  font-size: 0.7rem;
-  color: #8a94a6;
-}
-
-.package-info {
-  display: flex;
-  flex-direction: column;
-}
-
 .package-name {
-  font-weight: 500;
+  display: flex;
+  flex-direction: column;
 }
 
-.package-flight {
+.package-name .name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #1a2332;
+}
+
+.package-name .duration {
   font-size: 0.7rem;
   color: #8a94a6;
 }
 
-.room-type {
+.flight-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.flight-info .airline {
   font-weight: 500;
+  font-size: 0.85rem;
 }
 
-.passenger-count {
-  font-weight: 600;
-  text-align: center;
+.flight-info .flight-number {
+  font-size: 0.7rem;
+  color: #8a94a6;
+  font-family: monospace;
 }
 
-.amount {
-  font-weight: 700;
-  color: #0a2463;
+.route {
+  font-weight: 500;
+  font-size: 0.85rem;
+  color: #1a2332;
 }
 
-.booking-date-cell {
-  font-size: 0.8rem;
+.departure-date {
+  font-size: 0.85rem;
   color: #4a5568;
 }
 
-/* Tag */
-.tag {
+.hotels-info {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.75rem;
+  gap: 0.15rem;
+}
+
+.hotels-info .hotel-makkah {
+  color: #0a2463;
+  font-weight: 500;
+}
+
+.hotels-info .hotel-madinah {
+  color: #2a6aaa;
+  font-weight: 500;
+}
+
+.price {
+  font-weight: 700;
+  color: #0a2463;
+  font-size: 0.95rem;
+}
+
+.sharing-prices {
+  font-size: 0.7rem;
+  color: #4a5568;
+  line-height: 1.4;
+}
+
+/* Status Badges */
+.status-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  align-items: flex-start;
+}
+
+.status-badge {
   display: inline-block;
   padding: 0.15rem 0.6rem;
   border-radius: 9999px;
   font-size: 0.65rem;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
-.tag--warning {
-  background: #fef3c7;
-  color: #92400e;
-}
-
-.tag--success {
+.status-badge.active {
   background: #d1fae5;
   color: #065f46;
 }
 
-.tag--danger {
+.status-badge.inactive {
   background: #fee2e2;
   color: #991b1b;
 }
 
-.tag--info {
-  background: #dbeafe;
-  color: #1e40af;
+.featured-badge {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  background: #fef3c7;
+  color: #92400e;
 }
 
-.tag--secondary {
-  background: #f1f5f9;
-  color: #4a5568;
-}
-
-/* Actions */
+/* Action Buttons */
 .action-group {
   display: flex;
   gap: 0.3rem;
   flex-wrap: wrap;
-  align-items: center;
 }
 
-.status-select {
-  padding: 0.2rem 0.4rem;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 4px;
-  font-size: 0.7rem;
-  font-weight: 500;
-  background: white;
-  cursor: pointer;
-  outline: none;
-  min-width: 80px;
-}
-
-.status-select:focus {
-  border-color: #0a2463;
-}
-
-.status-select:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* Buttons */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.3rem;
-  padding: 0.3rem 0.8rem;
-  border-radius: 6px;
+  padding: 0.4rem 1rem;
+  border-radius: 8px;
   font-weight: 600;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   transition: all 0.2s ease;
   border: none;
   cursor: pointer;
   text-decoration: none;
   font-family: inherit;
+  white-space: nowrap;
 }
 
 .btn--primary {
@@ -322,8 +263,38 @@
 }
 
 .btn--primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(10,36,99,0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(10,36,99,0.25);
+}
+
+.btn--success {
+  background: #10b981;
+  color: white;
+}
+
+.btn--success:hover {
+  background: #059669;
+  transform: translateY(-2px);
+}
+
+.btn--warning {
+  background: #f59e0b;
+  color: white;
+}
+
+.btn--warning:hover {
+  background: #d97706;
+  transform: translateY(-2px);
+}
+
+.btn--danger {
+  background: #ef4444;
+  color: white;
+}
+
+.btn--danger:hover {
+  background: #dc2626;
+  transform: translateY(-2px);
 }
 
 .btn--ghost {
@@ -337,19 +308,10 @@
   border-color: #94a3b8;
 }
 
-.btn--danger {
-  background: #ef4444;
-  color: white;
-}
-
-.btn--danger:hover {
-  background: #dc2626;
-}
-
 .btn--sm {
-  padding: 0.15rem 0.5rem;
-  font-size: 0.65rem;
-  min-height: 26px;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.7rem;
+  min-height: 30px;
 }
 
 /* Empty State */
@@ -357,7 +319,7 @@
   text-align: center;
   padding: 4rem 2rem;
   background: white;
-  border-radius: 12px;
+  border-radius: 16px;
   border: 1px solid #e2e8f0;
 }
 
@@ -369,11 +331,33 @@
 .empty-state h3 {
   font-size: 1.25rem;
   margin: 0 0 0.5rem 0;
+  color: #1a2332;
 }
 
 .empty-state .faint {
   color: #8a94a6;
   margin-bottom: 1.5rem;
+}
+
+/* Alert */
+.alert {
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid;
+}
+
+.alert--success {
+  background: #d1fae5;
+  color: #065f46;
+  border-color: #10b981;
+}
+
+.alert--error {
+  background: #fee2e2;
+  color: #991b1b;
+  border-color: #ef4444;
 }
 
 /* Pagination */
@@ -397,64 +381,40 @@
   padding: 0 0.5rem;
 }
 
-/* Alert */
-.alert {
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
-  font-size: 0.85rem;
-  margin-bottom: 1rem;
-}
-
-.alert--success {
-  background: #d1fae5;
-  color: #065f46;
-  border: 1px solid #a7f3d0;
-}
-
-.alert--error {
-  background: #fee2e2;
-  color: #991b1b;
-  border: 1px solid #fca5a5;
-}
-
+/* Center Utility */
 .center {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Responsive */
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
 @media (max-width: 1024px) {
-  .admin-umrah-filters {
-    flex-direction: column;
-    align-items: stretch;
+  .admin-umrah-table {
+    font-size: 0.85rem;
+    min-width: 900px;
   }
-
-  .filter-buttons {
-    justify-content: center;
-  }
-
-  .search-group {
-    width: 100%;
-  }
-
-  .search-input {
-    flex: 1;
-    min-width: unset;
+  
+  .admin-umrah-table thead th,
+  .admin-umrah-table tbody td {
+    padding: 0.7rem 0.8rem;
   }
 }
 
 @media (max-width: 768px) {
-  .admin-umrah-bookings-wrapper {
+  .admin-umrah-wrapper {
     padding: 1rem;
   }
 
-  .admin-umrah-bookings-header {
+  .admin-umrah-header {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .admin-umrah-bookings-header h1 {
+  .admin-umrah-header h1 {
     font-size: 1.5rem;
   }
 
@@ -463,35 +423,274 @@
     align-items: stretch;
   }
 
-  .action-group .btn,
-  .action-group .status-select {
+  .action-group .btn {
     width: 100%;
+    justify-content: center;
   }
 
-  .filter-buttons {
-    gap: 0.2rem;
+  .admin-umrah-table {
+    min-width: 750px;
+    font-size: 0.8rem;
   }
 
-  .filter-buttons .btn {
-    font-size: 0.6rem;
-    padding: 0.15rem 0.5rem;
+  .admin-umrah-table thead th,
+  .admin-umrah-table tbody td {
+    padding: 0.5rem 0.6rem;
+  }
+
+  .package-name .name {
+    font-size: 0.85rem;
+  }
+
+  .price {
+    font-size: 0.85rem;
   }
 }
 
 @media (max-width: 480px) {
-  .admin-umrah-bookings-table {
-    min-width: 700px;
+  .admin-umrah-wrapper {
+    padding: 0.75rem;
   }
 
-  .booking-ref {
-    font-size: 0.7rem;
+  .admin-umrah-header h1 {
+    font-size: 1.2rem;
   }
 
-  .customer-name {
-    font-size: 0.8rem;
+  .btn--sm {
+    font-size: 0.6rem;
+    padding: 0.2rem 0.4rem;
+    min-height: 26px;
   }
 
-  .amount {
-    font-size: 0.8rem;
+  .status-badge {
+    font-size: 0.55rem;
+    padding: 0.1rem 0.4rem;
+  }
+
+  .featured-badge {
+    font-size: 0.5rem;
+    padding: 0.05rem 0.3rem;
+  }
+
+  .admin-umrah-table {
+    min-width: 650px;
+    font-size: 0.75rem;
+  }
+
+  .admin-umrah-table thead th,
+  .admin-umrah-table tbody td {
+    padding: 0.4rem 0.5rem;
+  }
+
+  .sharing-prices {
+    font-size: 0.6rem;
+  }
+
+  .hotels-info {
+    font-size: 0.65rem;
+  }
+}
+
+/* ============================================
+   DARK MODE SUPPORT
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+  .admin-umrah-wrapper {
+    background: #0f172a;
+  }
+
+  .admin-umrah-header h1 {
+    background: linear-gradient(135deg, #818cf8 0%, #a78bfa 50%, #c084fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .table-container {
+    background: #1e293b;
+    border-color: #334155;
+  }
+
+  .admin-umrah-table thead {
+    background: linear-gradient(135deg, #1e3a5f 0%, #0a2463 50%, #1a4a8a 100%);
+  }
+
+  .admin-umrah-table thead th {
+    color: #f1f5f9;
+  }
+
+  .admin-umrah-table tbody td {
+    border-bottom-color: #334155;
+    color: #94a3b8;
+  }
+
+  .admin-umrah-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .admin-umrah-table tbody tr.inactive {
+    opacity: 0.5;
+  }
+
+  .package-name .name {
+    color: #f1f5f9;
+  }
+
+  .package-name .duration {
+    color: #64748b;
+  }
+
+  .flight-info .airline {
+    color: #94a3b8;
+  }
+
+  .route {
+    color: #94a3b8;
+  }
+
+  .departure-date {
+    color: #94a3b8;
+  }
+
+  .hotels-info .hotel-makkah {
+    color: #818cf8;
+  }
+
+  .hotels-info .hotel-madinah {
+    color: #60a5fa;
+  }
+
+  .price {
+    color: #ffa10b;
+  }
+
+  .sharing-prices {
+    color: #94a3b8;
+  }
+
+  .status-badge.active {
+    background: rgba(16, 185, 129, 0.15);
+    color: #6ee7b7;
+  }
+
+  .status-badge.inactive {
+    background: rgba(239, 68, 68, 0.15);
+    color: #fca5a5;
+  }
+
+  .featured-badge {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+  }
+
+  .btn--primary {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+  }
+
+  .btn--ghost {
+    color: #94a3b8;
+    border-color: #475569;
+  }
+
+  .btn--ghost:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .empty-state {
+    background: #1e293b;
+    border-color: #334155;
+  }
+
+  .empty-state h3 {
+    color: #f1f5f9;
+  }
+
+  .empty-state .faint {
+    color: #94a3b8;
+  }
+
+  .alert--success {
+    background: rgba(16, 185, 129, 0.1);
+    color: #6ee7b7;
+    border-color: #10b981;
+  }
+
+  .alert--error {
+    background: rgba(239, 68, 68, 0.1);
+    color: #fca5a5;
+    border-color: #ef4444;
+  }
+
+  .pagination .page-info {
+    color: #94a3b8;
+  }
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+
+.table-wrapper::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #0a2463 0%, #1a4a8a 50%, #2a6aaa 100%);
+  border-radius: 3px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #1a4a8a 0%, #2a6aaa 50%, #3a8aca 100%);
+}
+
+@media (prefers-color-scheme: dark) {
+  .table-wrapper::-webkit-scrollbar-track {
+    background: #1e293b;
+  }
+  
+  .table-wrapper::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  .admin-umrah-wrapper {
+    padding: 0;
+  }
+
+  .admin-umrah-header {
+    flex-wrap: nowrap;
+  }
+
+  .btn {
+    display: none !important;
+  }
+
+  .table-container {
+    border: 1px solid #ddd;
+    box-shadow: none;
+  }
+
+  .admin-umrah-table thead {
+    background: #f1f5f9 !important;
+  }
+
+  .admin-umrah-table thead th {
+    color: #1a2332 !important;
+  }
+
+  .admin-umrah-table tbody tr.inactive {
+    opacity: 1;
   }
 }
