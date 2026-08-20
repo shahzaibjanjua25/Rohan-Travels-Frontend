@@ -3,10 +3,16 @@ import { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { flightService } from '../services/flights';
+import { umrahService } from '../services/umrah';
 import bahrainImage from '../assests/bahrain.jpg';
 import omanImage from '../assests/oman.jpg';
 import heroVideo from '../assests/hero-vid.mp4';
 import saudiphoto from '../assests/saudia.jpg';
+
+// Import Umrah images
+import umrahImage1 from '../assests/umrah.jpg';
+import umrahImage2 from '../assests/umrah2.jpg';
+import umrahImage3 from '../assests/umrah3.jpg';
 
 import {
   Plane,
@@ -149,13 +155,7 @@ const COUNTRY_AIRPORT_MAP = {
 };
 
 // ============================================
-// FLIGHT CATEGORIES (TICKET TYPES) - SIMPLIFIED
-// ============================================
-// ============================================
-// FLIGHT CATEGORIES (TICKET TYPES) - NO BADGES
-// ============================================
-// ============================================
-// FLIGHT CATEGORIES (TICKET TYPES) - NO DESTINATIONS DISPLAYED
+// FLIGHT CATEGORIES (TICKET TYPES)
 // ============================================
 const FLIGHT_CATEGORIES = [
   {
@@ -213,6 +213,7 @@ const FLIGHT_CATEGORIES = [
     filterValue: 'global',
   },
 ];
+
 // Airport Select Component
 function AirportSelect({ id, label, placeholder, value, onChange, airports = [], className = '' }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -299,6 +300,12 @@ export default function Home() {
   const [featuredFlights, setFeaturedFlights] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  // Umrah packages state - only 3 featured packages
+  const [umrahPackages, setUmrahPackages] = useState([]);
+  const [umrahLoading, setUmrahLoading] = useState(false);
+  const [umrahError, setUmrahError] = useState(null);
+  
   const [tripType, setTripType] = useState('round_trip');
   const [searchParams, setSearchParams] = useState({
     origin: '',
@@ -317,6 +324,9 @@ export default function Home() {
     tiktok: 'https://www.tiktok.com/@m_rohan_travels_tours?_r=1&_t=ZN-98xOcwAp770',
     whatsapp: 'https://wa.me/qr/Y5PW7NQXWGTLP1',
   };
+
+  // Array of Umrah images to cycle through
+  const umrahImages = [umrahImage1, umrahImage2, umrahImage3];
 
   const shuffleArray = (array) => {
     const shuffled = [...array];
@@ -398,6 +408,28 @@ export default function Home() {
       setFeaturedFlights(getFallbackFlights());
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Fetch ONLY 3 featured Umrah packages
+  const fetchUmrahPackages = async () => {
+    setUmrahLoading(true);
+    setUmrahError(null);
+    try {
+      const response = await umrahService.getPackages({ 
+        isFeatured: true,
+        limit: 3,  // Only fetch 3
+        isActive: true
+      });
+      // Get only the first 3 (or all if less than 3)
+      const packages = response.data || [];
+      setUmrahPackages(packages.slice(0, 3));
+    } catch (err) {
+      console.error('Error fetching Umrah packages:', err);
+      setUmrahError('Failed to load Umrah packages');
+      setUmrahPackages([]);
+    } finally {
+      setUmrahLoading(false);
     }
   };
 
@@ -490,6 +522,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchRandomFlights();
+    fetchUmrahPackages();
   }, []);
 
   const handleSearchSubmit = (e) => {
@@ -504,21 +537,15 @@ export default function Home() {
     navigate(`/flights?${params.toString()}`);
   };
 
-  // ============================================================
-  // HANDLE CATEGORY CLICK - Navigate to flights with filters
-  // ============================================================
   const handleCategoryClick = (category) => {
     const params = new URLSearchParams();
 
     if (category.filterType === 'travelType') {
-      // Umrah: Filter by travel type
       if (category.filterValue) params.append('travelType', category.filterValue);
     } else if (category.filterType === 'country') {
       if (category.filterValue === 'global') {
-        // Global: Show all international flights
         params.append('flightType', 'international');
       } else {
-        // Country-based: Pass country name
         params.append('country', category.filterValue);
       }
     }
@@ -738,8 +765,8 @@ export default function Home() {
       </section>
 
       {/* ============================================================
-    FLIGHT CATEGORIES SECTION - NO DESTINATIONS, NO BLUR
-    ============================================================ */}
+          FLIGHT CATEGORIES SECTION
+          ============================================================ */}
       <section className="section categories-section">
         <div className="categories-bg"></div>
         <div className="categories-overlay"></div>
@@ -763,7 +790,6 @@ export default function Home() {
                   alt={category.title}
                   className="category-card-bg-image"
                 />
-                {/* DESTINATIONS REMOVED */}
               </div>
               <div className="category-card-body">
                 <h3>{category.title}</h3>
@@ -825,6 +851,102 @@ export default function Home() {
             <h3>Sub-Agent Control</h3>
             <p>Manage branch accounts, staff permissions, and commission splits.</p>
           </div>
+        </div>
+      </section>
+
+      {/* ============================================================
+          FEATURED UMRAH PACKAGES SECTION - ONLY 3 CARDS
+          ============================================================ */}
+      <section className="section umrah-home-section">
+        <div className="section-header">
+          <span className="eyebrow">🕋 Spiritual Journeys</span>
+          <h2>Featured Umrah Packages</h2>
+          <p>Complete packages with flights, hotels, and transport for your spiritual journey.</p>
+        </div>
+
+        {umrahLoading ? (
+          <div className="umrah-home-loading">
+            <div className="spinner" aria-hidden="true"></div>
+            <p>Loading packages...</p>
+          </div>
+        ) : umrahError ? (
+          <div className="umrah-home-error">
+            <p>{umrahError}</p>
+            <button className="btn btn--ghost" onClick={fetchUmrahPackages}>Retry</button>
+          </div>
+        ) : umrahPackages.length === 0 ? (
+          <div className="umrah-home-empty">
+            <p className="faint">No featured Umrah packages available at the moment.</p>
+            <Link to="/umrah" className="btn btn--ghost">Browse all packages</Link>
+          </div>
+        ) : (
+          <div className="umrah-home-grid">
+            {umrahPackages.map((pkg, index) => {
+              const price = pkg.sharingPrices?.quad || pkg.perPersonPrice || 0;
+              // Cycle through images: index 0 -> umrah.jpg, index 1 -> umra2.jpg, index 2 -> umra3.jpg
+              const imageIndex = index % 3;
+              const packageImage = umrahImages[imageIndex];
+              
+              return (
+                <Link 
+                  key={pkg._id} 
+                  to={`/umrah/packages/${pkg._id}/book`} 
+                  className="umrah-home-card"
+                >
+                  <div className="umrah-home-card-image">
+                    <img
+                      src={packageImage}
+                      alt={pkg.packageName}
+                      onError={(e) => {
+                        // Fallback if image fails to load
+                        e.target.src = 'https://images.unsplash.com/photo-1580589351520-187b703aa0e7?auto=format&fit=crop&w=800&q=80';
+                      }}
+                    />
+                    <span className="umrah-home-card-badge">Featured</span>
+                  </div>
+                  <div className="umrah-home-card-body">
+                    <h3>{pkg.packageName}</h3>
+                    <div className="umrah-home-card-meta">
+                      <span>{pkg.airline}</span>
+                      <span>{pkg.flightNumber}</span>
+                    </div>
+                    <div className="umrah-home-card-route">
+                      <span>{pkg.origin?.airportCode || 'N/A'}</span>
+                      <span className="arrow">→</span>
+                      <span>{pkg.destination?.airportCode || 'N/A'}</span>
+                    </div>
+                    <div className="umrah-home-card-hotels">
+                      <div className="hotel-item">
+                        <span className="hotel-city">🕋 Makkah</span>
+                        <span className="hotel-name">{pkg.makkahHotel?.name?.substring(0, 20) || 'N/A'}</span>
+                        <span className="hotel-nights">{pkg.makkahHotel?.nights || 0} nights</span>
+                      </div>
+                      <div className="hotel-item">
+                        <span className="hotel-city">🕌 Madinah</span>
+                        <span className="hotel-name">{pkg.madinahHotel?.name?.substring(0, 20) || 'N/A'}</span>
+                        <span className="hotel-nights">{pkg.madinahHotel?.nights || 0} nights</span>
+                      </div>
+                    </div>
+                    <div className="umrah-home-card-footer">
+                      <div className="price">
+                        <span className="from">From</span>
+                        <span className="amount">PKR {price.toLocaleString()}</span>
+                        <span className="per">/ person</span>
+                      </div>
+                      <span className="view-btn">View Details →</span>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        )}
+
+        <div className="umrah-home-view-all">
+          <Link to="/umrah" className="btn btn--gold">
+            View All Umrah Packages
+            <ArrowRight size={16} />
+          </Link>
         </div>
       </section>
 

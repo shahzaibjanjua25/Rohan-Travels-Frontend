@@ -91,6 +91,8 @@ export default function UmrahPackages() {
     const [pagination, setPagination] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    
+    // Initialize filters from URL params
     const [filters, setFilters] = useState({
         departureDate: searchParams.get('departureDate') || '',
         airline: searchParams.get('airline') || '',
@@ -118,6 +120,8 @@ export default function UmrahPackages() {
                 // Add default limit
                 params.limit = 20;
 
+                console.log('🔍 Loading packages with params:', params);
+
                 const response = await umrahService.getPackages(params);
                 if (cancelled) return;
                 setPackages(response.data || []);
@@ -142,6 +146,17 @@ export default function UmrahPackages() {
         };
     }, [searchParams]);
 
+    // Sync filters when URL params change (e.g., from browser back/forward)
+    useEffect(() => {
+        setFilters({
+            departureDate: searchParams.get('departureDate') || '',
+            airline: searchParams.get('airline') || '',
+            origin: searchParams.get('origin') || '',
+            minPrice: searchParams.get('minPrice') || '',
+            maxPrice: searchParams.get('maxPrice') || '',
+        });
+    }, [searchParams]);
+
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
         setFilters((prev) => ({ ...prev, [name]: value }));
@@ -156,8 +171,30 @@ export default function UmrahPackages() {
                 params[key] = value;
             }
         });
+        // Reset page to 1 when searching
+        params.page = 1;
         setSearchParams(params);
     };
+
+    // Auto-search when a filter changes (optional - uncomment if you want instant search)
+    // Commented out to keep click-to-search behavior
+    /*
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            const params = {};
+            Object.entries(filters).forEach(([key, value]) => {
+                if (value && value !== '') {
+                    params[key] = value;
+                }
+            });
+            if (Object.keys(params).length > 0 || Object.keys(searchParams).length > 0) {
+                params.page = 1;
+                setSearchParams(params);
+            }
+        }, 500);
+        return () => clearTimeout(timeoutId);
+    }, [filters]);
+    */
 
     const handleReset = () => {
         setFilters(EMPTY_FILTERS);
@@ -177,6 +214,7 @@ export default function UmrahPackages() {
     };
 
     const hasFilters = Object.values(filters).some((v) => v !== '');
+    const hasActiveFilters = searchParams.toString().length > 0;
 
     return (
         <div className="umrah-wrapper">
@@ -265,11 +303,21 @@ export default function UmrahPackages() {
 
             {error && <Alert kind="error">{error}</Alert>}
 
-            {!loading && !error && packages.length > 0 && (
-                <p className="umrah-count">
-                    {pagination?.total ?? packages.length} packages
-                    {hasFilters ? ' match your search' : ' available'}
-                </p>
+            {/* Show search info - only when filters are active */}
+            {!loading && !error && (
+                <div className="umrah-search-info">
+                    {hasActiveFilters ? (
+                        <p className="umrah-count">
+                            {pagination?.total ?? packages.length} packages found
+                            {hasFilters && ' matching your search'}
+                            <span className="search-badge">🔍 Filtered</span>
+                        </p>
+                    ) : (
+                        <p className="umrah-count">
+                            {pagination?.total ?? packages.length} packages available
+                        </p>
+                    )}
+                </div>
             )}
 
             {loading ? (
@@ -333,14 +381,13 @@ export default function UmrahPackages() {
 
                                 <div className="pkg-tear" aria-hidden="true" />
 
-                                // In the package card rendering, update the hotel display:
                                 <ul className="pkg-stays">
                                     <li>
                                         <span className="pkg-stay-label">Makkah</span>
                                         <span className="pkg-stay-name">{pkg.makkahHotel?.name || 'Hotel TBC'}</span>
                                         <span className="pkg-stay-meta">
                                             {pkg.makkahHotel?.distance ? `${pkg.makkahHotel.distance} · ` : ''}
-                                            {pkg.makkahHotel?.nights || 0} nights  {/* ← This should now show correctly */}
+                                            {pkg.makkahHotel?.nights || 0} nights
                                         </span>
                                     </li>
                                     <li>
@@ -348,7 +395,7 @@ export default function UmrahPackages() {
                                         <span className="pkg-stay-name">{pkg.madinahHotel?.name || 'Hotel TBC'}</span>
                                         <span className="pkg-stay-meta">
                                             {pkg.madinahHotel?.distance ? `${pkg.madinahHotel.distance} · ` : ''}
-                                            {pkg.madinahHotel?.nights || 0} nights  {/* ← This should now show correctly */}
+                                            {pkg.madinahHotel?.nights || 0} nights
                                         </span>
                                     </li>
                                 </ul>
@@ -360,27 +407,27 @@ export default function UmrahPackages() {
                                     {(pkg.sharingPrices?.quad > 0 ||
                                         pkg.sharingPrices?.triple > 0 ||
                                         pkg.sharingPrices?.double > 0) && (
-                                            <dl className="pkg-shares">
-                                                {pkg.sharingPrices?.quad > 0 && (
-                                                    <div>
-                                                        <dt>Quad</dt>
-                                                        <dd>{money(pkg.sharingPrices.quad)}</dd>
-                                                    </div>
-                                                )}
-                                                {pkg.sharingPrices?.triple > 0 && (
-                                                    <div>
-                                                        <dt>Triple</dt>
-                                                        <dd>{money(pkg.sharingPrices.triple)}</dd>
-                                                    </div>
-                                                )}
-                                                {pkg.sharingPrices?.double > 0 && (
-                                                    <div>
-                                                        <dt>Double</dt>
-                                                        <dd>{money(pkg.sharingPrices.double)}</dd>
-                                                    </div>
-                                                )}
-                                            </dl>
-                                        )}
+                                        <dl className="pkg-shares">
+                                            {pkg.sharingPrices?.quad > 0 && (
+                                                <div>
+                                                    <dt>Quad</dt>
+                                                    <dd>{money(pkg.sharingPrices.quad)}</dd>
+                                                </div>
+                                            )}
+                                            {pkg.sharingPrices?.triple > 0 && (
+                                                <div>
+                                                    <dt>Triple</dt>
+                                                    <dd>{money(pkg.sharingPrices.triple)}</dd>
+                                                </div>
+                                            )}
+                                            {pkg.sharingPrices?.double > 0 && (
+                                                <div>
+                                                    <dt>Double</dt>
+                                                    <dd>{money(pkg.sharingPrices.double)}</dd>
+                                                </div>
+                                            )}
+                                        </dl>
+                                    )}
 
                                     {(pkg.childWithoutBedPrice > 0 || pkg.infantPrice > 0) && (
                                         <p className="pkg-extras">

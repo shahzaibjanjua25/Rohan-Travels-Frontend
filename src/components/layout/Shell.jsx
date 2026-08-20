@@ -24,18 +24,15 @@ import {
   Home,
   Phone,
   Mail,
-  Clock,
-  Globe,
-  Sparkles,
+  Info,
   ArrowRight,
   MapPin,
+  Ticket,
+  Package,
 } from 'lucide-react';
 import { FaFacebook, FaWhatsapp, FaTiktok } from 'react-icons/fa';
 
-const MOBILE_BREAKPOINT = 768;
-
-const linkClass = ({ isActive }) =>
-  `nav-link${isActive ? ' active' : ''}`;
+const DESKTOP_BREAKPOINT = 1024;
 
 const mobileLinkClass = ({ isActive }) =>
   `shell__mobile-link${isActive ? ' shell__mobile-link--active' : ''}`;
@@ -45,8 +42,8 @@ export default function Shell({ children }) {
   const { maintenanceMode, maintenanceMessage, isBlocked, loading } = useMaintenance();
 
   const [unread, setUnread] = useState(0);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < MOBILE_BREAKPOINT);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= DESKTOP_BREAKPOINT);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 
   const userMenuRef = useRef(null);
@@ -66,38 +63,40 @@ export default function Shell({ children }) {
   // Viewport tracking
   useEffect(() => {
     const handleResize = () => {
-      const mobile = window.innerWidth < MOBILE_BREAKPOINT;
-      setIsMobile(mobile);
-      if (!mobile) setIsMobileMenuOpen(false);
+      const desktop = window.innerWidth >= DESKTOP_BREAKPOINT;
+      setIsDesktop(desktop);
+      if (desktop && isSidebarOpen) {
+        setIsSidebarOpen(false);
+      }
     };
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [isSidebarOpen]);
 
-  // Close mobile menu when navigating
+  // Close sidebar when navigating
   useEffect(() => {
-    setIsMobileMenuOpen(false);
+    setIsSidebarOpen(false);
     setUserMenuOpen(false);
   }, [location.pathname]);
 
-  // Lock body scroll when mobile menu is open
+  // Lock body scroll when mobile sidebar is open
   useEffect(() => {
-    if (!isMobile || !isMobileMenuOpen) {
+    if (!isDesktop && isSidebarOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
       document.body.style.overflow = '';
-      return;
     }
-    document.body.style.overflow = 'hidden';
     return () => {
       document.body.style.overflow = '';
     };
-  }, [isMobile, isMobileMenuOpen]);
+  }, [isDesktop, isSidebarOpen]);
 
   // ESC key closes menus
   useEffect(() => {
     const onKeyDown = (event) => {
       if (event.key !== 'Escape') return;
-      setIsMobileMenuOpen(false);
+      setIsSidebarOpen(false);
       setUserMenuOpen(false);
     };
     window.addEventListener('keydown', onKeyDown);
@@ -147,20 +146,28 @@ export default function Shell({ children }) {
 
   const handleSignOut = async () => {
     setUserMenuOpen(false);
-    setIsMobileMenuOpen(false);
+    setIsSidebarOpen(false);
     await logout();
     navigate('/login');
   };
 
-  // Navigation config - UPDATED WITH UMRAAH ADMIN LINKS
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const closeSidebar = () => {
+    setIsSidebarOpen(false);
+  };
+
+  // Navigation config
   const navItems = [
     { to: '/', label: 'Home', icon: Home, end: true, show: true },
     { to: '/flights', label: 'Explore Flights', icon: Plane, show: true },
     { to: '/umrah', label: 'Umrah Packages', icon: Calendar, show: true },
     {
       to: isAdmin ? '/admin/bookings' : '/bookings',
-      label: isAdmin ? 'Bookings' : 'Bookings',
-      icon: Calendar,
+      label: 'Bookings',
+      icon: Ticket,
       show: isAuthenticated
     },
     {
@@ -180,14 +187,13 @@ export default function Shell({ children }) {
       ? [
           { to: '/admin/flights', label: 'Manage Flights', icon: Plane, show: true },
           { to: '/admin/umrah/packages', label: 'Umrah Packages', icon: Calendar, show: true },
-          { to: '/admin/umrah/bookings', label: 'Umrah Bookings', icon: Calendar, show: true },
+          { to: '/admin/umrah/bookings', label: 'Umrah Bookings', icon: Ticket, show: true },
           { to: '/admin/users', label: 'Users', icon: Users, show: true },
           { to: '/admin/settings', label: 'Settings', icon: Settings, show: true }
         ]
       : [])
   ];
 
-  // Check if maintenance banner should be shown
   const showMaintenanceBanner = isAdmin && maintenanceMode;
 
   if (loading) {
@@ -201,7 +207,7 @@ export default function Shell({ children }) {
   const initial = user?.name?.charAt(0)?.toUpperCase() || 'U';
 
   return (
-    <div className="marketing-shell flex min-h-screen flex-col bg-canvas">
+    <div className="marketing-shell">
       {/* ============================================================
           MARKETING STRIP - Top Bar
           ============================================================ */}
@@ -209,12 +215,12 @@ export default function Shell({ children }) {
         <div className="marketing-strip-inner">
           <div className="marketing-strip-left">
             <a href={`tel:${BUSINESS_INFO.phone.replace(/\s/g, '')}`} className="hidden sm:inline-flex group">
-              <Phone className="icon" />
+              <Phone className="icon" size={14} />
               <span>{BUSINESS_INFO.phone}</span>
             </a>
             <span className="marketing-strip-divider"></span>
             <a href={`mailto:${BUSINESS_INFO.email}`} className="inline-flex group">
-              <Mail className="icon" />
+              <Mail className="icon" size={14} />
               <span className="truncate">{BUSINESS_INFO.email}</span>
             </a>
           </div>
@@ -228,43 +234,31 @@ export default function Shell({ children }) {
       </div>
 
       {/* ============================================================
-          MAIN NAVBAR
+          MAIN NAVBAR - Hamburger on LEFT
           ============================================================ */}
       <header className="main-navbar">
         <div className="main-navbar-inner">
-          {/* Logo */}
-          <Link to="/" className="navbar-logo">
-            <img src={logo} alt="Rohan Travels & Tours" />
-          </Link>
+          {/* LEFT: Hamburger + Logo */}
+          <div className="navbar-left">
+            {/* Hamburger Button - ALWAYS VISIBLE */}
+            <button
+              type="button"
+              className="hamburger-btn"
+              onClick={toggleSidebar}
+              aria-label={isSidebarOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={isSidebarOpen}
+            >
+              <Menu size={28} />
+            </button>
 
-          {/* Navigation Links */}
-          <nav className="nav-links">
-            {navItems
-              .filter((item) => item.show)
-              .map((item) => {
-                const Icon = item.icon;
-                return (
-                  <NavLink
-                    key={item.to}
-                    to={item.to}
-                    className={linkClass}
-                    end={item.end}
-                  >
-                    <Icon size={16} />
-                    <span>{item.label}</span>
-                    {item.badge > 0 && (
-                      <span className="shell__badge">{item.badge > 99 ? '99+' : item.badge}</span>
-                    )}
-                  </NavLink>
-                );
-              })}
-            <NavLink to="/contact" className={linkClass}>
-              <Phone size={16} />
-              <span>Contact</span>
-            </NavLink>
-          </nav>
+            {/* Logo + Company Name */}
+            <Link to="/" className="navbar-logo">
+              <img src={logo} alt="Rohan Travels & Tours" />
+              <span className="navbar-company-name">M Rohan Travels & Tours</span>
+            </Link>
+          </div>
 
-          {/* Actions */}
+          {/* RIGHT: User Actions */}
           <div className="navbar-actions">
             {isAuthenticated ? (
               <div className="shell__user-menu" ref={userMenuRef}>
@@ -290,6 +284,7 @@ export default function Shell({ children }) {
                   </div>
                   <ChevronDown
                     className={`shell__chevron${userMenuOpen ? ' shell__chevron--open' : ''}`}
+                    size={16}
                   />
                 </button>
 
@@ -323,17 +318,13 @@ export default function Shell({ children }) {
                     {isAdmin && (
                       <>
                         <div className="shell__dropdown-divider" />
-                        <Link to="/admin/umrah/packages" className="shell__dropdown-item" role="menuitem">
-                          <Calendar size={18} />
-                          <span>Umrah Packages</span>
-                        </Link>
-                        <Link to="/admin/umrah/bookings" className="shell__dropdown-item" role="menuitem">
-                          <Calendar size={18} />
-                          <span>Umrah Bookings</span>
-                        </Link>
                         <Link to="/admin/flights" className="shell__dropdown-item" role="menuitem">
                           <Plane size={18} />
                           <span>Manage Flights</span>
+                        </Link>
+                        <Link to="/admin/umrah/packages" className="shell__dropdown-item" role="menuitem">
+                          <Package size={18} />
+                          <span>Umrah Packages</span>
                         </Link>
                         <Link to="/admin/users" className="shell__dropdown-item" role="menuitem">
                           <Users size={18} />
@@ -372,135 +363,134 @@ export default function Shell({ children }) {
               </>
             )}
           </div>
-
-          {/* Mobile Toggle */}
-          <button
-            type="button"
-            className="mobile-toggle"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
-            aria-expanded={isMobileMenuOpen}
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
         </div>
       </header>
 
       {/* ============================================================
-          MOBILE SIDEBAR
+          SIDEBAR - Desktop pushes content, Mobile overlays
           ============================================================ */}
-      {isMobile && isMobileMenuOpen && (
-        <div
-          className="shell__mobile-overlay active"
-          onClick={() => setIsMobileMenuOpen(false)}
-          role="button"
-          aria-label="Close menu"
-        />
-      )}
+      <div className={`app-wrapper ${isSidebarOpen ? 'sidebar-open' : ''}`}>
+        {/* Sidebar */}
+        <aside className={`sidebar ${isSidebarOpen ? 'sidebar--open' : ''}`}>
+          <div className="sidebar-inner">
+            {/* Sidebar Header with Close Button */}
+            <div className="sidebar-header">
+              <Link to="/" className="sidebar-brand" onClick={closeSidebar}>
+                <img src={logo} alt="" className="sidebar-brand-logo" />
+                <span className="sidebar-brand-name">M Rohan Travels</span>
+              </Link>
+              {/* Close Button INSIDE Sidebar */}
+              <button
+                type="button"
+                className="sidebar-close-btn"
+                onClick={closeSidebar}
+                aria-label="Close menu"
+              >
+                <X size={24} />
+              </button>
+            </div>
 
-      <div className={`shell__mobile-sidebar ${isMobileMenuOpen ? 'open' : ''}`}>
-        <div className="shell__mobile-sidebar-inner">
-          <div className="shell__mobile-sidebar-header">
-            <Link to="/" className="shell__mobile-brand" onClick={() => setIsMobileMenuOpen(false)}>
-              <img src={logo} alt="" className="shell__mobile-brand-logo" />
-              <span className="shell__mobile-brand-name">Rohan Travels</span>
-            </Link>
-            <button
-              type="button"
-              className="shell__mobile-sidebar-close"
-              onClick={() => setIsMobileMenuOpen(false)}
-              aria-label="Close menu"
-            >
-              <X size={24} />
-            </button>
+            <nav className="sidebar-nav">
+              {navItems
+                .filter((item) => item.show)
+                .map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <NavLink
+                      key={item.to}
+                      to={item.to}
+                      className={mobileLinkClass}
+                      end={item.end}
+                      onClick={closeSidebar}
+                    >
+                      <Icon size={20} />
+                      <span>{item.label}</span>
+                      {item.badge > 0 && (
+                        <span className="sidebar-badge">{item.badge > 99 ? '99+' : item.badge}</span>
+                      )}
+                    </NavLink>
+                  );
+                })}
+              <NavLink
+                to="/contact"
+                className={mobileLinkClass}
+                onClick={closeSidebar}
+              >
+                <Phone size={20} />
+                <span>Contact Us</span>
+              </NavLink>
+              <NavLink
+                to="/about"
+                className={mobileLinkClass}
+                onClick={closeSidebar}
+              >
+                <Info size={20} />
+                <span>About Us</span>
+              </NavLink>
+            </nav>
+
+            <div className="sidebar-footer">
+              {isAuthenticated ? (
+                <>
+                  <Link to="/account" className="sidebar-footer-link" onClick={closeSidebar}>
+                    <User size={18} />
+                    My account
+                  </Link>
+                  <button type="button" className="sidebar-footer-link sidebar-footer-link--danger" onClick={handleSignOut}>
+                    <LogOut size={18} />
+                    Sign out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link to="/login" className="btn btn--primary btn--full" onClick={closeSidebar}>
+                    Sign in
+                  </Link>
+                  <Link to="/register" className="btn btn--ghost btn--full" onClick={closeSidebar}>
+                    Create account
+                  </Link>
+                </>
+              )}
+            </div>
           </div>
+        </aside>
 
-          <nav className="shell__mobile-sidebar-nav">
-            {navItems
-              .filter((item) => item.show)
-              .map((item) => {
-                const Icon = item.icon;
-                return (
-                  <NavLink
-                    key={item.to}
-                    to={item.to}
-                    className={mobileLinkClass}
-                    end={item.end}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    <Icon size={20} />
-                    <span>{item.label}</span>
-                    {item.badge > 0 && (
-                      <span className="shell__badge">{item.badge > 99 ? '99+' : item.badge}</span>
-                    )}
-                  </NavLink>
-                );
-              })}
-            <NavLink
-              to="/contact"
-              className={mobileLinkClass}
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              <Phone size={20} />
-              <span>Contact Us</span>
-            </NavLink>
-          </nav>
+        {/* Overlay - only on mobile */}
+        {!isDesktop && isSidebarOpen && (
+          <div
+            className="sidebar-overlay"
+            onClick={closeSidebar}
+            role="button"
+            aria-label="Close menu"
+          />
+        )}
 
-          <div className="shell__mobile-sidebar-footer">
-            {isAuthenticated ? (
-              <>
-                <Link to="/account" className="shell__mobile-sidebar-link" onClick={() => setIsMobileMenuOpen(false)}>
-                  <User size={18} />
-                  My account
-                </Link>
-                <button type="button" className="shell__mobile-sidebar-link shell__mobile-sidebar-link--danger" onClick={handleSignOut}>
-                  <LogOut size={18} />
-                  Sign out
-                </button>
-              </>
-            ) : (
-              <>
-                <Link to="/login" className="btn btn--primary btn--full" onClick={() => setIsMobileMenuOpen(false)}>
-                  Sign in
-                </Link>
-                <Link to="/register" className="btn btn--ghost btn--full" onClick={() => setIsMobileMenuOpen(false)}>
-                  Create account
-                </Link>
-              </>
-            )}
-          </div>
-        </div>
+        {/* Main Content */}
+        <main className={`main-content ${isSidebarOpen ? 'main-content--pushed' : ''}`}>
+          {showMaintenanceBanner && (
+            <div className="maintenance-banner">
+              <span>Maintenance mode is on. Only admins can reach the system.</span>
+              <button
+                type="button"
+                className="maintenance-banner-close"
+                onClick={() => navigate('/admin/settings')}
+              >
+                Go to settings
+              </button>
+            </div>
+          )}
+
+          {isBlocked ? <MaintenancePage message={maintenanceMessage} /> : children}
+        </main>
       </div>
 
       {/* ============================================================
-          MAIN CONTENT
-          ============================================================ */}
-      <main className="relative flex-grow">
-        {/* Maintenance Banner */}
-        {showMaintenanceBanner && (
-          <div className="maintenance-banner">
-            <span>Maintenance mode is on. Only admins can reach the system.</span>
-            <button
-              type="button"
-              className="maintenance-banner-close"
-              onClick={() => navigate('/admin/settings')}
-            >
-              Go to settings
-            </button>
-          </div>
-        )}
-
-        {isBlocked ? <MaintenancePage message={maintenanceMessage} /> : children}
-      </main>
-
-      {/* ============================================================
-          FOOTER
+          FOOTER (same as before)
           ============================================================ */}
       <footer className="footer">
         <div className="footer-top-border"></div>
         <div className="footer-inner">
           <div className="footer-grid">
-            {/* Brand Column */}
             <div className="footer-brand">
               <Link to="/" className="logo">
                 <img src={logo} alt="Rohan Travels & Tours" />
@@ -515,7 +505,6 @@ export default function Shell({ children }) {
               </div>
             </div>
 
-            {/* Services Column */}
             <div>
               <h3 className="footer-heading">Services</h3>
               <ul className="footer-links">
@@ -534,7 +523,6 @@ export default function Shell({ children }) {
               </ul>
             </div>
 
-            {/* Company Column */}
             <div>
               <h3 className="footer-heading">Company</h3>
               <ul className="footer-links">
@@ -553,7 +541,6 @@ export default function Shell({ children }) {
               </ul>
             </div>
 
-            {/* Access Column */}
             <div>
               <h3 className="footer-heading">Access</h3>
               <ul className="footer-links">
@@ -572,7 +559,6 @@ export default function Shell({ children }) {
               </ul>
             </div>
 
-            {/* Contact Column */}
             <div>
               <h3 className="footer-heading">Contact Info</h3>
               <div className="footer-contact">
@@ -600,7 +586,6 @@ export default function Shell({ children }) {
                 </div>
               </div>
 
-              {/* Social Links in Footer */}
               <div style={{ marginTop: '16px' }}>
                 <div style={{ display: 'flex', gap: '8px' }}>
                   <a
@@ -662,7 +647,6 @@ export default function Shell({ children }) {
             </div>
           </div>
 
-          {/* Bottom Bar */}
           <div className="footer-bottom">
             <div>
               <p>Copyright © {new Date().getFullYear()} Rohan Travels &amp; Tours. All rights reserved.</p>
@@ -686,9 +670,6 @@ export default function Shell({ children }) {
         </div>
       </footer>
 
-      {/* ============================================================
-          FLOATING WHATSAPP BUTTON
-          ============================================================ */}
       <a
         href={BUSINESS_INFO.whatsapp}
         target="_blank"
