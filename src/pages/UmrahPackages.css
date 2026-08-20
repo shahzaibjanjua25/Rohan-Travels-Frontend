@@ -1,0 +1,367 @@
+/* frontend/src/pages/UmrahPackages.css */
+.umrah-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.umrah-hero {
+  text-align: center;
+  padding: 2rem 0;
+  margin-bottom: 2rem;
+}
+
+.umrah-hero h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #0a2463;
+  margin: 0 0 0.5rem 0;
+}
+
+.umrah-hero h1::before {
+  content: '🕋 ';
+}
+
+.umrah-hero p {
+  font-size: 1.1rem;
+  color: #6b7a8f;
+  margin: 0;
+}
+
+/* Filters */
+.umrah-filters {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 2rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.filter-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #4a5568;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.filter-group input,
+.filter-group select {
+  padding: 0.6rem 0.8rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+  outline: none;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+  border-color: #0a2463;
+  box-shadow: 0 0 0 3px rgba(10,36,99,0.1);
+}
+
+.filter-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  padding-top: 0.75rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+/* Grid */
+.umrah-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+/* Card */
+.umrah-card {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  transition: all 0.3s ease;
+}
+
+.umrah-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+
+.umrah-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #f1f5f9;
+  margin-bottom: 0.75rem;
+}
+
+.airline-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.airline-code {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #0a2463;
+  color: white;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.airline-name {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.flight-number {
+  font-size: 0.8rem;
+  color: #8a94a6;
+  font-family: monospace;
+  background: #f1f5f9;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+}
+
+/* Route */
+.umrah-route {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 0.5rem 0;
+}
+
+.route-city {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.city-code {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0a2463;
+}
+
+.city-name {
+  font-size: 0.8rem;
+  color: #8a94a6;
+}
+
+.route-arrow {
+  font-size: 1.5rem;
+  color: #d4af37;
+}
+
+/* Dates */
+.umrah-dates {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  padding: 0.75rem 0;
+  background: #f8fafc;
+  border-radius: 8px;
+  margin: 0.5rem 0;
+}
+
+.date-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.date-group .label {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  color: #8a94a6;
+  font-weight: 600;
+}
+
+.date-group .value {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Hotels */
+.umrah-hotels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+}
+
+.hotel-item {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.hotel-city {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  color: #8a94a6;
+  font-weight: 700;
+}
+
+.hotel-name {
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin: 2px 0;
+}
+
+.hotel-distance {
+  font-size: 0.75rem;
+  color: #6b7a8f;
+}
+
+.hotel-nights {
+  font-size: 0.75rem;
+  color: #0a2463;
+  font-weight: 600;
+}
+
+/* Pricing */
+.umrah-pricing {
+  padding: 0.75rem 0;
+  border-top: 1px solid #f1f5f9;
+  border-bottom: 1px solid #f1f5f9;
+  margin: 0.5rem 0;
+}
+
+.price-main {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.price-label {
+  font-size: 0.8rem;
+  color: #8a94a6;
+}
+
+.price-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0a2463;
+}
+
+.price-per {
+  font-size: 0.7rem;
+  color: #8a94a6;
+}
+
+.sharing-prices {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  color: #4a5568;
+  margin-top: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.sharing-prices span {
+  background: #f1f5f9;
+  padding: 0.1rem 0.5rem;
+  border-radius: 4px;
+}
+
+.child-price,
+.infant-price {
+  font-size: 0.75rem;
+  color: #6b7a8f;
+}
+
+/* Actions */
+.umrah-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.75rem;
+}
+
+.seats-available {
+  font-size: 0.8rem;
+  color: #8a94a6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .umrah-wrapper {
+    padding: 1rem;
+  }
+  
+  .umrah-hero h1 {
+    font-size: 1.8rem;
+  }
+  
+  .umrah-hotels {
+    grid-template-columns: 1fr;
+  }
+  
+  .umrah-dates {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  
+  .filter-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .umrah-hero h1 {
+    font-size: 1.4rem;
+  }
+  
+  .filter-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .filter-actions {
+    flex-direction: column;
+  }
+  
+  .filter-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .umrah-route {
+    gap: 0.75rem;
+  }
+  
+  .city-code {
+    font-size: 1.1rem;
+  }
+  
+  .price-value {
+    font-size: 1.2rem;
+  }
+}

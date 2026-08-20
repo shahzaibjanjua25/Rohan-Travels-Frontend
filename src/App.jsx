@@ -36,6 +36,15 @@ import AdminSettings from './pages/admin/AdminSettings';
 import CreateFlight from './pages/admin/CreateFlight';
 import EditFlight from './pages/admin/EditFlight';
 
+import UmrahPackages from './pages/UmrahPackages';
+import UmrahBookingForm from './pages/UmrahBookingForm';
+import UmrahBookings from './pages/UmrahBookings';
+import UmrahBookingDetail from './pages/UmrahBookingDetail';
+import AdminUmrahPackages from './pages/admin/AdminUmrahPackages';
+import AdminUmrahCreatePackage from './pages/admin/AdminUmrahCreatePackage';
+import AdminUmrahEditPackage from './pages/admin/AdminUmrahEditPackage';
+import AdminUmrahBookings from './pages/admin/AdminUmrahBookings';
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -66,7 +75,7 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
-            
+
             <Route
               path="/bookings"
               element={
@@ -75,7 +84,7 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
-            
+
             <Route
               path="/bookings/:id"
               element={
@@ -84,7 +93,7 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
-            
+
             <Route
               path="/dashboard"
               element={
@@ -93,7 +102,7 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
-            
+
             <Route
               path="/notifications"
               element={
@@ -102,7 +111,45 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
-            
+            <Route path="/umrah" element={<UmrahPackages />} />
+            <Route path="/umrah/packages/:id/book" element={
+              <ProtectedRoute>
+                <UmrahBookingForm />
+              </ProtectedRoute>
+            } />
+            <Route path="/umrah/bookings" element={
+              <ProtectedRoute>
+                <UmrahBookings />
+              </ProtectedRoute>
+            } />
+            <Route path="/umrah/bookings/:id" element={
+              <ProtectedRoute>
+                <UmrahBookingDetail />
+              </ProtectedRoute>
+            } />
+
+// Admin routes
+            <Route path="/admin/umrah" element={<Navigate to="/admin/umrah/packages" replace />} />
+            <Route path="/admin/umrah/packages" element={
+              <ProtectedRoute adminOnly>
+                <AdminUmrahPackages />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/umrah/packages/create" element={
+              <ProtectedRoute adminOnly>
+                <AdminUmrahCreatePackage />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/umrah/packages/:id/edit" element={
+              <ProtectedRoute adminOnly>
+                <AdminUmrahEditPackage />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/umrah/bookings" element={
+              <ProtectedRoute adminOnly>
+                <AdminUmrahBookings />
+              </ProtectedRoute>
+            } />
             <Route
               path="/account"
               element={
@@ -111,7 +158,7 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
-            
+
             <Route
               path="/settings"
               element={
@@ -120,7 +167,7 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
-            
+
             <Route
               path="/ledger"
               element={
@@ -141,7 +188,7 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
-            
+
             <Route
               path="/admin/flights/create"
               element={
@@ -150,7 +197,7 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
-            
+
             <Route
               path="/admin/flights/:id/edit"
               element={
@@ -159,7 +206,7 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
-            
+
             <Route
               path="/admin/users"
               element={
@@ -168,7 +215,7 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
-            
+
             <Route
               path="/admin/bookings"
               element={
@@ -177,7 +224,7 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
-            
+
             <Route
               path="/admin/notifications"
               element={
@@ -186,7 +233,7 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
-            
+
             <Route
               path="/admin/settings"
               element={
@@ -195,7 +242,7 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
-            
+
             <Route
               path="/admin"
               element={<Navigate to="/admin/flights" replace />}

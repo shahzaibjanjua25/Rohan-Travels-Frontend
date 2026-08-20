@@ -1,0 +1,292 @@
+/* frontend/src/pages/admin/AdminUmrahPackages.css */
+.admin-umrah-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.admin-umrah-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.admin-umrah-header .eyebrow {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #8a94a6;
+  font-weight: 600;
+  margin: 0 0 0.15rem 0;
+}
+
+.admin-umrah-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  background: linear-gradient(135deg, #0a2463 0%, #1a4a8a 50%, #2a6aaa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.admin-umrah-header .faint {
+  color: #8a94a6;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.table-container {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  overflow-x: auto;
+}
+
+.admin-umrah-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  min-width: 900px;
+}
+
+.admin-umrah-table thead {
+  background: linear-gradient(135deg, #0a2463 0%, #1a4a8a 50%, #2a6aaa 100%);
+}
+
+.admin-umrah-table thead th {
+  padding: 0.85rem 1rem;
+  text-align: left;
+  font-weight: 700;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: white;
+  white-space: nowrap;
+}
+
+.admin-umrah-table thead th:first-child {
+  padding-left: 1.25rem;
+}
+
+.admin-umrah-table thead th:last-child {
+  padding-right: 1.25rem;
+}
+
+.admin-umrah-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  vertical-align: middle;
+}
+
+.admin-umrah-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.admin-umrah-table tbody tr.inactive {
+  opacity: 0.6;
+}
+
+.admin-umrah-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.package-name {
+  display: flex;
+  flex-direction: column;
+}
+
+.package-name .name {
+  font-weight: 600;
+}
+
+.package-name .duration {
+  font-size: 0.7rem;
+  color: #8a94a6;
+}
+
+.flight-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.flight-info .airline {
+  font-weight: 500;
+}
+
+.flight-info .flight-number {
+  font-size: 0.7rem;
+  color: #8a94a6;
+  font-family: monospace;
+}
+
+.route {
+  font-weight: 500;
+}
+
+.departure-date {
+  font-size: 0.85rem;
+}
+
+.hotels-info {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.75rem;
+  color: #4a5568;
+}
+
+.price {
+  font-weight: 700;
+  color: #0a2463;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-badge.active {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status-badge.inactive {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.featured-badge {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  background: #fef3c7;
+  color: #92400e;
+  margin-left: 0.3rem;
+}
+
+.action-group {
+  display: flex;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 0.4rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn--primary {
+  background: linear-gradient(135deg, #0a2463 0%, #1a4a8a 50%, #2a6aaa 100%);
+  color: white;
+}
+
+.btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(10,36,99,0.25);
+}
+
+.btn--success {
+  background: #10b981;
+  color: white;
+}
+
+.btn--success:hover {
+  background: #059669;
+}
+
+.btn--warning {
+  background: #f59e0b;
+  color: white;
+}
+
+.btn--warning:hover {
+  background: #d97706;
+}
+
+.btn--danger {
+  background: #ef4444;
+  color: white;
+}
+
+.btn--danger:hover {
+  background: #dc2626;
+}
+
+.btn--sm {
+  padding: 0.25rem 0.6rem;
+  font-size: 0.7rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+  font-size: 1.25rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.empty-state .faint {
+  color: #8a94a6;
+  margin-bottom: 1.5rem;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .admin-umrah-wrapper {
+    padding: 1rem;
+  }
+  
+  .admin-umrah-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .admin-umrah-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .action-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .action-group .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

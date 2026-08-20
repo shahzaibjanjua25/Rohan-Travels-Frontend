@@ -156,6 +156,8 @@ export default function Shell({ children }) {
   const navItems = [
     { to: '/', label: 'Home', icon: Home, end: true, show: true },
     { to: '/flights', label: 'Explore Flights', icon: Plane, show: true },
+    { to: '/umrah', label: 'Umrah Packages', icon: Calendar, show: true }, // ADD THIS
+
     {
       to: isAdmin ? '/admin/bookings' : '/bookings',
       label: isAdmin ? 'Bookings' : 'Bookings',
@@ -177,10 +179,10 @@ export default function Shell({ children }) {
     },
     ...(isAdmin
       ? [
-          { to: '/admin/flights', label: 'Manage Flights', icon: Plane, show: true },
-          { to: '/admin/users', label: 'Users', icon: Users, show: true },
-          { to: '/admin/settings', label: 'Settings', icon: Settings, show: true }
-        ]
+        { to: '/admin/flights', label: 'Manage Flights', icon: Plane, show: true },
+        { to: '/admin/users', label: 'Users', icon: Users, show: true },
+        { to: '/admin/settings', label: 'Settings', icon: Settings, show: true }
+      ]
       : [])
   ];
 
