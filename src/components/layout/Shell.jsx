@@ -219,7 +219,7 @@ export default function Shell({ children }) {
             <a href="/contact">Support Desk</a>
             <a href="/about">About Us</a>
             <span className="marketing-strip-divider"></span>
-            <a href="/login">Agent Login</a>
+            <a href="/login">Login</a>
           </div>
         </div>
       </div>
@@ -334,7 +334,7 @@ export default function Shell({ children }) {
             ) : (
               <>
                 <Link to="/login" className="btn-outline-light">
-                  Agent Login
+                  Login
                 </Link>
                 <Link to="/register" className="btn-gold">
                   Join Portal
@@ -497,7 +497,7 @@ export default function Shell({ children }) {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/umrah">
+                  <Link to="/flights?travelType=umrah">
                     <span className="dot"></span>
                     Umrah Packages
                   </Link>
@@ -515,12 +515,12 @@ export default function Shell({ children }) {
                     About Us
                   </Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link to="/blogs">
                     <span className="dot"></span>
                     Blogs &amp; Guides
                   </Link>
-                </li>
+                </li> */}
                 <li>
                   <Link to="/contact">
                     <span className="dot"></span>
@@ -644,13 +644,13 @@ export default function Shell({ children }) {
             <div>
               <p>Copyright © {new Date().getFullYear()} Rohan Travels &amp; Tours. All rights reserved.</p>
               <p className="dev-by">
-                Developed by <a href="https://motivesolutions.tech" target="_blank" rel="noopener noreferrer">Motive Solutions</a> · 0311-1105009
+                Developed by <a href="https://www.linkedin.com/in/shah-zaib-sajid-204461203/" target="_blank" rel="noopener noreferrer">Shah Zaib Sajid</a> · 0313-2677570
               </p>
             </div>
             <div className="footer-bottom-links">
               <Link to="/about">About</Link>
               <Link to="/contact">Contact</Link>
-              <Link to="/login">Agent Login</Link>
+              <Link to="/login">Login</Link>
               <button
                 className="scroll-top-btn"
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}

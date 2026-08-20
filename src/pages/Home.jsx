@@ -36,6 +36,7 @@ import {
   Instagram,
   Twitter,
   ChevronDown,
+  Ticket,
 } from 'lucide-react';
 import { FaFacebook, FaWhatsapp, FaTiktok } from 'react-icons/fa';
 import './Home.css';
@@ -147,6 +148,71 @@ const COUNTRY_AIRPORT_MAP = {
   'Pakistan': ['ISB', 'LHE', 'KHI', 'PEW', 'MUX', 'SKT', 'UET', 'LYP', 'GWD', 'KDU', 'GIL', 'CJL', 'DSK', 'RYK', 'TUK', 'PAJ', 'DBA', 'SGI', 'MWD', 'ZIA'],
 };
 
+// ============================================
+// FLIGHT CATEGORIES (TICKET TYPES) - SIMPLIFIED
+// ============================================
+// ============================================
+// FLIGHT CATEGORIES (TICKET TYPES) - NO BADGES
+// ============================================
+// ============================================
+// FLIGHT CATEGORIES (TICKET TYPES) - NO DESTINATIONS DISPLAYED
+// ============================================
+const FLIGHT_CATEGORIES = [
+  {
+    id: 1,
+    title: 'Umrah Tickets',
+    description: 'Direct flights to Jeddah & Madinah for your spiritual journey.',
+    image: 'https://zamzam.com/blog/wp-content/uploads/2021/05/history-of-Umrah.jpg',
+    color: '#10b981',
+    filterType: 'travelType',
+    filterValue: 'umrah',
+  },
+  {
+    id: 2,
+    title: 'Dubai Tickets',
+    description: 'Daily direct flights to Dubai, Abu Dhabi & Sharjah.',
+    image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80',
+    color: '#8b5cf6',
+    filterType: 'country',
+    filterValue: 'UAE',
+  },
+  {
+    id: 3,
+    title: 'Oman Tickets',
+    description: 'Direct flights to Muscat & Salalah from major Pakistani cities.',
+    image: omanImage,
+    color: '#d4af37',
+    filterType: 'country',
+    filterValue: 'Oman',
+  },
+  {
+    id: 4,
+    title: 'Bahrain Tickets',
+    description: 'Convenient flights to Manama, the pearl of the Gulf.',
+    image: bahrainImage,
+    color: '#e74c3c',
+    filterType: 'country',
+    filterValue: 'Bahrain',
+  },
+  {
+    id: 5,
+    title: 'Saudi Arabia Tickets',
+    description: 'Flights to Riyadh, Jeddah, Dammam & Madinah.',
+    image: saudiphoto,
+    color: '#2ecc71',
+    filterType: 'country',
+    filterValue: 'Saudi Arabia',
+  },
+  {
+    id: 6,
+    title: 'USA & Europe Tickets',
+    description: 'Long-haul flights to London, New York, Paris & more.',
+    image: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&w=800&q=80',
+    color: '#3498db',
+    filterType: 'country',
+    filterValue: 'global',
+  },
+];
 // Airport Select Component
 function AirportSelect({ id, label, placeholder, value, onChange, airports = [], className = '' }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -251,94 +317,6 @@ export default function Home() {
     tiktok: 'https://www.tiktok.com/@m_rohan_travels_tours?_r=1&_t=ZN-98xOcwAp770',
     whatsapp: 'https://wa.me/qr/Y5PW7NQXWGTLP1',
   };
-
-  // Tour packages with country-based filtering
-  const tourPackages = [
-    // 1. Umrah Packages (Saudi Arabia) - Uses travelType filter
-    {
-      id: 1,
-      title: 'Saudi Arabia - Umrah',
-      description: 'Spiritual journey to the holy cities of Makkah and Madinah with premium services and comfortable accommodations.',
-      duration: '7-14 Days',
-      image: 'https://zamzam.com/blog/wp-content/uploads/2021/05/history-of-Umrah.jpg',
-      features: ['5-Star Hotels', '24/7 Support', 'Visa Assistance'],
-      icon: <Umbrella size={32} />,
-      color: '#10b981',
-      badge: '⭐ Best Seller',
-      filterType: 'travelType',   // Uses travelType filter
-      filterValue: 'umrah',
-    },
-    // 2. UAE Packages - Uses country filter
-    {
-      id: 2,
-      title: 'Dubai - UAE',
-      description: 'Experience the ultimate luxury in Dubai with private tours, 5-star hotels, and exclusive access to top attractions.',
-      duration: '5-7 Days',
-      image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80',
-      features: ['Burj Khalifa', 'Desert Safari', 'Private Yacht'],
-      icon: <Building size={32} />,
-      color: '#8b5cf6',
-      badge: '🌟 Top Rated',
-      filterType: 'country',
-      filterValue: 'UAE',
-    },
-    // 3. Oman Packages - Uses country filter
-    {
-      id: 3,
-      title: 'Oman - Muscat',
-      description: 'Discover the hidden gems of Oman with stunning landscapes, rich culture, and warm hospitality.',
-      duration: '6-10 Days',
-      image: omanImage,
-      features: ['Grand Mosque', 'Wadi Shab', 'Desert Safari'],
-      icon: <Compass size={32} />,
-      color: '#d4af37',
-      badge: '🌅 Hidden Gem',
-      filterType: 'country',
-      filterValue: 'Oman',
-    },
-    // 4. Bahrain Packages - Uses country filter
-    {
-      id: 4,
-      title: 'Bahrain - Manama',
-      description: 'Explore the pearl of the Gulf with modern architecture, ancient forts, and vibrant culture.',
-      duration: '4-7 Days',
-      image: bahrainImage,
-      features: ['Bahrain Fort', 'Pearl Diving', 'Shopping Malls'],
-      icon: <Globe size={32} />,
-      color: '#e74c3c',
-      badge: '🏝️ Gulf Pearl',
-      filterType: 'country',
-      filterValue: 'Bahrain',
-    },
-    // 5. Saudi Arabia - Other Cities (not Umrah) - Uses country filter
-    {
-      id: 5,
-      title: 'Saudi Arabia - Riyadh',
-      description: 'Experience the modern capital of Saudi Arabia with its stunning architecture, rich history, and vibrant culture.',
-      duration: '5-10 Days',
-      image: saudiphoto,
-      features: ['Kingdom Tower', 'Diriyah', 'Shopping Malls'],
-      icon: <Building size={32} />,
-      color: '#2ecc71',
-      badge: '🏙️ Modern Capital',
-      filterType: 'country',
-      filterValue: 'Saudi Arabia',
-    },
-    // 6. USA Packages - Uses country filter
-    {
-      id: 6,
-      title: 'USA - New York',
-      description: 'Experience the city that never sleeps with iconic landmarks, world-class entertainment, and endless opportunities.',
-      duration: '8-14 Days',
-      image: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&w=800&q=80',
-      features: ['Times Square', 'Statue of Liberty', 'Broadway Shows'],
-      icon: <MapPin size={32} />,
-      color: '#3498db',
-      badge: '🗽 Iconic City',
-      filterType: 'country',
-      filterValue: 'USA',
-    },
-  ];
 
   const shuffleArray = (array) => {
     const shuffled = [...array];
@@ -527,18 +505,22 @@ export default function Home() {
   };
 
   // ============================================================
-  // UPDATED: handleTourClick - Different filtering based on package type
+  // HANDLE CATEGORY CLICK - Navigate to flights with filters
   // ============================================================
-  const handleTourClick = (pkg) => {
+  const handleCategoryClick = (category) => {
     const params = new URLSearchParams();
 
-    if (pkg.filterType === 'travelType') {
-      // Umrah: Only apply travelType filter
-      if (pkg.filterValue) params.append('travelType', pkg.filterValue);
-    } else if (pkg.filterType === 'country') {
-      // Country-based filter: Pass the country name as a parameter
-      // UserFlights.jsx will handle the logic to find all airports in that country
-      params.append('country', pkg.filterValue);
+    if (category.filterType === 'travelType') {
+      // Umrah: Filter by travel type
+      if (category.filterValue) params.append('travelType', category.filterValue);
+    } else if (category.filterType === 'country') {
+      if (category.filterValue === 'global') {
+        // Global: Show all international flights
+        params.append('flightType', 'international');
+      } else {
+        // Country-based: Pass country name
+        params.append('country', category.filterValue);
+      }
     }
 
     navigate(`/flights?${params.toString()}`);
@@ -756,6 +738,48 @@ export default function Home() {
       </section>
 
       {/* ============================================================
+    FLIGHT CATEGORIES SECTION - NO DESTINATIONS, NO BLUR
+    ============================================================ */}
+      <section className="section categories-section">
+        <div className="categories-bg"></div>
+        <div className="categories-overlay"></div>
+        <div className="section-header" style={{ position: 'relative', zIndex: 2 }}>
+          <span className="eyebrow">Flight Categories</span>
+          <h2>Book by Destination</h2>
+          <p>Find flights to your favorite destinations. Click on any category to see available flights.</p>
+        </div>
+
+        <div className="categories-grid" style={{ position: 'relative', zIndex: 2 }}>
+          {FLIGHT_CATEGORIES.map((category) => (
+            <div
+              key={category.id}
+              className={`category-card ${category.id === 1 ? 'featured' : ''}`}
+              onClick={() => handleCategoryClick(category)}
+              style={{ cursor: 'pointer' }}
+            >
+              <div className="category-card-image">
+                <img
+                  src={category.image}
+                  alt={category.title}
+                  className="category-card-bg-image"
+                />
+                {/* DESTINATIONS REMOVED */}
+              </div>
+              <div className="category-card-body">
+                <h3>{category.title}</h3>
+                <p className="category-description">{category.description}</p>
+                <div className="category-card-footer">
+                  <span className="category-cta">
+                    View Flights <ArrowRight size={14} />
+                  </span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ============================================================
           FEATURES SECTION
           ============================================================ */}
       <section className="section features-section">
@@ -800,93 +824,6 @@ export default function Home() {
             </div>
             <h3>Sub-Agent Control</h3>
             <p>Manage branch accounts, staff permissions, and commission splits.</p>
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================================
-          UMRAH PACKAGES SECTION - UPDATED WITH PROPER FILTERING
-          ============================================================ */}
-      <section className="umrah-section">
-        <div className="section-header">
-          <span className="eyebrow">Spiritual Journey, Premium Experience</span>
-          <h2>UMRAH PACKAGES</h2>
-          <p>Carefully curated Umrah packages with premium accommodations, seamless transfers, and exceptional service.</p>
-        </div>
-
-        <div className="umrah-grid">
-          {tourPackages.map((pkg, index) => (
-            <div key={pkg.id} className={`umrah-card ${index === 0 ? 'featured' : ''}`}>
-              <div className="umrah-card-image">
-                <img src={pkg.image} alt={pkg.title} />
-                <div className="umrah-card-badge">
-                  <Star size={12} />
-                  <span>{pkg.badge}</span>
-                </div>
-              </div>
-              <div className="umrah-card-body">
-                <div className="umrah-card-header">
-                  <div>
-                    <h4>{pkg.title}</h4>
-                    <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)' }}>{pkg.duration}</p>
-                  </div>
-                  <div className="price">
-                    <div className="from">From</div>
-                    <div className="amount">$899</div>
-                    <div className="per-person">/ PER PERSON</div>
-                  </div>
-                </div>
-
-                <div className="umrah-features">
-                  <div className="umrah-feature">
-                    <div className="icon"><Plane size={16} /></div>
-                    <span className="label">Return Flights</span>
-                  </div>
-                  <div className="umrah-feature">
-                    <div className="icon"><Building size={16} /></div>
-                    <span className="label">3 Star Hotel</span>
-                    <span className="sub">300M from Haram</span>
-                  </div>
-                  <div className="umrah-feature">
-                    <div className="icon"><Calendar size={16} /></div>
-                    <span className="label">7 Nights</span>
-                    <span className="sub">Makkah</span>
-                  </div>
-                  <div className="umrah-feature">
-                    <div className="icon"><Compass size={16} /></div>
-                    <span className="label">Shared Transfers</span>
-                  </div>
-                </div>
-
-                <button
-                  className="btn-view"
-                  onClick={() => handleTourClick(pkg)}
-                >
-                  View Details <ArrowRight size={16} />
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="umrah-trust">
-          <div className="umrah-trust-item">
-            <div className="icon"><Shield size={20} /></div>
-            <div className="text"><span className="title">ATOL Protected</span><span className="sub">Your Money is Safe</span></div>
-          </div>
-          <div className="umrah-trust-item">
-            <div className="icon"><Users size={20} /></div>
-            <div className="text"><span className="title">24/7 Support</span><span className="sub">We're Here to Help</span></div>
-          </div>
-          <div className="umrah-trust-item">
-            <div className="icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1" /><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" /></svg>
-            </div>
-            <div className="text"><span className="title">Flexible Payments</span><span className="sub">Easy Installments</span></div>
-          </div>
-          <div className="umrah-trust-item">
-            <div className="icon"><Award size={20} /></div>
-            <div className="text"><span className="title">Trusted by Agents</span><span className="sub">Preferred Partner</span></div>
           </div>
         </div>
       </section>
@@ -1071,14 +1008,14 @@ export default function Home() {
           <div className="map-column">
             <div className="map-container">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27094.594246822095!2d73.4916027!3d32.5657597!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39216cb5c5c8fefb%3A0xd7e38ec4a802185!2sMandi%20Bahauddin%2C%20Punjab%2C%20Pakistan!5e0!3m2!1sen!2s!4v1700000000000"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3055.278336623904!2d73.4961549!3d32.5880143!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391f7d1fff85b91b%3A0x3c5580dd33145c7e!2sM%20ROHAN%20TRAVEL%20%26%20TOURS!5e1!3m2!1sen!2s!4v1787200004245!5m2!1sen!2s"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
                 allowFullScreen
                 loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Rohan Travels Location"
+                referrerPolicy="strict-origin-when-cross-origin"
+                title="M ROHAN TRAVEL & TOURS Location"
               />
             </div>
           </div>

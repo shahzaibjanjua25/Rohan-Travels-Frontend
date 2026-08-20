@@ -15,6 +15,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import NotFound from './pages/NotFound';
 import Contact from './pages/Contact';
+import About from './pages/About';  // ← ADD THIS
 
 // Authenticated Pages
 import Bookings from './pages/Bookings';
@@ -52,6 +53,7 @@ export default function App() {
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/about" element={<About />} />  {/* ← ADD THIS */}
 
             {/* ============================================
                 PROTECTED ROUTES (Require Authentication)
