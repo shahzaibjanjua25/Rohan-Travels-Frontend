@@ -8,6 +8,8 @@ import bahrainImage from '../assests/bahrain.jpg';
 import omanImage from '../assests/oman.jpg';
 import heroVideo from '../assests/hero-vid.mp4';
 import saudiphoto from '../assests/saudia.jpg';
+import qatarImage from '../assests/qatar.jpg';
+import umrahBgImage from '../assests/umrah-bg.jpg'; 
 import { CONTACTS } from '../config/contacts';
 
 // Import Umrah images
@@ -157,19 +159,11 @@ const COUNTRY_AIRPORT_MAP = {
 
 // ============================================
 // FLIGHT CATEGORIES (TICKET TYPES)
+// ✨ UPDATED: Removed Umrah, added Qatar
 // ============================================
 const FLIGHT_CATEGORIES = [
   {
     id: 1,
-    title: 'Umrah Tickets',
-    description: 'Direct flights to Jeddah & Madinah for your spiritual journey.',
-    image: 'https://zamzam.com/blog/wp-content/uploads/2021/05/history-of-Umrah.jpg',
-    color: '#10b981',
-    filterType: 'travelType',
-    filterValue: 'umrah',
-  },
-  {
-    id: 2,
     title: 'Dubai Tickets',
     description: 'Daily direct flights to Dubai, Abu Dhabi & Sharjah.',
     image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80',
@@ -178,7 +172,7 @@ const FLIGHT_CATEGORIES = [
     filterValue: 'UAE',
   },
   {
-    id: 3,
+    id: 2,
     title: 'Oman Tickets',
     description: 'Direct flights to Muscat & Salalah from major Pakistani cities.',
     image: omanImage,
@@ -187,13 +181,22 @@ const FLIGHT_CATEGORIES = [
     filterValue: 'Oman',
   },
   {
-    id: 4,
+    id: 3,
     title: 'Bahrain Tickets',
     description: 'Convenient flights to Manama, the pearl of the Gulf.',
     image: bahrainImage,
     color: '#e74c3c',
     filterType: 'country',
     filterValue: 'Bahrain',
+  },
+  {
+    id: 4,
+    title: 'Qatar Tickets',
+    description: 'Direct flights to Doha, the jewel of the Arabian Gulf.',
+    image: qatarImage,
+    color: '#8a1538',
+    filterType: 'country',
+    filterValue: 'Qatar',
   },
   {
     id: 5,
@@ -766,7 +769,145 @@ export default function Home() {
       </section>
 
       {/* ============================================================
-          FLIGHT CATEGORIES SECTION
+          FEATURED UMRAH PACKAGES SECTION - WITH BACKGROUND IMAGE
+          ============================================================ */}
+      <section className="section umrah-home-section" style={{
+        backgroundImage: `url(${umrahBgImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
+        position: 'relative',
+      }}>
+        {/* Dark overlay for readability */}
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'rgba(3, 13, 34, 0.75)',
+          zIndex: 0,
+        }}></div>
+        
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <div className="section-header">
+            <span className="eyebrow" style={{ color: '#ffa10b' }}>🕋 Spiritual Journeys</span>
+            <h2 style={{ color: '#ffffff' }}>Featured Umrah Packages</h2>
+            <p style={{ color: 'rgba(255,255,255,0.85)' }}>Complete packages with flights, hotels, and transport for your spiritual journey.</p>
+          </div>
+
+          {umrahLoading ? (
+            <div className="umrah-home-loading" style={{ background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(8px)' }}>
+              <div className="spinner" aria-hidden="true"></div>
+              <p style={{ color: '#ffffff' }}>Loading packages...</p>
+            </div>
+          ) : umrahError ? (
+            <div className="umrah-home-error" style={{ background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(8px)' }}>
+              <p style={{ color: '#ffffff' }}>{umrahError}</p>
+              <button className="btn btn--ghost" onClick={fetchUmrahPackages} style={{ color: '#ffa10b', borderColor: '#ffa10b' }}>Retry</button>
+            </div>
+          ) : umrahPackages.length === 0 ? (
+            <div className="umrah-home-empty" style={{ background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(8px)' }}>
+              <p className="faint" style={{ color: 'rgba(255,255,255,0.7)' }}>No featured Umrah packages available at the moment.</p>
+              <Link to="/umrah" className="btn btn--ghost" style={{ color: '#ffa10b', borderColor: '#ffa10b' }}>Browse all packages</Link>
+            </div>
+          ) : (
+            <div className="umrah-home-grid">
+              {umrahPackages.map((pkg, index) => {
+                // Get the lowest price from all room types
+                const prices = [
+                  pkg.sharingPrices?.single,
+                  pkg.sharingPrices?.double,
+                  pkg.sharingPrices?.triple,
+                  pkg.sharingPrices?.quad,
+                  pkg.sharingPrices?.sharing,
+                  pkg.perPersonPrice,
+                ].filter(p => p && p > 0);
+                const price = prices.length ? Math.min(...prices) : pkg.perPersonPrice || 0;
+                
+                // Cycle through images
+                const imageIndex = index % 3;
+                const packageImage = umrahImages[imageIndex];
+                
+                return (
+                  <Link 
+                    key={pkg._id} 
+                    to={`/umrah/packages/${pkg._id}/book`} 
+                    className="umrah-home-card"
+                    style={{
+                      background: 'rgba(255,255,255,0.08)',
+                      backdropFilter: 'blur(12px)',
+                      border: '1px solid rgba(255,255,255,0.12)',
+                      transition: 'all 0.3s ease',
+                    }}
+                  >
+                    <div className="umrah-home-card-image">
+                      <img
+                        src={packageImage}
+                        alt={pkg.packageName}
+                        onError={(e) => {
+                          e.target.src = 'https://images.unsplash.com/photo-1580589351520-187b703aa0e7?auto=format&fit=crop&w=800&q=80';
+                        }}
+                      />
+                      <span className="umrah-home-card-badge" style={{ background: 'linear-gradient(135deg, #ffa10b 0%, #e08e09 100%)' }}>Featured</span>
+                    </div>
+                    <div className="umrah-home-card-body" style={{ color: '#ffffff' }}>
+                      <h3 style={{ color: '#ffffff' }}>{pkg.packageName}</h3>
+                      <div className="umrah-home-card-meta" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                        <span>{pkg.airline}</span>
+                        <span>{pkg.flightNumber}</span>
+                      </div>
+                      <div className="umrah-home-card-route" style={{ color: 'rgba(255,255,255,0.9)' }}>
+                        <span>{pkg.origin?.airportCode || 'N/A'}</span>
+                        <span className="arrow" style={{ color: '#ffa10b' }}>→</span>
+                        <span>{pkg.destination?.airportCode || 'N/A'}</span>
+                      </div>
+                      <div className="umrah-home-card-hotels" style={{ borderTopColor: 'rgba(255,255,255,0.1)', borderBottomColor: 'rgba(255,255,255,0.1)' }}>
+                        <div className="hotel-item">
+                          <span className="hotel-city" style={{ color: 'rgba(255,255,255,0.5)' }}>🕋 Makkah</span>
+                          <span className="hotel-name" style={{ color: '#ffffff' }}>{pkg.makkahHotel?.name?.substring(0, 20) || 'N/A'}</span>
+                          <span className="hotel-nights" style={{ color: '#ffa10b' }}>{pkg.makkahHotel?.nights || 0} nights</span>
+                        </div>
+                        {pkg.makkahReturnHotel?.name && (
+                          <div className="hotel-item">
+                            <span className="hotel-city" style={{ color: 'rgba(255,255,255,0.5)' }}>🕋 Makkah (Return)</span>
+                            <span className="hotel-name" style={{ color: '#ffffff' }}>{pkg.makkahReturnHotel.name?.substring(0, 20) || 'N/A'}</span>
+                            <span className="hotel-nights" style={{ color: '#ffa10b' }}>{pkg.makkahReturnHotel.nights || 0} nights</span>
+                          </div>
+                        )}
+                        <div className="hotel-item">
+                          <span className="hotel-city" style={{ color: 'rgba(255,255,255,0.5)' }}>🕌 Madinah</span>
+                          <span className="hotel-name" style={{ color: '#ffffff' }}>{pkg.madinahHotel?.name?.substring(0, 20) || 'N/A'}</span>
+                          <span className="hotel-nights" style={{ color: '#ffa10b' }}>{pkg.madinahHotel?.nights || 0} nights</span>
+                        </div>
+                      </div>
+                      <div className="umrah-home-card-footer">
+                        <div className="price">
+                          <span className="from" style={{ color: 'rgba(255,255,255,0.5)' }}>From</span>
+                          <span className="amount" style={{ color: '#ffa10b' }}>PKR {price.toLocaleString()}</span>
+                          <span className="per" style={{ color: 'rgba(255,255,255,0.4)' }}>/ person</span>
+                        </div>
+                        <span className="view-btn" style={{ background: 'rgba(255,161,11,0.15)', color: '#ffa10b' }}>View Details →</span>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
+
+          <div className="umrah-home-view-all">
+            <Link to="/umrah" className="btn btn--gold" style={{
+              background: 'linear-gradient(135deg, #ffa10b 0%, #e08e09 100%)',
+              color: '#0f172a',
+              boxShadow: '0 4px 20px rgba(255,161,11,0.3)',
+            }}>
+              View All Umrah Packages
+              <ArrowRight size={16} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================
+          FLIGHT CATEGORIES SECTION - UPDATED (Umrah removed, Qatar added)
           ============================================================ */}
       <section className="section categories-section">
         <div className="categories-bg"></div>
@@ -852,102 +993,6 @@ export default function Home() {
             <h3>Sub-Agent Control</h3>
             <p>Manage branch accounts, staff permissions, and commission splits.</p>
           </div>
-        </div>
-      </section>
-
-      {/* ============================================================
-          FEATURED UMRAH PACKAGES SECTION - ONLY 3 CARDS
-          ============================================================ */}
-      <section className="section umrah-home-section">
-        <div className="section-header">
-          <span className="eyebrow">🕋 Spiritual Journeys</span>
-          <h2>Featured Umrah Packages</h2>
-          <p>Complete packages with flights, hotels, and transport for your spiritual journey.</p>
-        </div>
-
-        {umrahLoading ? (
-          <div className="umrah-home-loading">
-            <div className="spinner" aria-hidden="true"></div>
-            <p>Loading packages...</p>
-          </div>
-        ) : umrahError ? (
-          <div className="umrah-home-error">
-            <p>{umrahError}</p>
-            <button className="btn btn--ghost" onClick={fetchUmrahPackages}>Retry</button>
-          </div>
-        ) : umrahPackages.length === 0 ? (
-          <div className="umrah-home-empty">
-            <p className="faint">No featured Umrah packages available at the moment.</p>
-            <Link to="/umrah" className="btn btn--ghost">Browse all packages</Link>
-          </div>
-        ) : (
-          <div className="umrah-home-grid">
-            {umrahPackages.map((pkg, index) => {
-              const price = pkg.sharingPrices?.quad || pkg.perPersonPrice || 0;
-              // Cycle through images: index 0 -> umrah.jpg, index 1 -> umra2.jpg, index 2 -> umra3.jpg
-              const imageIndex = index % 3;
-              const packageImage = umrahImages[imageIndex];
-              
-              return (
-                <Link 
-                  key={pkg._id} 
-                  to={`/umrah/packages/${pkg._id}/book`} 
-                  className="umrah-home-card"
-                >
-                  <div className="umrah-home-card-image">
-                    <img
-                      src={packageImage}
-                      alt={pkg.packageName}
-                      onError={(e) => {
-                        // Fallback if image fails to load
-                        e.target.src = 'https://images.unsplash.com/photo-1580589351520-187b703aa0e7?auto=format&fit=crop&w=800&q=80';
-                      }}
-                    />
-                    <span className="umrah-home-card-badge">Featured</span>
-                  </div>
-                  <div className="umrah-home-card-body">
-                    <h3>{pkg.packageName}</h3>
-                    <div className="umrah-home-card-meta">
-                      <span>{pkg.airline}</span>
-                      <span>{pkg.flightNumber}</span>
-                    </div>
-                    <div className="umrah-home-card-route">
-                      <span>{pkg.origin?.airportCode || 'N/A'}</span>
-                      <span className="arrow">→</span>
-                      <span>{pkg.destination?.airportCode || 'N/A'}</span>
-                    </div>
-                    <div className="umrah-home-card-hotels">
-                      <div className="hotel-item">
-                        <span className="hotel-city">🕋 Makkah</span>
-                        <span className="hotel-name">{pkg.makkahHotel?.name?.substring(0, 20) || 'N/A'}</span>
-                        <span className="hotel-nights">{pkg.makkahHotel?.nights || 0} nights</span>
-                      </div>
-                      <div className="hotel-item">
-                        <span className="hotel-city">🕌 Madinah</span>
-                        <span className="hotel-name">{pkg.madinahHotel?.name?.substring(0, 20) || 'N/A'}</span>
-                        <span className="hotel-nights">{pkg.madinahHotel?.nights || 0} nights</span>
-                      </div>
-                    </div>
-                    <div className="umrah-home-card-footer">
-                      <div className="price">
-                        <span className="from">From</span>
-                        <span className="amount">PKR {price.toLocaleString()}</span>
-                        <span className="per">/ person</span>
-                      </div>
-                      <span className="view-btn">View Details →</span>
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        )}
-
-        <div className="umrah-home-view-all">
-          <Link to="/umrah" className="btn btn--gold">
-            View All Umrah Packages
-            <ArrowRight size={16} />
-          </Link>
         </div>
       </section>
 
