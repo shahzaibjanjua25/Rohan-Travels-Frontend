@@ -47,9 +47,11 @@ function initials(name = '') {
 
 function lowestPrice(pkg) {
     const prices = [
-        pkg.sharingPrices?.quad,
-        pkg.sharingPrices?.triple,
+        pkg.sharingPrices?.single,
         pkg.sharingPrices?.double,
+        pkg.sharingPrices?.triple,
+        pkg.sharingPrices?.quad,
+        pkg.sharingPrices?.sharing,
         pkg.perPersonPrice,
     ].filter((p) => p && p > 0);
     return prices.length ? Math.min(...prices) : pkg.perPersonPrice;
@@ -120,8 +122,6 @@ export default function UmrahPackages() {
                 // Add default limit
                 params.limit = 20;
 
-                console.log('🔍 Loading packages with params:', params);
-
                 const response = await umrahService.getPackages(params);
                 if (cancelled) return;
                 setPackages(response.data || []);
@@ -146,7 +146,7 @@ export default function UmrahPackages() {
         };
     }, [searchParams]);
 
-    // Sync filters when URL params change (e.g., from browser back/forward)
+    // Sync filters when URL params change
     useEffect(() => {
         setFilters({
             departureDate: searchParams.get('departureDate') || '',
@@ -164,37 +164,15 @@ export default function UmrahPackages() {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        // Build params object from filters, filtering out empty values
         const params = {};
         Object.entries(filters).forEach(([key, value]) => {
             if (value && value !== '') {
                 params[key] = value;
             }
         });
-        // Reset page to 1 when searching
         params.page = 1;
         setSearchParams(params);
     };
-
-    // Auto-search when a filter changes (optional - uncomment if you want instant search)
-    // Commented out to keep click-to-search behavior
-    /*
-    useEffect(() => {
-        const timeoutId = setTimeout(() => {
-            const params = {};
-            Object.entries(filters).forEach(([key, value]) => {
-                if (value && value !== '') {
-                    params[key] = value;
-                }
-            });
-            if (Object.keys(params).length > 0 || Object.keys(searchParams).length > 0) {
-                params.page = 1;
-                setSearchParams(params);
-            }
-        }, 500);
-        return () => clearTimeout(timeoutId);
-    }, [filters]);
-    */
 
     const handleReset = () => {
         setFilters(EMPTY_FILTERS);
@@ -303,7 +281,7 @@ export default function UmrahPackages() {
 
             {error && <Alert kind="error">{error}</Alert>}
 
-            {/* Show search info - only when filters are active */}
+            {/* Show search info */}
             {!loading && !error && (
                 <div className="umrah-search-info">
                     {hasActiveFilters ? (
@@ -390,6 +368,16 @@ export default function UmrahPackages() {
                                             {pkg.makkahHotel?.nights || 0} nights
                                         </span>
                                     </li>
+                                    {pkg.makkahReturnHotel?.name && (
+                                        <li>
+                                            <span className="pkg-stay-label">Makkah (Return)</span>
+                                            <span className="pkg-stay-name">{pkg.makkahReturnHotel.name}</span>
+                                            <span className="pkg-stay-meta">
+                                                {pkg.makkahReturnHotel.distance ? `${pkg.makkahReturnHotel.distance} · ` : ''}
+                                                {pkg.makkahReturnHotel.nights || 0} nights
+                                            </span>
+                                        </li>
+                                    )}
                                     <li>
                                         <span className="pkg-stay-label">Madinah</span>
                                         <span className="pkg-stay-name">{pkg.madinahHotel?.name || 'Hotel TBC'}</span>
@@ -404,14 +392,23 @@ export default function UmrahPackages() {
                                     <p className="pkg-price-eyebrow">From, per person</p>
                                     <p className="pkg-price-amount">{money(price)}</p>
 
-                                    {(pkg.sharingPrices?.quad > 0 ||
+                                    {/* ✨ UPDATED: Show all sharing prices including single and sharing */}
+                                    {(pkg.sharingPrices?.single > 0 ||
+                                        pkg.sharingPrices?.double > 0 ||
                                         pkg.sharingPrices?.triple > 0 ||
-                                        pkg.sharingPrices?.double > 0) && (
+                                        pkg.sharingPrices?.quad > 0 ||
+                                        pkg.sharingPrices?.sharing > 0) && (
                                         <dl className="pkg-shares">
-                                            {pkg.sharingPrices?.quad > 0 && (
+                                            {pkg.sharingPrices?.single > 0 && (
                                                 <div>
-                                                    <dt>Quad</dt>
-                                                    <dd>{money(pkg.sharingPrices.quad)}</dd>
+                                                    <dt>Single</dt>
+                                                    <dd>{money(pkg.sharingPrices.single)}</dd>
+                                                </div>
+                                            )}
+                                            {pkg.sharingPrices?.double > 0 && (
+                                                <div>
+                                                    <dt>Double</dt>
+                                                    <dd>{money(pkg.sharingPrices.double)}</dd>
                                                 </div>
                                             )}
                                             {pkg.sharingPrices?.triple > 0 && (
@@ -420,10 +417,16 @@ export default function UmrahPackages() {
                                                     <dd>{money(pkg.sharingPrices.triple)}</dd>
                                                 </div>
                                             )}
-                                            {pkg.sharingPrices?.double > 0 && (
+                                            {pkg.sharingPrices?.quad > 0 && (
                                                 <div>
-                                                    <dt>Double</dt>
-                                                    <dd>{money(pkg.sharingPrices.double)}</dd>
+                                                    <dt>Quad</dt>
+                                                    <dd>{money(pkg.sharingPrices.quad)}</dd>
+                                                </div>
+                                            )}
+                                            {pkg.sharingPrices?.sharing > 0 && (
+                                                <div>
+                                                    <dt>Sharing</dt>
+                                                    <dd>{money(pkg.sharingPrices.sharing)}</dd>
                                                 </div>
                                             )}
                                         </dl>

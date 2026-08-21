@@ -43,13 +43,27 @@ const AIRPORTS = [
   { code: 'MCT', city: 'Muscat' }
 ];
 
-const SHARING_TYPES = ['quad', 'triple', 'double'];
+// ✨ UPDATED: Room types with all options
+const ROOM_TYPES = [
+  { value: 'single', label: 'Single (1 person)' },
+  { value: 'double', label: 'Double (2 persons)' },
+  { value: 'triple', label: 'Triple (3 persons)' },
+  { value: 'quad', label: 'Quad (4 persons)' },
+  { value: 'sharing', label: 'Sharing (5+ persons)' },
+];
 
 const SAMPLE_MAKKAH_HOTELS = [
   { name: 'WEDAM SIX', distance: 'Shuttle', nights: 8 },
   { name: 'WHITE LION', distance: '1200 M', nights: 8 },
   { name: 'MASARAT KHALIL / NADA HIJRA', distance: '750 M', nights: 8 },
   { name: 'MASARAT GOLDEN', distance: '600 M', nights: 8 }
+];
+
+const SAMPLE_MAKKAH_RETURN_HOTELS = [
+  { name: 'WEDAM SIX', distance: 'Shuttle', nights: 2 },
+  { name: 'WHITE LION', distance: '1200 M', nights: 2 },
+  { name: 'MASARAT KHALIL / NADA HIJRA', distance: '750 M', nights: 2 },
+  { name: 'MASARAT GOLDEN', distance: '600 M', nights: 2 }
 ];
 
 const SAMPLE_MADINAH_HOTELS = [
@@ -85,15 +99,20 @@ export default function AdminUmrahCreatePackage() {
     stops: 0,
     baggageAllowance: { departure: '23 KG', arrival: '46 KG' },
     makkahHotel: { name: '', distance: '', nights: 8 },
+    makkahReturnHotel: { name: '', distance: '', nights: 2 },
     madinahHotel: { name: '', distance: '', nights: 6 },
     perPersonPrice: 0,
-    sharingPrices: { quad: 0, triple: 0, double: 0 },
+    sharingPrices: { single: 0, double: 0, triple: 0, quad: 0, sharing: 0 },
     childWithoutBedPrice: 0,
     infantPrice: 0,
     totalSeats: 0,
     isActive: true,
     isFeatured: false,
-    includes: ['Visa', 'Ticket', 'Accommodation', 'Transport']
+    includes: ['Visa', 'Ticket', 'Accommodation', 'Transport'],
+    // ✨ NEW: Ziyarat fields
+    ziyaratEnabled: false,
+    ziyaratPrice: 5000,
+    ziyaratDescription: 'Guided Ziyarat tour of holy sites including: Mount Uhud, Quba Mosque, Cave of Hira, and more.'
   });
 
   const handleChange = (e) => {
@@ -122,12 +141,21 @@ export default function AdminUmrahCreatePackage() {
     }));
   };
 
-  // ✅ FIX: Properly handle hotel nights with explicit number conversion
   const handleMakkahHotelChange = (field, value) => {
     setFormData(prev => ({
       ...prev,
       makkahHotel: { 
         ...prev.makkahHotel, 
+        [field]: field === 'nights' ? parseInt(value) || 0 : value 
+      }
+    }));
+  };
+
+  const handleMakkahReturnHotelChange = (field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      makkahReturnHotel: { 
+        ...prev.makkahReturnHotel, 
         [field]: field === 'nights' ? parseInt(value) || 0 : value 
       }
     }));
@@ -192,7 +220,6 @@ export default function AdminUmrahCreatePackage() {
     setError('');
 
     try {
-      // ✅ FIX: Ensure nights are properly included as numbers in the payload
       const payload = {
         ...formData,
         departureDate: new Date(formData.departureDate).toISOString(),
@@ -206,19 +233,32 @@ export default function AdminUmrahCreatePackage() {
           nights: parseInt(formData.makkahHotel.nights) || 0,
           rating: 0
         },
+        makkahReturnHotel: formData.makkahReturnHotel.name ? {
+          name: formData.makkahReturnHotel.name,
+          distance: formData.makkahReturnHotel.distance || '',
+          nights: parseInt(formData.makkahReturnHotel.nights) || 0,
+          rating: 0
+        } : null,
         madinahHotel: {
           name: formData.madinahHotel.name,
           distance: formData.madinahHotel.distance || '',
           nights: parseInt(formData.madinahHotel.nights) || 0,
           rating: 0
-        }
+        },
+        sharingPrices: {
+          single: parseFloat(formData.sharingPrices.single) || 0,
+          double: parseFloat(formData.sharingPrices.double) || 0,
+          triple: parseFloat(formData.sharingPrices.triple) || 0,
+          quad: parseFloat(formData.sharingPrices.quad) || 0,
+          sharing: parseFloat(formData.sharingPrices.sharing) || 0,
+        },
+        // ✨ NEW: Ziyarat fields
+        ziyaratEnabled: formData.ziyaratEnabled || false,
+        ziyaratPrice: parseFloat(formData.ziyaratPrice) || 0,
+        ziyaratDescription: formData.ziyaratDescription || '',
       };
 
-      console.log('📤 Sending payload:', JSON.stringify(payload, null, 2));
-
-      const response = await umrahService.createPackage(payload);
-      console.log('✅ Package created:', response);
-      
+      await umrahService.createPackage(payload);
       navigate('/admin/umrah/adminpackages');
     } catch (err) {
       console.error('Error creating package:', err);
@@ -230,11 +270,13 @@ export default function AdminUmrahCreatePackage() {
 
   const fillSampleHotels = () => {
     const makkahSample = SAMPLE_MAKKAH_HOTELS[Math.floor(Math.random() * SAMPLE_MAKKAH_HOTELS.length)];
+    const makkahReturnSample = SAMPLE_MAKKAH_RETURN_HOTELS[Math.floor(Math.random() * SAMPLE_MAKKAH_RETURN_HOTELS.length)];
     const madinahSample = SAMPLE_MADINAH_HOTELS[Math.floor(Math.random() * SAMPLE_MADINAH_HOTELS.length)];
     
     setFormData(prev => ({
       ...prev,
       makkahHotel: { ...prev.makkahHotel, ...makkahSample },
+      makkahReturnHotel: { ...prev.makkahReturnHotel, ...makkahReturnSample },
       madinahHotel: { ...prev.madinahHotel, ...madinahSample }
     }));
   };
@@ -533,9 +575,12 @@ export default function AdminUmrahCreatePackage() {
           </div>
         </div>
 
-        {/* ✅ FIXED: Hotels Section with proper nights handling */}
+        {/* ✨ UPDATED: Hotels Section with Makkah Return */}
         <div className="form-section">
           <h3>Hotels</h3>
+          <p className="faint" style={{ marginBottom: '1rem', fontSize: '14px' }}>
+            Journey: <strong>Makkah</strong> → <strong>Madinah</strong> → <strong>Makkah (Return)</strong>
+          </p>
           <button
             type="button"
             className="btn btn--ghost btn--sm"
@@ -585,6 +630,42 @@ export default function AdminUmrahCreatePackage() {
             </div>
 
             <div className="field-group half">
+              <h4>🕋 Makkah Return Hotel</h4>
+              <div className="hotel-fields">
+                <div className="field-group">
+                  <label>Hotel Name (Optional)</label>
+                  <input
+                    type="text"
+                    value={formData.makkahReturnHotel.name}
+                    onChange={(e) => handleMakkahReturnHotelChange('name', e.target.value)}
+                    placeholder="e.g., WEDAM SIX"
+                  />
+                </div>
+                <div className="field-group">
+                  <label>Distance from Haram</label>
+                  <input
+                    type="text"
+                    value={formData.makkahReturnHotel.distance}
+                    onChange={(e) => handleMakkahReturnHotelChange('distance', e.target.value)}
+                    placeholder="e.g., 1200 M or Shuttle"
+                  />
+                </div>
+                <div className="field-group">
+                  <label>Nights</label>
+                  <input
+                    type="number"
+                    value={formData.makkahReturnHotel.nights}
+                    onChange={(e) => handleMakkahReturnHotelChange('nights', e.target.value)}
+                    min="0"
+                    placeholder="Number of nights"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="form-row" style={{ marginTop: '1rem' }}>
+            <div className="field-group half">
               <h4>🕌 Madinah Hotel *</h4>
               <div className="hotel-fields">
                 <div className="field-group">
@@ -624,7 +705,7 @@ export default function AdminUmrahCreatePackage() {
           </div>
         </div>
 
-        {/* Pricing */}
+        {/* ✨ UPDATED: Pricing with all room types */}
         <div className="form-section">
           <h3>Pricing</h3>
           <div className="form-row">
@@ -665,20 +746,72 @@ export default function AdminUmrahCreatePackage() {
           </div>
 
           <div className="form-row">
-            <h4>Sharing Prices (Optional)</h4>
-            {SHARING_TYPES.map((type) => (
-              <div className="field-group" key={type}>
-                <label>{type.charAt(0).toUpperCase() + type.slice(1)} Sharing</label>
+            <h4>Sharing Prices (Per Person)</h4>
+            {ROOM_TYPES.map((type) => (
+              <div className="field-group" key={type.value}>
+                <label>{type.label}</label>
                 <input
                   type="number"
-                  value={formData.sharingPrices[type] || 0}
-                  onChange={(e) => handleSharingChange(type, e.target.value)}
+                  value={formData.sharingPrices[type.value] || 0}
+                  onChange={(e) => handleSharingChange(type.value, e.target.value)}
                   min="0"
                   placeholder="0"
                 />
               </div>
             ))}
           </div>
+        </div>
+
+        {/* ✨ NEW: Ziyarat Package Section */}
+        <div className="form-section">
+          <h3>Ziyarat Package</h3>
+          <p className="faint" style={{ marginBottom: '1rem', fontSize: '14px' }}>
+            Offer a guided Ziyarat tour as an optional add-on for your customers.
+          </p>
+          
+          <div className="form-row">
+            <div className="field-group">
+              <label className="checkbox-label" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '15px', fontWeight: '600' }}>
+                <input
+                  type="checkbox"
+                  name="ziyaratEnabled"
+                  checked={formData.ziyaratEnabled}
+                  onChange={handleChange}
+                />
+                Enable Ziyarat Package
+              </label>
+            </div>
+          </div>
+
+          {formData.ziyaratEnabled && (
+            <>
+              <div className="form-row">
+                <div className="field-group">
+                  <label>Ziyarat Price (PKR) *</label>
+                  <input
+                    type="number"
+                    name="ziyaratPrice"
+                    value={formData.ziyaratPrice}
+                    onChange={handleChange}
+                    min="0"
+                    placeholder="e.g., 5000"
+                  />
+                </div>
+              </div>
+              <div className="form-row">
+                <div className="field-group">
+                  <label>Ziyarat Description</label>
+                  <textarea
+                    name="ziyaratDescription"
+                    value={formData.ziyaratDescription}
+                    onChange={handleChange}
+                    placeholder="Describe what's included in the Ziyarat tour..."
+                    rows="3"
+                  />
+                </div>
+              </div>
+            </>
+          )}
         </div>
 
         {/* Seats & Status */}

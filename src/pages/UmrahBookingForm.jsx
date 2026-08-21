@@ -34,6 +34,9 @@ export default function UmrahBookingForm() {
     passportNumber: ''
   });
   const [specialRequests, setSpecialRequests] = useState('');
+  
+  // ✨ NEW: Ziyarat state
+  const [ziyaratEnabled, setZiyaratEnabled] = useState(false);
 
   useEffect(() => {
     loadPackage();
@@ -89,6 +92,7 @@ export default function UmrahBookingForm() {
     return prices[roomType] || packageData.perPersonPrice || 0;
   };
 
+  // ✨ UPDATED: Calculate total including Ziyarat
   const calculateTotal = () => {
     if (!packageData) return 0;
     const sharingPrice = getSharingPrice();
@@ -99,6 +103,12 @@ export default function UmrahBookingForm() {
     let total = adults * sharingPrice;
     total += children * (packageData.childWithoutBedPrice || 0);
     total += infants * (packageData.infantPrice || 0);
+    
+    // ✨ NEW: Add Ziyarat price if enabled
+    if (ziyaratEnabled && packageData.ziyaratEnabled && packageData.ziyaratPrice > 0) {
+      total += packageData.ziyaratPrice;
+    }
+    
     return total;
   };
 
@@ -158,6 +168,7 @@ export default function UmrahBookingForm() {
     });
   };
 
+  // ✨ UPDATED: Submit handler with ziyarat
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -175,7 +186,8 @@ export default function UmrahBookingForm() {
           dateOfBirth: p.dateOfBirth ? new Date(p.dateOfBirth).toISOString().split('T')[0] : ''
         })),
         customerDetails,
-        specialRequests
+        specialRequests,
+        ziyaratEnabled: ziyaratEnabled || false  // ✨ NEW
       };
 
       const response = await umrahService.createBooking(payload);
@@ -190,6 +202,7 @@ export default function UmrahBookingForm() {
               ✅ Confirmation sent to your email<br>
               📞 Our team will contact you within 24 hours<br>
               💳 Payment will be confirmed after verification
+              ${ziyaratEnabled ? '<br>🕌 Ziyarat package included' : ''}
             </p>
           </div>
         `,
@@ -292,6 +305,13 @@ export default function UmrahBookingForm() {
                 <span className="name">{packageData.makkahHotel?.name || 'N/A'}</span>
                 <span className="detail">{packageData.makkahHotel?.distance || ''} • {packageData.makkahHotel?.nights || 0} Nights</span>
               </div>
+              {packageData.makkahReturnHotel?.name && (
+                <div className="hotel-summary">
+                  <span className="city">🕋 Makkah (Return)</span>
+                  <span className="name">{packageData.makkahReturnHotel.name}</span>
+                  <span className="detail">{packageData.makkahReturnHotel.distance || ''} • {packageData.makkahReturnHotel.nights || 0} Nights</span>
+                </div>
+              )}
               <div className="hotel-summary">
                 <span className="city">🕌 Madinah</span>
                 <span className="name">{packageData.madinahHotel?.name || 'N/A'}</span>
@@ -304,22 +324,34 @@ export default function UmrahBookingForm() {
                 <span>Per Person (Base)</span>
                 <span className="price">{money(packageData.perPersonPrice)}</span>
               </div>
-              {packageData.sharingPrices?.quad > 0 && (
+              {packageData.sharingPrices?.single > 0 && (
                 <div className="price-row">
-                  <span>Quad Sharing</span>
-                  <span className="price">{money(packageData.sharingPrices.quad)}</span>
-                </div>
-              )}
-              {packageData.sharingPrices?.triple > 0 && (
-                <div className="price-row">
-                  <span>Triple Sharing</span>
-                  <span className="price">{money(packageData.sharingPrices.triple)}</span>
+                  <span>Single</span>
+                  <span className="price">{money(packageData.sharingPrices.single)}</span>
                 </div>
               )}
               {packageData.sharingPrices?.double > 0 && (
                 <div className="price-row">
-                  <span>Double Sharing</span>
+                  <span>Double</span>
                   <span className="price">{money(packageData.sharingPrices.double)}</span>
+                </div>
+              )}
+              {packageData.sharingPrices?.triple > 0 && (
+                <div className="price-row">
+                  <span>Triple</span>
+                  <span className="price">{money(packageData.sharingPrices.triple)}</span>
+                </div>
+              )}
+              {packageData.sharingPrices?.quad > 0 && (
+                <div className="price-row">
+                  <span>Quad</span>
+                  <span className="price">{money(packageData.sharingPrices.quad)}</span>
+                </div>
+              )}
+              {packageData.sharingPrices?.sharing > 0 && (
+                <div className="price-row">
+                  <span>Sharing</span>
+                  <span className="price">{money(packageData.sharingPrices.sharing)}</span>
                 </div>
               )}
               {packageData.childWithoutBedPrice > 0 && (
@@ -343,34 +375,21 @@ export default function UmrahBookingForm() {
           <form onSubmit={handleSubmit}>
             <h2>Complete Your Booking</h2>
 
-            {/* Room Type Selection */}
+            {/* ✨ UPDATED: Room Type Selection with all options */}
             <div className="form-section">
               <h3>Room Type</h3>
               <div className="room-options">
-                {packageData.sharingPrices?.quad > 0 && (
-                  <label className={`room-option ${roomType === 'quad' ? 'selected' : ''}`}>
+                {packageData.sharingPrices?.single > 0 && (
+                  <label className={`room-option ${roomType === 'single' ? 'selected' : ''}`}>
                     <input
                       type="radio"
                       name="roomType"
-                      value="quad"
-                      checked={roomType === 'quad'}
+                      value="single"
+                      checked={roomType === 'single'}
                       onChange={(e) => setRoomType(e.target.value)}
                     />
-                    <span className="room-label">Quad</span>
-                    <span className="room-price">{money(packageData.sharingPrices.quad)}</span>
-                  </label>
-                )}
-                {packageData.sharingPrices?.triple > 0 && (
-                  <label className={`room-option ${roomType === 'triple' ? 'selected' : ''}`}>
-                    <input
-                      type="radio"
-                      name="roomType"
-                      value="triple"
-                      checked={roomType === 'triple'}
-                      onChange={(e) => setRoomType(e.target.value)}
-                    />
-                    <span className="room-label">Triple</span>
-                    <span className="room-price">{money(packageData.sharingPrices.triple)}</span>
+                    <span className="room-label">Single (1)</span>
+                    <span className="room-price">{money(packageData.sharingPrices.single)}</span>
                   </label>
                 )}
                 {packageData.sharingPrices?.double > 0 && (
@@ -382,12 +401,76 @@ export default function UmrahBookingForm() {
                       checked={roomType === 'double'}
                       onChange={(e) => setRoomType(e.target.value)}
                     />
-                    <span className="room-label">Double</span>
+                    <span className="room-label">Double (2)</span>
                     <span className="room-price">{money(packageData.sharingPrices.double)}</span>
+                  </label>
+                )}
+                {packageData.sharingPrices?.triple > 0 && (
+                  <label className={`room-option ${roomType === 'triple' ? 'selected' : ''}`}>
+                    <input
+                      type="radio"
+                      name="roomType"
+                      value="triple"
+                      checked={roomType === 'triple'}
+                      onChange={(e) => setRoomType(e.target.value)}
+                    />
+                    <span className="room-label">Triple (3)</span>
+                    <span className="room-price">{money(packageData.sharingPrices.triple)}</span>
+                  </label>
+                )}
+                {packageData.sharingPrices?.quad > 0 && (
+                  <label className={`room-option ${roomType === 'quad' ? 'selected' : ''}`}>
+                    <input
+                      type="radio"
+                      name="roomType"
+                      value="quad"
+                      checked={roomType === 'quad'}
+                      onChange={(e) => setRoomType(e.target.value)}
+                    />
+                    <span className="room-label">Quad (4)</span>
+                    <span className="room-price">{money(packageData.sharingPrices.quad)}</span>
+                  </label>
+                )}
+                {packageData.sharingPrices?.sharing > 0 && (
+                  <label className={`room-option ${roomType === 'sharing' ? 'selected' : ''}`}>
+                    <input
+                      type="radio"
+                      name="roomType"
+                      value="sharing"
+                      checked={roomType === 'sharing'}
+                      onChange={(e) => setRoomType(e.target.value)}
+                    />
+                    <span className="room-label">Sharing (5+)</span>
+                    <span className="room-price">{money(packageData.sharingPrices.sharing)}</span>
                   </label>
                 )}
               </div>
             </div>
+
+            {/* ✨ NEW: Ziyarat Package Option */}
+            {packageData.ziyaratEnabled && packageData.ziyaratPrice > 0 && (
+              <div className="form-section">
+                <h3>🕌 Ziyarat Package</h3>
+                <div className="ziyarat-option">
+                  <label className="ziyarat-checkbox" style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', cursor: 'pointer' }}>
+                    <input
+                      type="checkbox"
+                      checked={ziyaratEnabled}
+                      onChange={(e) => setZiyaratEnabled(e.target.checked)}
+                      style={{ marginTop: '4px', width: '18px', height: '18px', accentColor: '#0a2463' }}
+                    />
+                    <div>
+                      <span style={{ fontWeight: '600', display: 'block' }}>
+                        Add Ziyarat Tour (+{money(packageData.ziyaratPrice)})
+                      </span>
+                      <span style={{ fontSize: '14px', color: '#6b7a8f' }}>
+                        {packageData.ziyaratDescription || 'Guided tour of holy sites in Makkah and Madinah'}
+                      </span>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            )}
 
             {/* Passengers */}
             <div className="form-section">
@@ -574,7 +657,7 @@ export default function UmrahBookingForm() {
               </div>
             </div>
 
-            {/* Price Breakdown */}
+            {/* ✨ UPDATED: Price Breakdown with Ziyarat */}
             <div className="form-section price-breakdown">
               <h3>Price Breakdown</h3>
               <div className="breakdown-row">
@@ -591,6 +674,13 @@ export default function UmrahBookingForm() {
                 <div className="breakdown-row">
                   <span>{infantCount} Infant(s) × {money(packageData.infantPrice || 0)}</span>
                   <span>{money(infantCount * (packageData.infantPrice || 0))}</span>
+                </div>
+              )}
+              {/* ✨ NEW: Ziyarat row */}
+              {ziyaratEnabled && packageData.ziyaratEnabled && packageData.ziyaratPrice > 0 && (
+                <div className="breakdown-row" style={{ color: '#0a2463', fontWeight: '600' }}>
+                  <span>🕌 Ziyarat Package</span>
+                  <span>{money(packageData.ziyaratPrice)}</span>
                 </div>
               )}
               <div className="breakdown-total">
