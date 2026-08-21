@@ -149,7 +149,7 @@ export default function App() {
               <ProtectedRoute adminOnly>
                 <AdminUmrahBookings />
               </ProtectedRoute>
-            } />
+            } /> 
             <Route
               path="/account"
               element={
