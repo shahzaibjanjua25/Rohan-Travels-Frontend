@@ -7,18 +7,7 @@ import Alert from '../../components/ui/Alert';
 import Spinner from '../../components/ui/Spinner';
 import './AdminUmrahPackageForm.css';
 
-const AIRLINES = [
-  'Saudi Arabian Airlines',
-  'Pakistan International Airlines',
-  'Fly Jinnah',
-  'Riyadh Air',
-  'Emirates',
-  'Qatar Airways',
-  'Etihad Airways',
-  'Oman Air',
-  'Gulf Air',
-  'Kuwait Airways'
-];
+// ✨ REMOVED: AIRLINES dropdown array - no longer needed
 
 const AIRPORTS = [
   { code: 'ISB', city: 'Islamabad' },
@@ -43,7 +32,7 @@ const AIRPORTS = [
   { code: 'MCT', city: 'Muscat' }
 ];
 
-// ✨ UPDATED: Room types with all options
+// Room types with all options
 const ROOM_TYPES = [
   { value: 'single', label: 'Single (1 person)' },
   { value: 'double', label: 'Double (2 persons)' },
@@ -81,7 +70,7 @@ export default function AdminUmrahCreatePackage() {
   const [formData, setFormData] = useState({
     packageName: '',
     description: '',
-    airline: '',
+    airline: '', // ✨ Now a text field, not dropdown
     airlineCode: '',
     flightNumber: '',
     origin: { airportCode: '', city: '' },
@@ -109,7 +98,7 @@ export default function AdminUmrahCreatePackage() {
     isActive: true,
     isFeatured: false,
     includes: ['Visa', 'Ticket', 'Accommodation', 'Transport'],
-    // ✨ NEW: Ziyarat fields
+    // Ziyarat fields
     ziyaratEnabled: false,
     ziyaratPrice: 5000,
     ziyaratDescription: 'Guided Ziyarat tour of holy sites including: Mount Uhud, Quba Mosque, Cave of Hira, and more.'
@@ -191,7 +180,7 @@ export default function AdminUmrahCreatePackage() {
     const errors = {};
 
     if (!formData.packageName.trim()) errors.packageName = 'Package name is required';
-    if (!formData.airline) errors.airline = 'Airline is required';
+    if (!formData.airline.trim()) errors.airline = 'Airline name is required'; // ✨ Updated validation
     if (!formData.flightNumber.trim()) errors.flightNumber = 'Flight number is required';
     if (!formData.origin.airportCode) errors['origin.airportCode'] = 'Origin airport is required';
     if (!formData.destination.airportCode) errors['destination.airportCode'] = 'Destination airport is required';
@@ -252,7 +241,6 @@ export default function AdminUmrahCreatePackage() {
           quad: parseFloat(formData.sharingPrices.quad) || 0,
           sharing: parseFloat(formData.sharingPrices.sharing) || 0,
         },
-        // ✨ NEW: Ziyarat fields
         ziyaratEnabled: formData.ziyaratEnabled || false,
         ziyaratPrice: parseFloat(formData.ziyaratPrice) || 0,
         ziyaratDescription: formData.ziyaratDescription || '',
@@ -344,25 +332,23 @@ export default function AdminUmrahCreatePackage() {
         <div className="form-section">
           <h3>Flight Details</h3>
           <div className="form-row">
+            {/* ✨ UPDATED: Airline - Now a text input instead of dropdown */}
             <div className="field-group">
               <label>Airline *</label>
-              <select
+              <input
+                type="text"
                 name="airline"
                 value={formData.airline}
                 onChange={handleChange}
+                placeholder="Enter airline name (e.g., Saudi Arabian Airlines)"
                 className={validationErrors.airline ? 'error' : ''}
-              >
-                <option value="">Select Airline</option>
-                {AIRLINES.map(a => (
-                  <option key={a} value={a}>{a}</option>
-                ))}
-              </select>
+              />
               {validationErrors.airline && (
                 <span className="error-text">{validationErrors.airline}</span>
               )}
             </div>
             <div className="field-group">
-              <label>Airline Code</label>
+              <label>Airline Code (Optional)</label>
               <input
                 type="text"
                 name="airlineCode"
@@ -575,7 +561,7 @@ export default function AdminUmrahCreatePackage() {
           </div>
         </div>
 
-        {/* ✨ UPDATED: Hotels Section with Makkah Return */}
+        {/* Hotels Section with Makkah Return */}
         <div className="form-section">
           <h3>Hotels</h3>
           <p className="faint" style={{ marginBottom: '1rem', fontSize: '14px' }}>
@@ -705,7 +691,7 @@ export default function AdminUmrahCreatePackage() {
           </div>
         </div>
 
-        {/* ✨ UPDATED: Pricing with all room types */}
+        {/* Pricing with all room types */}
         <div className="form-section">
           <h3>Pricing</h3>
           <div className="form-row">
@@ -762,7 +748,7 @@ export default function AdminUmrahCreatePackage() {
           </div>
         </div>
 
-        {/* ✨ NEW: Ziyarat Package Section */}
+        {/* Ziyarat Package Section */}
         <div className="form-section">
           <h3>Ziyarat Package</h3>
           <p className="faint" style={{ marginBottom: '1rem', fontSize: '14px' }}>
