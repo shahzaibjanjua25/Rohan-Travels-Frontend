@@ -565,3 +565,72 @@
     transform: rotate(90deg);
   }
 }
+/* ✨ NEW: Flight Details Summary */
+.flight-details-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 12px 0;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  margin: 8px 0;
+}
+
+.flight-detail-item {
+  display: flex;
+  flex-direction: column;
+  padding: 4px 0;
+}
+
+.flight-detail-item .label {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  color: #8a94a6;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.flight-detail-item .value {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #1a2332;
+}
+
+.flight-detail-item .time-value {
+  font-size: 0.75rem;
+  color: #6b7a8f;
+  font-weight: 500;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .flight-details-summary {
+    border-top-color: #334155;
+    border-bottom-color: #334155;
+  }
+  
+  .flight-detail-item .value {
+    color: #f1f5f9;
+  }
+  
+  .flight-detail-item .time-value {
+    color: #94a3b8;
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .flight-details-summary {
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    padding: 8px 0;
+  }
+  
+  .flight-detail-item .value {
+    font-size: 0.8rem;
+  }
+  
+  .flight-detail-item .time-value {
+    font-size: 0.7rem;
+  }
+}

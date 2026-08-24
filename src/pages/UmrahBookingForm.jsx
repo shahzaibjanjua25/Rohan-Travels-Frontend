@@ -5,7 +5,7 @@ import { umrahService } from '../services/umrah';
 import { ApiError } from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
 import { emailService } from '../services/emailService';
-import { date, money } from '../utils/format';
+import { date, dateTime, money, time } from '../utils/format';
 import Swal from 'sweetalert2';
 import Spinner from '../components/ui/Spinner';
 import Alert from '../components/ui/Alert';
@@ -244,7 +244,7 @@ export default function UmrahBookingForm() {
       <div className="umrah-booking-wrapper">
         <Alert kind="error">{error || 'Package not found.'}</Alert>
         <Link to="/umrah" className="btn btn--ghost" style={{ marginTop: '1rem' }}>
-          Back to Umrah Packages
+          ← Back to Umrah Packages
         </Link>
       </div>
     );
@@ -284,18 +284,46 @@ export default function UmrahBookingForm() {
               </div>
             </div>
 
+            {/* ✨ NEW: Flight Details with Date & Time */}
+            <div className="flight-details-summary">
+              <div className="flight-detail-item">
+                <span className="label">Departure</span>
+                <span className="value">{packageData.departureDate ? date(packageData.departureDate) : 'N/A'}</span>
+                <span className="time-value">{packageData.departureTime ? packageData.departureTime : 'N/A'}</span>
+              </div>
+              <div className="flight-detail-item">
+                <span className="label">Arrival</span>
+                <span className="value">{packageData.arrivalDate ? date(packageData.arrivalDate) : 'N/A'}</span>
+                <span className="time-value">{packageData.arrivalTime ? packageData.arrivalTime : 'N/A'}</span>
+              </div>
+              <div className="flight-detail-item">
+                <span className="label">Return Departure</span>
+                <span className="value">{packageData.returnDate ? date(packageData.returnDate) : 'N/A'}</span>
+                <span className="time-value">{packageData.returnDepartureTime ? packageData.returnDepartureTime : 'N/A'}</span>
+              </div>
+              <div className="flight-detail-item">
+                <span className="label">Return Arrival</span>
+                <span className="value">{packageData.returnArrivalDate ? date(packageData.returnArrivalDate) : 'N/A'}</span>
+                <span className="time-value">{packageData.returnArrivalTime ? packageData.returnArrivalTime : 'N/A'}</span>
+              </div>
+              <div className="flight-detail-item">
+                <span className="label">Duration</span>
+                <span className="value">{packageData.duration || 0} Days</span>
+              </div>
+            </div>
+
             <div className="summary-dates">
               <div>
                 <span className="label">Departure</span>
-                <span className="value">{date(packageData.departureDate)}</span>
+                <span className="value">{packageData.departureDate ? date(packageData.departureDate) : 'N/A'}</span>
               </div>
               <div>
                 <span className="label">Return</span>
-                <span className="value">{date(packageData.returnDate)}</span>
+                <span className="value">{packageData.returnDate ? date(packageData.returnDate) : 'N/A'}</span>
               </div>
               <div>
                 <span className="label">Duration</span>
-                <span className="value">{packageData.duration} Days</span>
+                <span className="value">{packageData.duration || 0} Days</span>
               </div>
             </div>
 
