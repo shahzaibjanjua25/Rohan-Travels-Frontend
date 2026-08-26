@@ -1579,3 +1579,25 @@ body {
     max-width: 80px;
   }
 }
+.hamburger-btn {
+  display: flex; /* CHANGE from 'flex' to always show */
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-radius: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  color: #0a2463;
+}
+
+/* REMOVE or COMMENT OUT this media query that hides it */
+/* @media (min-width: 1024px) {
+  .hamburger-btn {
+    display: none;
+  }
+} */
