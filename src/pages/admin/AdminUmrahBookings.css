@@ -168,7 +168,7 @@
 
 .admin-umrah-bookings-table tbody td {
   padding: 0.7rem 0.8rem;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid hsl(55, 93%, 45%);
   vertical-align: middle;
 }
 
@@ -266,7 +266,7 @@
 }
 
 .tag--secondary {
-  background: #f1f5f9;
+  background: hsl(55, 93%, 45%);
   color: #4a5568;
 }
 
@@ -334,7 +334,7 @@
 
 .btn--ghost:hover {
   background: #f8fafc;
-  border-color: hsl(55, 93%, 45%);
+  border-color: #94a3b8;
 }
 
 .btn--danger {

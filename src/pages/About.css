@@ -641,11 +641,11 @@
   }
 
   .about-feature-card h3 {
-    color: #f1f5f9;
+    color: hsl(55, 93%, 45%);
   }
 
   .about-feature-card p {
-    color: hsl(55, 93%, 45%);
+    color: #94a3b8;
   }
 
   .about-service-card {
@@ -654,11 +654,11 @@
   }
 
   .about-service-card h3 {
-    color: #f1f5f9;
+    color: hsl(55, 93%, 45%);
   }
 
   .about-service-card p {
-    color: hsl(55, 93%, 45%);
+    color: #94a3b8;
   }
 
   .about-service-icon {
@@ -667,11 +667,11 @@
   }
 
   .about-story-text h2 {
-    color: #f1f5f9;
+    color: hsl(55, 93%, 45%);
   }
 
   .about-story-text p {
-    color: hsl(55, 93%, 45%);
+    color: #94a3b8;
   }
 
   .about-stat-number {
@@ -679,7 +679,7 @@
   }
 
   .about-stat-label {
-    color: hsl(55, 93%, 45%);
+    color: #94a3b8;
   }
 
   .about-cta {
@@ -687,15 +687,15 @@
   }
 
   .about-cta-content h2 {
-    color: #f1f5f9;
-  }
-
-  .about-cta-content p {
     color: hsl(55, 93%, 45%);
   }
 
+  .about-cta-content p {
+    color: #94a3b8;
+  }
+
   .about-btn-outline {
-    color: #f1f5f9;
+    color: hsl(55, 93%, 45%);
     border-color: #475569;
   }
 
@@ -780,7 +780,7 @@
   }
 
   .about-contact-person .name {
-    color: #f1f5f9;
+    color: hsl(55, 93%, 45%);
   }
 }
 

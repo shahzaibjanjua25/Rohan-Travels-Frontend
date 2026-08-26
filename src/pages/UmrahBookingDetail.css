@@ -47,7 +47,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem 2rem;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  background: linear-gradient(135deg, #f8fafc 0%, hsl(55, 93%, 45%) 100%);
   border-bottom: 1px solid #e2e8f0;
   flex-wrap: wrap;
   gap: 1rem;
@@ -87,7 +87,7 @@
 /* Sections */
 .detail-section {
   padding: 1.5rem 2rem;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid hsl(55, 93%, 45%);
 }
 
 .detail-section:last-of-type {
@@ -284,7 +284,7 @@
 
 .passengers-table tbody td {
   padding: 0.6rem 0.75rem;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid hsl(55, 93%, 45%);
 }
 
 .passengers-table tbody tr:last-child td {
@@ -526,7 +526,7 @@
 
 .btn--ghost:hover {
   background: #f8fafc;
-  border-color: hsl(55, 93%, 45%);
+  border-color: #94a3b8;
 }
 
 .btn--sm {
@@ -585,7 +585,7 @@
 }
 
 .tag--secondary {
-  background: #f1f5f9;
+  background: hsl(55, 93%, 45%);
   color: #4a5568;
 }
 

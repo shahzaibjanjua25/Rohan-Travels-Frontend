@@ -34,7 +34,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: hsl(55, 93%, 45%);
+  color: #94a3b8;
   margin: 0 0 4px 0;
 }
 
@@ -171,7 +171,7 @@
 
 /* Table Body */
 .flights-table tbody tr {
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid hsl(55, 93%, 45%);
   transition: background 0.2s;
 }
 
@@ -216,7 +216,7 @@
 
 .flight-airline {
   font-size: 12px;
-  color: hsl(55, 93%, 45%);
+  color: #94a3b8;
 }
 
 /* Route Info */
@@ -238,11 +238,11 @@
 
 .route-city {
   font-size: 11px;
-  color: hsl(55, 93%, 45%);
+  color: #94a3b8;
 }
 
 .route-arrow {
-  color: hsl(55, 93%, 45%);
+  color: #94a3b8;
   padding: 0 4px;
 }
 
@@ -287,7 +287,7 @@
 
 .withdrawn-tag {
   font-size: 10px;
-  color: hsl(55, 93%, 45%);
+  color: #94a3b8;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -370,7 +370,7 @@
 }
 
 .pagination .page-info {
-  color: hsl(55, 93%, 45%);
+  color: #94a3b8;
   font-size: 14px;
   padding: 0 8px;
 }
@@ -464,7 +464,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 8px 0;
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid hsl(55, 93%, 45%);
     gap: 12px;
   }
 
@@ -612,7 +612,7 @@
 }
 
 .table-wrapper::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: hsl(55, 93%, 45%);
 }
 
 .table-wrapper::-webkit-scrollbar-thumb {
@@ -621,7 +621,7 @@
 }
 
 .table-wrapper::-webkit-scrollbar-thumb:hover {
-  background: hsl(55, 93%, 45%);
+  background: #94a3b8;
 }
 
 /* ============================================

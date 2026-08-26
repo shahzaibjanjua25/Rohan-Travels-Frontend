@@ -66,7 +66,7 @@
   justify-content: space-between;
   align-items: center;
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid hsl(55, 93%, 45%);
   margin-bottom: 0.75rem;
 }
 
@@ -173,7 +173,7 @@
 
 .summary-pricing {
   padding-top: 0.75rem;
-  border-top: 1px solid #f1f5f9;
+  border-top: 1px solid hsl(55, 93%, 45%);
   margin-top: 0.5rem;
 }
 
@@ -209,7 +209,7 @@
 .form-section {
   margin-bottom: 2rem;
   padding-bottom: 2rem;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid hsl(55, 93%, 45%);
 }
 
 .form-section:last-child {
@@ -256,7 +256,7 @@
 }
 
 .room-option:hover {
-  border-color: hsl(55, 93%, 45%);
+  border-color: #94a3b8;
 }
 
 .room-option.selected {
@@ -465,7 +465,7 @@
 
 .btn--ghost:hover {
   background: #f8fafc;
-  border-color: hsl(55, 93%, 45%);
+  border-color: #94a3b8;
 }
 
 .btn--sm {
@@ -610,11 +610,11 @@
   }
   
   .flight-detail-item .value {
-    color: #f1f5f9;
+    color: hsl(55, 93%, 45%);
   }
   
   .flight-detail-item .time-value {
-    color: hsl(55, 93%, 45%);
+    color: #94a3b8;
   }
 }
 

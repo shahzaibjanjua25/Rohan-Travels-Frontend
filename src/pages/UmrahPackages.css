@@ -800,7 +800,7 @@
     .umrah-wrapper {
         --page: #0f172a;
         --card: #1a2332;
-        --ink: #f1f5f9;
+        --ink: hsl(55, 93%, 45%);
         --navy: #818cf8;
         --navy-light: #1e3a5f;
         --navy-dark: #061a4a;
@@ -808,7 +808,7 @@
         --gold-strong: #e08e09;
         --gold-soft: #2a2410;
         --line: #334155;
-        --muted: hsl(55, 93%, 45%);
+        --muted: #94a3b8;
         --success: #6ee7b7;
         --warning: #fbbf24;
         --danger: #fca5a5;
@@ -819,7 +819,7 @@
     }
 
     .umrah-hero h1 {
-        color: #f1f5f9;
+        color: hsl(55, 93%, 45%);
     }
 
     .umrah-hero h1 em {

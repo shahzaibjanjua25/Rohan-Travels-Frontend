@@ -227,7 +227,7 @@
   }
 
   .contact-hero p {
-    color: hsl(55, 93%, 45%);
+    color: #94a3b8;
   }
 
   .contact-card {
@@ -236,11 +236,11 @@
   }
 
   .contact-card h3 {
-    color: #f1f5f9;
+    color: hsl(55, 93%, 45%);
   }
 
   .contact-card p {
-    color: hsl(55, 93%, 45%);
+    color: #94a3b8;
   }
 
   .contact-card-action {
@@ -253,7 +253,7 @@
   }
 
   .contact-info-item {
-    color: #f1f5f9;
+    color: hsl(55, 93%, 45%);
   }
 
   .contact-info-item svg {
@@ -261,7 +261,7 @@
   }
 
   .contact-info-item p {
-    color: hsl(55, 93%, 45%);
+    color: #94a3b8;
   }
 }
 
@@ -363,11 +363,11 @@
   }
 
   .contact-card h3 {
-    color: #f1f5f9;
+    color: hsl(55, 93%, 45%);
   }
 
   .contact-card p {
-    color: hsl(55, 93%, 45%);
+    color: #94a3b8;
   }
 
   .contact-card-action {

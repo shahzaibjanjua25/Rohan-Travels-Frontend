@@ -31,7 +31,7 @@
   
   --text: #0f172a;
   --text-secondary: #475569;
-  --text-light: hsl(55, 93%, 45%);
+  --text-light: #94a3b8;
   --bg: #f4f6f9;
   --bg-card: #ffffff;
   --bg-hover: #f8fafc;
@@ -62,7 +62,7 @@
   margin: 0 auto;
   padding: 2rem;
   font-family: var(--font);
-  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  background: linear-gradient(180deg, #f8fafc 0%, hsl(55, 93%, 45%) 100%);
   min-height: 100vh;
 }
 
@@ -791,7 +791,7 @@
 .btn--ghost {
   background: transparent;
   color: var(--text-secondary);
-  border-color: hsl(55, 93%, 45%);
+  border-color: #94a3b8;
 }
 
 .btn--ghost:hover {
@@ -856,7 +856,7 @@
 
 .pagination button {
   padding: 0.4rem 0.9rem;
-  border: 2px solid hsl(55, 93%, 45%);
+  border: 2px solid #94a3b8;
   border-radius: var(--radius-sm);
   background: var(--bg-card);
   color: var(--text-secondary);
@@ -1191,8 +1191,8 @@
     --bg: #0f172a;
     --bg-card: #1e293b;
     --bg-hover: #2d3748;
-    --text: #f1f5f9;
-    --text-secondary: hsl(55, 93%, 45%);
+    --text: hsl(55, 93%, 45%);
+    --text-secondary: #94a3b8;
     --text-light: #64748b;
     --primary-light: #1e3a5f;
     --secondary-light: #332a0a;
@@ -1505,7 +1505,7 @@
   }
 
   .flights-table thead {
-    background: #f1f5f9 !important;
+    background: hsl(55, 93%, 45%) !important;
   }
 
   .flights-table thead th {
@@ -1518,7 +1518,7 @@
   }
 
   .route-group__header {
-    background: #f1f5f9 !important;
+    background: hsl(55, 93%, 45%) !important;
     color: #0f172a !important;
   }
 

@@ -19,8 +19,8 @@
   --info-light: #dbeafe;
   --text: #0f172a;
   --text-secondary: #475569;
-  --text-light: hsl(55, 93%, 45%);
-  --bg: #f1f5f9;
+  --text-light: #94a3b8;
+  --bg: hsl(55, 93%, 45%);
   --bg-card: #ffffff;
   --bg-hover: #f8fafc;
   --shadow: 0 1px 3px rgba(99, 102, 241, 0.06);
@@ -52,7 +52,7 @@
   margin: 0 auto;
   padding: 2rem;
   font-family: var(--font);
-  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  background: linear-gradient(180deg, #f8fafc 0%, hsl(55, 93%, 45%) 100%);
   min-height: 100vh;
 }
 
@@ -237,7 +237,7 @@
 }
 
 .field:disabled {
-  background: #f1f5f9;
+  background: hsl(55, 93%, 45%);
   cursor: not-allowed;
   opacity: 0.7;
 }
@@ -674,8 +674,8 @@ input[type="datetime-local"].field::-webkit-calendar-picker-indicator:hover {
     --bg: #0f172a;
     --bg-card: #1e293b;
     --bg-hover: #2d3748;
-    --text: #f1f5f9;
-    --text-secondary: hsl(55, 93%, 45%);
+    --text: hsl(55, 93%, 45%);
+    --text-secondary: #94a3b8;
     --text-light: #64748b;
     --primary-light: #1e3a5f;
   }
@@ -768,7 +768,7 @@ input[type="datetime-local"].field::-webkit-calendar-picker-indicator:hover {
 }
 
 .flight-form-wrapper::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: hsl(55, 93%, 45%);
 }
 
 .flight-form-wrapper::-webkit-scrollbar-thumb {

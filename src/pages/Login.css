@@ -396,20 +396,20 @@
   }
 
   .auth__title {
-    color: #f1f5f9;
-  }
-
-  .auth__sub {
     color: hsl(55, 93%, 45%);
   }
 
+  .auth__sub {
+    color: #94a3b8;
+  }
+
   .field__label {
-    color: #f1f5f9;
+    color: hsl(55, 93%, 45%);
   }
 
   .field__input {
     background: #0f172a;
-    color: #f1f5f9;
+    color: hsl(55, 93%, 45%);
     border-color: #334155;
   }
 
@@ -432,16 +432,16 @@
   .field__input:-webkit-autofill:focus,
   .field__input:-webkit-autofill:active {
     -webkit-box-shadow: 0 0 0 1000px #0f172a inset !important;
-    -webkit-text-fill-color: #f1f5f9 !important;
+    -webkit-text-fill-color: hsl(55, 93%, 45%) !important;
     background-color: #0f172a !important;
     border-color: #334155 !important;
-    caret-color: #f1f5f9 !important;
+    caret-color: hsl(55, 93%, 45%) !important;
   }
 
   .field__input:autofill,
   .field__input:-moz-autofill {
     background-color: #0f172a !important;
-    color: #f1f5f9 !important;
+    color: hsl(55, 93%, 45%) !important;
     border-color: #334155 !important;
   }
 
@@ -455,7 +455,7 @@
   }
 
   .btn--ghost {
-    color: hsl(55, 93%, 45%);
+    color: #94a3b8;
     border-color: #334155;
   }
 
@@ -473,7 +473,7 @@
   }
 
   .muted {
-    color: hsl(55, 93%, 45%);
+    color: #94a3b8;
   }
 
   .auth__logo-img {

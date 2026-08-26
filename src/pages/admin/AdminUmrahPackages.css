@@ -305,7 +305,7 @@
 
 .btn--ghost:hover {
   background: #f8fafc;
-  border-color: hsl(55, 93%, 45%);
+  border-color: #94a3b8;
 }
 
 .btn--sm {
@@ -517,12 +517,12 @@
   }
 
   .admin-umrah-table thead th {
-    color: #f1f5f9;
+    color: hsl(55, 93%, 45%);
   }
 
   .admin-umrah-table tbody td {
     border-bottom-color: #334155;
-    color: hsl(55, 93%, 45%);
+    color: #94a3b8;
   }
 
   .admin-umrah-table tbody tr:hover {
@@ -534,7 +534,7 @@
   }
 
   .package-name .name {
-    color: #f1f5f9;
+    color: hsl(55, 93%, 45%);
   }
 
   .package-name .duration {
@@ -542,15 +542,15 @@
   }
 
   .flight-info .airline {
-    color: hsl(55, 93%, 45%);
+    color: #94a3b8;
   }
 
   .route {
-    color: hsl(55, 93%, 45%);
+    color: #94a3b8;
   }
 
   .departure-date {
-    color: hsl(55, 93%, 45%);
+    color: #94a3b8;
   }
 
   .hotels-info .hotel-makkah {
@@ -566,7 +566,7 @@
   }
 
   .sharing-prices {
-    color: hsl(55, 93%, 45%);
+    color: #94a3b8;
   }
 
   .status-badge.active {
@@ -589,7 +589,7 @@
   }
 
   .btn--ghost {
-    color: hsl(55, 93%, 45%);
+    color: #94a3b8;
     border-color: #475569;
   }
 
@@ -603,11 +603,11 @@
   }
 
   .empty-state h3 {
-    color: #f1f5f9;
+    color: hsl(55, 93%, 45%);
   }
 
   .empty-state .faint {
-    color: hsl(55, 93%, 45%);
+    color: #94a3b8;
   }
 
   .alert--success {
@@ -623,7 +623,7 @@
   }
 
   .pagination .page-info {
-    color: hsl(55, 93%, 45%);
+    color: #94a3b8;
   }
 }
 
@@ -637,7 +637,7 @@
 }
 
 .table-wrapper::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: hsl(55, 93%, 45%);
   border-radius: 3px;
 }
 
@@ -683,7 +683,7 @@
   }
 
   .admin-umrah-table thead {
-    background: #f1f5f9 !important;
+    background: hsl(55, 93%, 45%) !important;
   }
 
   .admin-umrah-table thead th {

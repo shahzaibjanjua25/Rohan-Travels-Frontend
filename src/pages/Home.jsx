@@ -1152,7 +1152,7 @@ export default function Home() {
                 <div>
                   <h4>Business Hours</h4>
                   <p>Mon - Sat: 9:00 AM - 9:00 PM</p>
-                  <p style={{ fontSize: '13px', color: 'hsl(55, 93%, 45%)' }}>Sunday: Closed</p>
+                  <p style={{ fontSize: '13px', color: '#94a3b8' }}>Sunday: Closed</p>
                 </div>
               </div>
             </div>

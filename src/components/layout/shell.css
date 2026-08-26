@@ -430,8 +430,8 @@ body {
 }
 
 .btn-outline-light:hover {
-  background: #f1f5f9;
-  border-color: hsl(55, 93%, 45%);
+  background: hsl(55, 93%, 45%);
+  border-color: #94a3b8;
   transform: translateY(-2px);
 }
 
@@ -486,7 +486,7 @@ body {
 }
 
 .shell__user-trigger:hover {
-  background: #f1f5f9;
+  background: hsl(55, 93%, 45%);
   border-color: var(--brand);
 }
 
@@ -543,14 +543,14 @@ body {
 
 .shell__user-role {
   font-size: 10px;
-  color: hsl(55, 93%, 45%);
+  color: #94a3b8;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .shell__chevron {
   transition: var(--transition);
-  color: hsl(55, 93%, 45%);
+  color: #94a3b8;
   width: 16px;
   height: 16px;
 }
@@ -600,7 +600,7 @@ body {
   align-items: center;
   gap: 12px;
   padding: 12px 8px 16px;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid hsl(55, 93%, 45%);
 }
 
 .shell__dropdown-avatar {
@@ -637,13 +637,13 @@ body {
 
 .shell__dropdown-email {
   font-size: 11px;
-  color: hsl(55, 93%, 45%);
+  color: #94a3b8;
   word-break: break-all;
 }
 
 .shell__dropdown-divider {
   height: 1px;
-  background: #f1f5f9;
+  background: hsl(55, 93%, 45%);
   margin: 4px 0;
 }
 
@@ -666,7 +666,7 @@ body {
 }
 
 .shell__dropdown-item:hover {
-  background: #f1f5f9;
+  background: hsl(55, 93%, 45%);
   color: #0f172a;
 }
 
@@ -883,7 +883,7 @@ body {
 }
 
 .shell__mobile-link:hover {
-  background: #f1f5f9;
+  background: hsl(55, 93%, 45%);
   color: #0f172a;
 }
 
@@ -934,7 +934,7 @@ body {
 }
 
 .sidebar-footer-link:hover {
-  background: #f1f5f9;
+  background: hsl(55, 93%, 45%);
   color: #0f172a;
 }
 
@@ -1135,7 +1135,7 @@ body {
 
 .footer {
   background: linear-gradient(90deg, #103d67, #0b2d50);
-  color: #f1f5f9;
+  color: hsl(55, 93%, 45%);
   padding: 40px 0 24px;
   position: relative;
   overflow: hidden;
@@ -1433,11 +1433,11 @@ body {
   }
 
   .navbar-company-name {
-    color: #f1f5f9;
+    color: hsl(55, 93%, 45%);
   }
 
   .hamburger-btn {
-    color: hsl(55, 93%, 45%);
+    color: #94a3b8;
   }
 
   .hamburger-btn:hover {
@@ -1451,25 +1451,25 @@ body {
   }
 
   .sidebar-brand-name {
-    color: #f1f5f9;
+    color: hsl(55, 93%, 45%);
   }
 
   .sidebar-close-btn {
-    color: hsl(55, 93%, 45%);
+    color: #94a3b8;
   }
 
   .sidebar-close-btn:hover {
     background: rgba(255, 255, 255, 0.08);
-    color: #f1f5f9;
+    color: hsl(55, 93%, 45%);
   }
 
   .shell__mobile-link {
-    color: hsl(55, 93%, 45%);
+    color: #94a3b8;
   }
 
   .shell__mobile-link:hover {
     background: rgba(255, 255, 255, 0.05);
-    color: #f1f5f9;
+    color: hsl(55, 93%, 45%);
   }
 
   .shell__mobile-link--active {
@@ -1478,12 +1478,12 @@ body {
   }
 
   .sidebar-footer-link {
-    color: hsl(55, 93%, 45%);
+    color: #94a3b8;
   }
 
   .sidebar-footer-link:hover {
     background: rgba(255, 255, 255, 0.05);
-    color: #f1f5f9;
+    color: hsl(55, 93%, 45%);
   }
 
   .sidebar-footer-link--danger {
@@ -1513,20 +1513,20 @@ body {
   }
 
   .shell__dropdown-name {
-    color: #f1f5f9;
+    color: hsl(55, 93%, 45%);
   }
 
   .shell__dropdown-email {
-    color: hsl(55, 93%, 45%);
+    color: #94a3b8;
   }
 
   .shell__dropdown-item {
-    color: hsl(55, 93%, 45%);
+    color: #94a3b8;
   }
 
   .shell__dropdown-item:hover {
     background: rgba(255, 255, 255, 0.05);
-    color: #f1f5f9;
+    color: hsl(55, 93%, 45%);
   }
 
   .shell__dropdown-divider {

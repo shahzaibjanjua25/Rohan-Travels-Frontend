@@ -19,8 +19,8 @@
   --info-light: #dbeafe;
   --text: #0f172a;
   --text-secondary: #475569;
-  --text-light: hsl(55, 93%, 45%);
-  --bg: #f1f5f9;
+  --text-light: #94a3b8;
+  --bg: hsl(55, 93%, 45%);
   --bg-card: #ffffff;
   --bg-hover: #f8fafc;
   --shadow: 0 1px 3px rgba(99, 102, 241, 0.06);
@@ -54,7 +54,7 @@
   margin: 0 auto;
   padding: 2rem;
   font-family: var(--font);
-  background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 50%, #f1f5f9 100%);
+  background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 50%, hsl(55, 93%, 45%) 100%);
   min-height: 100vh;
   position: relative;
 }
@@ -626,7 +626,7 @@
 .field {
   width: 100%;
   padding: 0.65rem 0.9rem;
-  border: 2px solid hsl(55, 93%, 45%);
+  border: 2px solid #94a3b8;
   border-radius: var(--radius-sm);
   font-size: 0.95rem;
   font-family: var(--font);
@@ -652,7 +652,7 @@
 }
 
 .field::placeholder {
-  color: hsl(55, 93%, 45%);
+  color: #94a3b8;
   opacity: 1;
   transition: var(--transition);
 }
@@ -662,7 +662,7 @@
 }
 
 .field:disabled {
-  background: #f1f5f9;
+  background: hsl(55, 93%, 45%);
   cursor: not-allowed;
   opacity: 0.7;
 }
@@ -989,7 +989,7 @@ input[type="date"].field::-webkit-calendar-picker-indicator:hover {
 .btn--ghost {
   background: transparent;
   color: var(--text-secondary);
-  border-color: hsl(55, 93%, 45%);
+  border-color: #94a3b8;
 }
 
 .btn--ghost:hover {
@@ -1491,8 +1491,8 @@ input[type="date"].field::-webkit-calendar-picker-indicator:hover {
     --bg: #0f172a;
     --bg-card: #1e293b;
     --bg-hover: #2d3748;
-    --text: #f1f5f9;
-    --text-secondary: hsl(55, 93%, 45%);
+    --text: hsl(55, 93%, 45%);
+    --text-secondary: #94a3b8;
     --text-light: #64748b;
     --primary-light: #1e3a5f;
     --secondary-light: #332a0a;

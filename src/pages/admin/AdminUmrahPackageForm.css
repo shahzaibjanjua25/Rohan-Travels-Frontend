@@ -61,7 +61,7 @@
 .form-section {
   margin-bottom: 2rem;
   padding-bottom: 2rem;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid hsl(55, 93%, 45%);
 }
 
 .form-section:last-child {
@@ -234,7 +234,7 @@
 
 .btn--ghost:hover {
   background: #f8fafc;
-  border-color: hsl(55, 93%, 45%);
+  border-color: #94a3b8;
 }
 
 .btn--sm {

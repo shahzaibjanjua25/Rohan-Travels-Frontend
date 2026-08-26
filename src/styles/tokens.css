@@ -400,8 +400,8 @@ body {
 }
 
 .btn-outline-light:hover {
-  background: #f1f5f9;
-  border-color: hsl(55, 93%, 45%);
+  background: hsl(55, 93%, 45%);
+  border-color: #94a3b8;
   transform: translateY(-2px);
 }
 
@@ -695,7 +695,7 @@ body {
 }
 
 .passenger-select:hover {
-  border-color: hsl(55, 93%, 45%);
+  border-color: #94a3b8;
 }
 
 .passenger-select:focus {
@@ -828,12 +828,12 @@ body {
 }
 
 .search-input::placeholder {
-  color: hsl(55, 93%, 45%);
+  color: #94a3b8;
   font-weight: 400;
 }
 
 .search-input:hover {
-  border-color: hsl(55, 93%, 45%);
+  border-color: #94a3b8;
 }
 
 .search-input:focus {
@@ -912,7 +912,7 @@ body {
 }
 
 .search-date-input:hover {
-  border-color: hsl(55, 93%, 45%);
+  border-color: #94a3b8;
 }
 
 .search-date-input:focus {
@@ -1745,7 +1745,7 @@ body {
   align-items: flex-end;
   justify-content: space-between;
   padding-top: 16px;
-  border-top: 1px solid #f1f5f9;
+  border-top: 1px solid hsl(55, 93%, 45%);
   margin-top: 16px;
 }
 
@@ -1754,7 +1754,7 @@ body {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: hsl(55, 93%, 45%);
+  color: #94a3b8;
 }
 
 .deal-card-footer .price {
@@ -1793,7 +1793,7 @@ body {
    ============================================ */
 .footer {
   background: linear-gradient(90deg, #103d67, #0b2d50);
-  color: #f1f5f9;
+  color: hsl(55, 93%, 45%);
   padding: 64px 0 32px;
   position: relative;
   overflow: hidden;
@@ -2188,20 +2188,20 @@ body {
   --text-primary: #0f172a;
   --text-secondary: #475569;
   --text-muted: #64748b;
-  --text-light: hsl(55, 93%, 45%);
+  --text-light: #94a3b8;
   --text-inverse: #ffffff;
 
   /* Border colors */
   --border-light: #e2e8f0;
-  --border-muted: hsl(55, 93%, 45%);
+  --border-muted: #94a3b8;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     /* Text colors - Dark mode */
-    --text-primary: #f1f5f9;
+    --text-primary: hsl(55, 93%, 45%);
     --text-secondary: #cbd5e1;
-    --text-muted: hsl(55, 93%, 45%);
+    --text-muted: #94a3b8;
     --text-light: #64748b;
     --text-inverse: #0f172a;
 

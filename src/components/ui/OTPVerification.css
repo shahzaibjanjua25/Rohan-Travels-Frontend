@@ -210,11 +210,11 @@
   }
 
   .otp-header h3 {
-    color: #f1f5f9;
+    color: hsl(55, 93%, 45%);
   }
 
   .otp-subtitle {
-    color: hsl(55, 93%, 45%);
+    color: #94a3b8;
   }
 
   .otp-subtitle strong {
@@ -223,7 +223,7 @@
 
   .otp-input {
     background: #0f172a;
-    color: #f1f5f9;
+    color: hsl(55, 93%, 45%);
     border-color: #334155;
   }
 
@@ -243,7 +243,7 @@
   }
 
   .otp-actions .btn--ghost {
-    color: hsl(55, 93%, 45%);
+    color: #94a3b8;
     border-color: #334155;
   }
 
@@ -252,7 +252,7 @@
   }
 
   .otp-footer {
-    color: hsl(55, 93%, 45%);
+    color: #94a3b8;
   }
 
   .otp-resend {
