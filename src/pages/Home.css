@@ -551,7 +551,7 @@
 }
 
 .airport-select-item:hover {
-  background: hsl(55, 93%, 45%);
+  background: #0c0c0c;
 }
 
 .airport-select-item .airport-code {
@@ -1075,7 +1075,7 @@
   color: #64748b;
   font-weight: 500;
   padding-top: 4px;
-  border-top: 1px solid hsl(55, 93%, 45%);
+  border-top: 1px solid #0c0c0c;
   margin-top: 4px;
 }
 
@@ -1084,7 +1084,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 12px 20px 16px;
-  border-top: 1px solid hsl(55, 93%, 45%);
+  border-top: 1px solid #0c0c0c;
   margin-top: auto;
   flex-shrink: 0;
   background: #ffffff;
@@ -1117,7 +1117,7 @@
   border: none;
   padding: 6px 12px;
   border-radius: 9999px;
-  background: hsl(55, 93%, 45%);
+  background: #0c0c0c;
   text-decoration: none;
 }
 
@@ -1739,7 +1739,7 @@
   }
 
   .section-header h2 {
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
   }
 
   .section-header p {
@@ -1766,12 +1766,12 @@
   }
 
   .search-tab:not(.active):hover {
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
   }
 
   .search-input {
     background: #0f172a;
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
     border-color: #334155;
   }
 
@@ -1786,7 +1786,7 @@
 
   .search-date-input {
     background: #0f172a;
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
     border-color: #334155;
     color-scheme: dark;
   }
@@ -1830,7 +1830,7 @@
   }
 
   .airport-select-item {
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
   }
 
   .airport-select-item:hover {
@@ -1838,7 +1838,7 @@
   }
 
   .airport-select-item .airport-code {
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
   }
 
   .airport-select-item .airport-name {
@@ -1867,7 +1867,7 @@
   }
 
   .category-card-body h3 {
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
   }
 
   .category-description {
@@ -1896,7 +1896,7 @@
   }
 
   .contact-detail-item h4 {
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
   }
 
   .contact-detail-item p {
@@ -1909,7 +1909,7 @@
   }
 
   .social-links h4 {
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
   }
 
   .social-icon {
@@ -1932,7 +1932,7 @@
   }
 
   .deal-card-body .airline-name {
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
   }
 
   .deal-card-body .flight-info {
@@ -2082,8 +2082,8 @@
   grid-template-columns: 1fr 1fr;
   gap: 8px;
   padding: 10px 0;
-  border-top: 1px solid hsl(55, 93%, 45%);
-  border-bottom: 1px solid hsl(55, 93%, 45%);
+  border-top: 1px solid #0c0c0c;
+  border-bottom: 1px solid #0c0c0c;
 }
 
 .hotel-item {

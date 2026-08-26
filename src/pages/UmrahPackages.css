@@ -800,7 +800,7 @@
     .umrah-wrapper {
         --page: #0f172a;
         --card: #1a2332;
-        --ink: hsl(55, 93%, 45%);
+        --ink: #0c0c0c;
         --navy: #818cf8;
         --navy-light: #1e3a5f;
         --navy-dark: #061a4a;
@@ -819,7 +819,7 @@
     }
 
     .umrah-hero h1 {
-        color: hsl(55, 93%, 45%);
+        color: #0c0c0c;
     }
 
     .umrah-hero h1 em {

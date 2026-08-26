@@ -210,7 +210,7 @@
   }
 
   .otp-header h3 {
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
   }
 
   .otp-subtitle {
@@ -223,7 +223,7 @@
 
   .otp-input {
     background: #0f172a;
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
     border-color: #334155;
   }
 

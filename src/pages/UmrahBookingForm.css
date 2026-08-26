@@ -66,7 +66,7 @@
   justify-content: space-between;
   align-items: center;
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid hsl(55, 93%, 45%);
+  border-bottom: 1px solid #0c0c0c;
   margin-bottom: 0.75rem;
 }
 
@@ -173,7 +173,7 @@
 
 .summary-pricing {
   padding-top: 0.75rem;
-  border-top: 1px solid hsl(55, 93%, 45%);
+  border-top: 1px solid #0c0c0c;
   margin-top: 0.5rem;
 }
 
@@ -209,7 +209,7 @@
 .form-section {
   margin-bottom: 2rem;
   padding-bottom: 2rem;
-  border-bottom: 1px solid hsl(55, 93%, 45%);
+  border-bottom: 1px solid #0c0c0c;
 }
 
 .form-section:last-child {
@@ -610,7 +610,7 @@
   }
   
   .flight-detail-item .value {
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
   }
   
   .flight-detail-item .time-value {

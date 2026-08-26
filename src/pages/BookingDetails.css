@@ -20,7 +20,7 @@
   --text: #0f172a;
   --text-secondary: #475569;
   --text-light: #94a3b8;
-  --bg: hsl(55, 93%, 45%);
+  --bg: #0c0c0c;
   --bg-card: #ffffff;
   --bg-hover: #f8fafc;
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -53,7 +53,7 @@
   margin: 0 auto;
   padding: 2rem;
   font-family: var(--font);
-  background: linear-gradient(135deg, hsl(55, 93%, 45%) 0%, #e2e8f0 50%, hsl(55, 93%, 45%) 100%);
+  background: linear-gradient(135deg, #0c0c0c 0%, #e2e8f0 50%, #0c0c0c 100%);
   min-height: 100vh;
   position: relative;
 }
@@ -454,7 +454,7 @@
 }
 
 .field:disabled {
-  background: hsl(55, 93%, 45%);
+  background: #0c0c0c;
   cursor: not-allowed;
   opacity: 0.7;
 }
@@ -890,7 +890,7 @@
     --bg: #0f172a;
     --bg-card: #1e293b;
     --bg-hover: #2d3748;
-    --text: hsl(55, 93%, 45%);
+    --text: #0c0c0c;
     --text-secondary: #94a3b8;
     --text-light: #64748b;
     --primary-light: #1e3a5f;

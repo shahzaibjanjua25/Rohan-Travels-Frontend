@@ -430,7 +430,7 @@ body {
 }
 
 .btn-outline-light:hover {
-  background: hsl(55, 93%, 45%);
+  background: #0c0c0c;
   border-color: #94a3b8;
   transform: translateY(-2px);
 }
@@ -486,7 +486,7 @@ body {
 }
 
 .shell__user-trigger:hover {
-  background: hsl(55, 93%, 45%);
+  background: #0c0c0c;
   border-color: var(--brand);
 }
 
@@ -600,7 +600,7 @@ body {
   align-items: center;
   gap: 12px;
   padding: 12px 8px 16px;
-  border-bottom: 1px solid hsl(55, 93%, 45%);
+  border-bottom: 1px solid #0c0c0c;
 }
 
 .shell__dropdown-avatar {
@@ -643,7 +643,7 @@ body {
 
 .shell__dropdown-divider {
   height: 1px;
-  background: hsl(55, 93%, 45%);
+  background: #0c0c0c;
   margin: 4px 0;
 }
 
@@ -666,7 +666,7 @@ body {
 }
 
 .shell__dropdown-item:hover {
-  background: hsl(55, 93%, 45%);
+  background: #0c0c0c;
   color: #0f172a;
 }
 
@@ -883,7 +883,7 @@ body {
 }
 
 .shell__mobile-link:hover {
-  background: hsl(55, 93%, 45%);
+  background: #0c0c0c;
   color: #0f172a;
 }
 
@@ -934,7 +934,7 @@ body {
 }
 
 .sidebar-footer-link:hover {
-  background: hsl(55, 93%, 45%);
+  background: #0c0c0c;
   color: #0f172a;
 }
 
@@ -1135,7 +1135,7 @@ body {
 
 .footer {
   background: linear-gradient(90deg, #103d67, #0b2d50);
-  color: hsl(55, 93%, 45%);
+  color: #0c0c0c;
   padding: 40px 0 24px;
   position: relative;
   overflow: hidden;
@@ -1433,7 +1433,7 @@ body {
   }
 
   .navbar-company-name {
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
   }
 
   .hamburger-btn {
@@ -1451,7 +1451,7 @@ body {
   }
 
   .sidebar-brand-name {
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
   }
 
   .sidebar-close-btn {
@@ -1460,7 +1460,7 @@ body {
 
   .sidebar-close-btn:hover {
     background: rgba(255, 255, 255, 0.08);
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
   }
 
   .shell__mobile-link {
@@ -1469,7 +1469,7 @@ body {
 
   .shell__mobile-link:hover {
     background: rgba(255, 255, 255, 0.05);
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
   }
 
   .shell__mobile-link--active {
@@ -1483,7 +1483,7 @@ body {
 
   .sidebar-footer-link:hover {
     background: rgba(255, 255, 255, 0.05);
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
   }
 
   .sidebar-footer-link--danger {
@@ -1513,7 +1513,7 @@ body {
   }
 
   .shell__dropdown-name {
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
   }
 
   .shell__dropdown-email {
@@ -1526,7 +1526,7 @@ body {
 
   .shell__dropdown-item:hover {
     background: rgba(255, 255, 255, 0.05);
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
   }
 
   .shell__dropdown-divider {

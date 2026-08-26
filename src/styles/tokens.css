@@ -400,7 +400,7 @@ body {
 }
 
 .btn-outline-light:hover {
-  background: hsl(55, 93%, 45%);
+  background: #0c0c0c;
   border-color: #94a3b8;
   transform: translateY(-2px);
 }
@@ -1745,7 +1745,7 @@ body {
   align-items: flex-end;
   justify-content: space-between;
   padding-top: 16px;
-  border-top: 1px solid hsl(55, 93%, 45%);
+  border-top: 1px solid #0c0c0c;
   margin-top: 16px;
 }
 
@@ -1793,7 +1793,7 @@ body {
    ============================================ */
 .footer {
   background: linear-gradient(90deg, #103d67, #0b2d50);
-  color: hsl(55, 93%, 45%);
+  color: #0c0c0c;
   padding: 64px 0 32px;
   position: relative;
   overflow: hidden;
@@ -2199,7 +2199,7 @@ body {
 @media (prefers-color-scheme: dark) {
   :root {
     /* Text colors - Dark mode */
-    --text-primary: hsl(55, 93%, 45%);
+    --text-primary: #0c0c0c;
     --text-secondary: #cbd5e1;
     --text-muted: #94a3b8;
     --text-light: #64748b;
@@ -2208,5 +2208,6 @@ body {
     /* Border colors - Dark mode */
     --border-light: #334155;
     --border-muted: #cbd5e1;
+    /* color:#0c0c0c; */
   }
 }

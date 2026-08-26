@@ -517,7 +517,7 @@
   }
 
   .admin-umrah-table thead th {
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
   }
 
   .admin-umrah-table tbody td {
@@ -534,7 +534,7 @@
   }
 
   .package-name .name {
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
   }
 
   .package-name .duration {
@@ -603,7 +603,7 @@
   }
 
   .empty-state h3 {
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
   }
 
   .empty-state .faint {
@@ -637,7 +637,7 @@
 }
 
 .table-wrapper::-webkit-scrollbar-track {
-  background: hsl(55, 93%, 45%);
+  background: #0c0c0c;
   border-radius: 3px;
 }
 
@@ -683,7 +683,7 @@
   }
 
   .admin-umrah-table thead {
-    background: hsl(55, 93%, 45%) !important;
+    background: #0c0c0c !important;
   }
 
   .admin-umrah-table thead th {

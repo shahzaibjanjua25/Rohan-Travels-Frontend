@@ -62,7 +62,7 @@
   margin: 0 auto;
   padding: 2rem;
   font-family: var(--font);
-  background: linear-gradient(180deg, #f8fafc 0%, hsl(55, 93%, 45%) 100%);
+  background: linear-gradient(180deg, #f8fafc 0%, #0c0c0c 100%);
   min-height: 100vh;
 }
 
@@ -1191,7 +1191,7 @@
     --bg: #0f172a;
     --bg-card: #1e293b;
     --bg-hover: #2d3748;
-    --text: hsl(55, 93%, 45%);
+    --text: #0c0c0c;
     --text-secondary: #94a3b8;
     --text-light: #64748b;
     --primary-light: #1e3a5f;
@@ -1505,7 +1505,7 @@
   }
 
   .flights-table thead {
-    background: hsl(55, 93%, 45%) !important;
+    background: #0c0c0c !important;
   }
 
   .flights-table thead th {
@@ -1518,7 +1518,7 @@
   }
 
   .route-group__header {
-    background: hsl(55, 93%, 45%) !important;
+    background: #0c0c0c !important;
     color: #0f172a !important;
   }
 

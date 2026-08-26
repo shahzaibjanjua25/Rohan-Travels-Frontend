@@ -641,7 +641,7 @@
   }
 
   .about-feature-card h3 {
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
   }
 
   .about-feature-card p {
@@ -654,7 +654,7 @@
   }
 
   .about-service-card h3 {
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
   }
 
   .about-service-card p {
@@ -667,7 +667,7 @@
   }
 
   .about-story-text h2 {
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
   }
 
   .about-story-text p {
@@ -687,7 +687,7 @@
   }
 
   .about-cta-content h2 {
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
   }
 
   .about-cta-content p {
@@ -695,7 +695,7 @@
   }
 
   .about-btn-outline {
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
     border-color: #475569;
   }
 
@@ -780,7 +780,7 @@
   }
 
   .about-contact-person .name {
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
   }
 }
 

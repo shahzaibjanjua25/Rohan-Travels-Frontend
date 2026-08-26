@@ -171,7 +171,7 @@
 
 /* Table Body */
 .flights-table tbody tr {
-  border-bottom: 1px solid hsl(55, 93%, 45%);
+  border-bottom: 1px solid #0c0c0c;
   transition: background 0.2s;
 }
 
@@ -464,7 +464,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 8px 0;
-    border-bottom: 1px solid hsl(55, 93%, 45%);
+    border-bottom: 1px solid #0c0c0c;
     gap: 12px;
   }
 
@@ -612,7 +612,7 @@
 }
 
 .table-wrapper::-webkit-scrollbar-track {
-  background: hsl(55, 93%, 45%);
+  background: #0c0c0c;
 }
 
 .table-wrapper::-webkit-scrollbar-thumb {

@@ -396,7 +396,7 @@
   }
 
   .auth__title {
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
   }
 
   .auth__sub {
@@ -404,12 +404,12 @@
   }
 
   .field__label {
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
   }
 
   .field__input {
     background: #0f172a;
-    color: hsl(55, 93%, 45%);
+    color: #0c0c0c;
     border-color: #334155;
   }
 
@@ -432,16 +432,16 @@
   .field__input:-webkit-autofill:focus,
   .field__input:-webkit-autofill:active {
     -webkit-box-shadow: 0 0 0 1000px #0f172a inset !important;
-    -webkit-text-fill-color: hsl(55, 93%, 45%) !important;
+    -webkit-text-fill-color: #0c0c0c !important;
     background-color: #0f172a !important;
     border-color: #334155 !important;
-    caret-color: hsl(55, 93%, 45%) !important;
+    caret-color: #0c0c0c !important;
   }
 
   .field__input:autofill,
   .field__input:-moz-autofill {
     background-color: #0f172a !important;
-    color: hsl(55, 93%, 45%) !important;
+    color: #0c0c0c !important;
     border-color: #334155 !important;
   }
 

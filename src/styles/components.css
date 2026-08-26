@@ -406,7 +406,7 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 0.5rem 1rem;
-  border-bottom: 1px solid hsl(55, 93%, 45%);
+  border-bottom: 1px solid #0c0c0c;
 }
 
 .shell__dropdown-avatar {
@@ -454,7 +454,7 @@
 
 .shell__dropdown-divider {
   height: 1px;
-  background: hsl(55, 93%, 45%);
+  background: #0c0c0c;
   margin: 0.25rem 0;
 }
 
@@ -605,7 +605,7 @@
   gap: 0.75rem;
   margin-top: auto;
   padding-top: 1.5rem;
-  border-top: 2px solid hsl(55, 93%, 45%);
+  border-top: 2px solid #0c0c0c;
 }
 
 .shell__mobile-auth .btn {
