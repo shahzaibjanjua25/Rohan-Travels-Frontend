@@ -829,7 +829,7 @@ body {
 .sidebar-brand-name {
   font-size: 14px;
   font-weight: 700;
-  color: #0f172a;
+  color: #f3e40c;
 }
 
 @media (max-width: 480px) {
@@ -1451,7 +1451,7 @@ body {
   }
 
   .sidebar-brand-name {
-    color: #0c0c0c;
+    color: #f7e41b;
   }
 
   .sidebar-close-btn {
@@ -1604,14 +1604,14 @@ body {
 
 :root {
   --hamburger-color: #0a2463;
-  --hamburger-hover-bg: rgba(10, 36, 99, 0.08);
+  --hamburger-hover-bg: rgba(10, 36, 99, 0.06);
   --hamburger-hover-color: #0a2463;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --hamburger-color: #f1f5f9;
-    --hamburger-hover-bg: rgba(255, 255, 255, 0.1);
+    --hamburger-color: #94a3b8;
+    --hamburger-hover-bg: rgba(255, 161, 11, 0.2);
     --hamburger-hover-color: #ffa10b;
   }
 }
@@ -1635,8 +1635,5 @@ body {
 .hamburger-btn:hover {
   background: var(--hamburger-hover-bg);
   color: var(--hamburger-hover-color);
-}
-
-.hamburger-btn:hover svg {
-  color: var(--hamburger-hover-color);
+  transform: scale(1.05);
 }
