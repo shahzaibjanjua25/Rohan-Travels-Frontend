@@ -1601,3 +1601,42 @@ body {
     display: none;
   }
 } */
+
+:root {
+  --hamburger-color: #0a2463;
+  --hamburger-hover-bg: rgba(10, 36, 99, 0.08);
+  --hamburger-hover-color: #0a2463;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --hamburger-color: #f1f5f9;
+    --hamburger-hover-bg: rgba(255, 255, 255, 0.1);
+    --hamburger-hover-color: #ffa10b;
+  }
+}
+
+.hamburger-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-radius: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  color: var(--hamburger-color);
+}
+
+.hamburger-btn:hover {
+  background: var(--hamburger-hover-bg);
+  color: var(--hamburger-hover-color);
+}
+
+.hamburger-btn:hover svg {
+  color: var(--hamburger-hover-color);
+}
