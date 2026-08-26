@@ -358,12 +358,12 @@
 }
 
 .search-input::placeholder {
-  color: #94a3b8;
+  color: hsl(55, 93%, 45%);
   font-weight: 400;
 }
 
 .search-input:hover {
-  border-color: #94a3b8;
+  border-color: hsl(55, 93%, 45%);
 }
 
 .search-input:focus {
@@ -440,7 +440,7 @@
 }
 
 .search-date-input:hover {
-  border-color: #94a3b8;
+  border-color: hsl(55, 93%, 45%);
 }
 
 .search-date-input:focus {
@@ -510,7 +510,7 @@
   right: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color: #94a3b8;
+  color: hsl(55, 93%, 45%);
   transition: transform 0.3s ease;
   pointer-events: none;
 }
@@ -572,12 +572,12 @@
 }
 
 .airport-select-item .airport-full-name {
-  color: #94a3b8;
+  color: hsl(55, 93%, 45%);
   font-size: 12px;
 }
 
 .airport-select-item.no-results {
-  color: #94a3b8;
+  color: hsl(55, 93%, 45%);
   justify-content: center;
   font-size: 13px;
   padding: 16px;
@@ -1095,7 +1095,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #94a3b8;
+  color: hsl(55, 93%, 45%);
 }
 
 .deal-card-footer .price {
@@ -1743,7 +1743,7 @@
   }
 
   .section-header p {
-    color: #94a3b8;
+    color: hsl(55, 93%, 45%);
   }
 
   .hero-search-form {
@@ -1757,7 +1757,7 @@
   }
 
   .search-tab {
-    color: #94a3b8;
+    color: hsl(55, 93%, 45%);
   }
 
   .search-tab.active {
@@ -1798,7 +1798,7 @@
 
   .swap-btn {
     background: #0f172a;
-    color: #94a3b8;
+    color: hsl(55, 93%, 45%);
     border-color: #334155;
   }
 
@@ -1810,7 +1810,7 @@
 
   .popular-route-btn {
     background: #0f172a;
-    color: #94a3b8;
+    color: hsl(55, 93%, 45%);
     border-color: #334155;
   }
 
@@ -1821,7 +1821,7 @@
   }
 
   .popular-routes-label {
-    color: #94a3b8;
+    color: hsl(55, 93%, 45%);
   }
 
   .airport-select-dropdown {
@@ -1842,7 +1842,7 @@
   }
 
   .airport-select-item .airport-name {
-    color: #94a3b8;
+    color: hsl(55, 93%, 45%);
   }
 
   .airport-select-item .airport-full-name {
@@ -1900,7 +1900,7 @@
   }
 
   .contact-detail-item p {
-    color: #94a3b8;
+    color: hsl(55, 93%, 45%);
   }
 
   .contact-detail-icon {
@@ -1915,7 +1915,7 @@
   .social-icon {
     background: #1e293b;
     border-color: #334155;
-    color: #94a3b8;
+    color: hsl(55, 93%, 45%);
   }
 
   .social-icon:hover {
@@ -1936,7 +1936,7 @@
   }
 
   .deal-card-body .flight-info {
-    color: #94a3b8;
+    color: hsl(55, 93%, 45%);
     border-top-color: #334155;
   }
 
@@ -1947,7 +1947,7 @@
 
   .deal-card-footer .view-link {
     background: rgba(255, 255, 255, 0.05);
-    color: #94a3b8;
+    color: hsl(55, 93%, 45%);
   }
 
   .deal-card-footer .view-link:hover {
@@ -2127,7 +2127,7 @@
 .umrah-home-card-footer .price .from {
   font-size: 10px;
   text-transform: uppercase;
-  color: #94a3b8;
+  color: hsl(55, 93%, 45%);
   letter-spacing: 0.05em;
 }
 

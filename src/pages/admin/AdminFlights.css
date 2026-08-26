@@ -34,7 +34,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: #94a3b8;
+  color: hsl(55, 93%, 45%);
   margin: 0 0 4px 0;
 }
 
@@ -216,7 +216,7 @@
 
 .flight-airline {
   font-size: 12px;
-  color: #94a3b8;
+  color: hsl(55, 93%, 45%);
 }
 
 /* Route Info */
@@ -238,11 +238,11 @@
 
 .route-city {
   font-size: 11px;
-  color: #94a3b8;
+  color: hsl(55, 93%, 45%);
 }
 
 .route-arrow {
-  color: #94a3b8;
+  color: hsl(55, 93%, 45%);
   padding: 0 4px;
 }
 
@@ -287,7 +287,7 @@
 
 .withdrawn-tag {
   font-size: 10px;
-  color: #94a3b8;
+  color: hsl(55, 93%, 45%);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -370,7 +370,7 @@
 }
 
 .pagination .page-info {
-  color: #94a3b8;
+  color: hsl(55, 93%, 45%);
   font-size: 14px;
   padding: 0 8px;
 }
@@ -621,7 +621,7 @@
 }
 
 .table-wrapper::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: hsl(55, 93%, 45%);
 }
 
 /* ============================================

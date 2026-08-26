@@ -645,7 +645,7 @@ export default function UserFlights() {
                 );
               })}
             </select>
-            <span className="filter-hint" style={{ fontSize: '11px', color: '#94a3b8', marginTop: '2px' }}>
+            <span className="filter-hint" style={{ fontSize: '11px', color: 'hsl(55, 93%, 45%)', marginTop: '2px' }}>
               Note: Umrah/Hajj redirects to packages page
             </span>
           </div>

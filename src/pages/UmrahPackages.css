@@ -808,7 +808,7 @@
         --gold-strong: #e08e09;
         --gold-soft: #2a2410;
         --line: #334155;
-        --muted: #94a3b8;
+        --muted: hsl(55, 93%, 45%);
         --success: #6ee7b7;
         --warning: #fbbf24;
         --danger: #fca5a5;

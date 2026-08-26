@@ -645,7 +645,7 @@
   }
 
   .about-feature-card p {
-    color: #94a3b8;
+    color: hsl(55, 93%, 45%);
   }
 
   .about-service-card {
@@ -658,7 +658,7 @@
   }
 
   .about-service-card p {
-    color: #94a3b8;
+    color: hsl(55, 93%, 45%);
   }
 
   .about-service-icon {
@@ -671,7 +671,7 @@
   }
 
   .about-story-text p {
-    color: #94a3b8;
+    color: hsl(55, 93%, 45%);
   }
 
   .about-stat-number {
@@ -679,7 +679,7 @@
   }
 
   .about-stat-label {
-    color: #94a3b8;
+    color: hsl(55, 93%, 45%);
   }
 
   .about-cta {
@@ -691,7 +691,7 @@
   }
 
   .about-cta-content p {
-    color: #94a3b8;
+    color: hsl(55, 93%, 45%);
   }
 
   .about-btn-outline {

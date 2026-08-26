@@ -431,7 +431,7 @@ body {
 
 .btn-outline-light:hover {
   background: #f1f5f9;
-  border-color: #94a3b8;
+  border-color: hsl(55, 93%, 45%);
   transform: translateY(-2px);
 }
 
@@ -543,14 +543,14 @@ body {
 
 .shell__user-role {
   font-size: 10px;
-  color: #94a3b8;
+  color: hsl(55, 93%, 45%);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .shell__chevron {
   transition: var(--transition);
-  color: #94a3b8;
+  color: hsl(55, 93%, 45%);
   width: 16px;
   height: 16px;
 }
@@ -637,7 +637,7 @@ body {
 
 .shell__dropdown-email {
   font-size: 11px;
-  color: #94a3b8;
+  color: hsl(55, 93%, 45%);
   word-break: break-all;
 }
 
@@ -1437,7 +1437,7 @@ body {
   }
 
   .hamburger-btn {
-    color: #94a3b8;
+    color: hsl(55, 93%, 45%);
   }
 
   .hamburger-btn:hover {
@@ -1455,7 +1455,7 @@ body {
   }
 
   .sidebar-close-btn {
-    color: #94a3b8;
+    color: hsl(55, 93%, 45%);
   }
 
   .sidebar-close-btn:hover {
@@ -1464,7 +1464,7 @@ body {
   }
 
   .shell__mobile-link {
-    color: #94a3b8;
+    color: hsl(55, 93%, 45%);
   }
 
   .shell__mobile-link:hover {
@@ -1478,7 +1478,7 @@ body {
   }
 
   .sidebar-footer-link {
-    color: #94a3b8;
+    color: hsl(55, 93%, 45%);
   }
 
   .sidebar-footer-link:hover {
@@ -1517,11 +1517,11 @@ body {
   }
 
   .shell__dropdown-email {
-    color: #94a3b8;
+    color: hsl(55, 93%, 45%);
   }
 
   .shell__dropdown-item {
-    color: #94a3b8;
+    color: hsl(55, 93%, 45%);
   }
 
   .shell__dropdown-item:hover {

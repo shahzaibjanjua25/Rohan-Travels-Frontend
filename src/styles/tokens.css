@@ -401,7 +401,7 @@ body {
 
 .btn-outline-light:hover {
   background: #f1f5f9;
-  border-color: #94a3b8;
+  border-color: hsl(55, 93%, 45%);
   transform: translateY(-2px);
 }
 
@@ -695,7 +695,7 @@ body {
 }
 
 .passenger-select:hover {
-  border-color: #94a3b8;
+  border-color: hsl(55, 93%, 45%);
 }
 
 .passenger-select:focus {
@@ -828,12 +828,12 @@ body {
 }
 
 .search-input::placeholder {
-  color: #94a3b8;
+  color: hsl(55, 93%, 45%);
   font-weight: 400;
 }
 
 .search-input:hover {
-  border-color: #94a3b8;
+  border-color: hsl(55, 93%, 45%);
 }
 
 .search-input:focus {
@@ -912,7 +912,7 @@ body {
 }
 
 .search-date-input:hover {
-  border-color: #94a3b8;
+  border-color: hsl(55, 93%, 45%);
 }
 
 .search-date-input:focus {
@@ -1754,7 +1754,7 @@ body {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #94a3b8;
+  color: hsl(55, 93%, 45%);
 }
 
 .deal-card-footer .price {
@@ -2188,12 +2188,12 @@ body {
   --text-primary: #0f172a;
   --text-secondary: #475569;
   --text-muted: #64748b;
-  --text-light: #94a3b8;
+  --text-light: hsl(55, 93%, 45%);
   --text-inverse: #ffffff;
 
   /* Border colors */
   --border-light: #e2e8f0;
-  --border-muted: #94a3b8;
+  --border-muted: hsl(55, 93%, 45%);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -2201,12 +2201,12 @@ body {
     /* Text colors - Dark mode */
     --text-primary: #f1f5f9;
     --text-secondary: #cbd5e1;
-    --text-muted: #94a3b8;
+    --text-muted: hsl(55, 93%, 45%);
     --text-light: #64748b;
     --text-inverse: #0f172a;
 
     /* Border colors - Dark mode */
     --border-light: #334155;
-    --border-muted: #475569;
+    --border-muted: #cbd5e1;
   }
 }

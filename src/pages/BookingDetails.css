@@ -19,7 +19,7 @@
   --info-light: #dbeafe;
   --text: #0f172a;
   --text-secondary: #475569;
-  --text-light: #94a3b8;
+  --text-light: hsl(55, 93%, 45%);
   --bg: #f1f5f9;
   --bg-card: #ffffff;
   --bg-hover: #f8fafc;
@@ -403,7 +403,7 @@
 .tag--secondary {
   background: var(--bg);
   color: var(--text-secondary);
-  border-color: #94a3b8;
+  border-color: hsl(55, 93%, 45%);
 }
 
 /* ============================================
@@ -430,7 +430,7 @@
 .field {
   width: 100%;
   padding: 0.65rem 0.9rem;
-  border: 2px solid #94a3b8;
+  border: 2px solid hsl(55, 93%, 45%);
   border-radius: var(--radius-sm);
   font-size: 0.95rem;
   font-family: var(--font);
@@ -462,7 +462,7 @@
 .field__input {
   width: 100%;
   padding: 0.65rem 0.9rem;
-  border: 2px solid #94a3b8;
+  border: 2px solid hsl(55, 93%, 45%);
   border-radius: var(--radius-sm);
   font-size: 0.95rem;
   font-family: var(--font);
@@ -566,7 +566,7 @@
 .btn--ghost {
   background: transparent;
   color: var(--text-secondary);
-  border-color: #94a3b8;
+  border-color: hsl(55, 93%, 45%);
 }
 
 .btn--ghost:hover {
@@ -891,7 +891,7 @@
     --bg-card: #1e293b;
     --bg-hover: #2d3748;
     --text: #f1f5f9;
-    --text-secondary: #94a3b8;
+    --text-secondary: hsl(55, 93%, 45%);
     --text-light: #64748b;
     --primary-light: #1e3a5f;
     --secondary-light: #332a0a;

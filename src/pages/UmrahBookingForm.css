@@ -256,7 +256,7 @@
 }
 
 .room-option:hover {
-  border-color: #94a3b8;
+  border-color: hsl(55, 93%, 45%);
 }
 
 .room-option.selected {
@@ -465,7 +465,7 @@
 
 .btn--ghost:hover {
   background: #f8fafc;
-  border-color: #94a3b8;
+  border-color: hsl(55, 93%, 45%);
 }
 
 .btn--sm {
@@ -614,7 +614,7 @@
   }
   
   .flight-detail-item .time-value {
-    color: #94a3b8;
+    color: hsl(55, 93%, 45%);
   }
 }
 

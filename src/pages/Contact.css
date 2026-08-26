@@ -227,7 +227,7 @@
   }
 
   .contact-hero p {
-    color: #94a3b8;
+    color: hsl(55, 93%, 45%);
   }
 
   .contact-card {
@@ -240,7 +240,7 @@
   }
 
   .contact-card p {
-    color: #94a3b8;
+    color: hsl(55, 93%, 45%);
   }
 
   .contact-card-action {
@@ -261,7 +261,7 @@
   }
 
   .contact-info-item p {
-    color: #94a3b8;
+    color: hsl(55, 93%, 45%);
   }
 }
 
@@ -367,7 +367,7 @@
   }
 
   .contact-card p {
-    color: #94a3b8;
+    color: hsl(55, 93%, 45%);
   }
 
   .contact-card-action {
