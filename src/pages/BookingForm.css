@@ -1,4 +1,4 @@
-/* BookingForm.css - Complete Working Styles */
+/* BookingForm.css - Complete Working Styles - Full Dark Mode Support */
 
 /* ============================================
    ROOT VARIABLES
@@ -20,7 +20,7 @@
   --text: #0f172a;
   --text-secondary: #475569;
   --text-light: #94a3b8;
-  --bg: #0c0c0c;
+  --bg: #f1f5f9;
   --bg-card: #ffffff;
   --bg-hover: #f8fafc;
   --shadow: 0 1px 3px rgba(99, 102, 241, 0.06);
@@ -46,6 +46,31 @@
 }
 
 /* ============================================
+   DARK MODE OVERRIDES
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f172a;
+    --bg-card: #1e293b;
+    --bg-hover: #2d3748;
+    --text: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-light: #94a3b8;
+    --primary-light: #1e3a5f;
+    --secondary-light: #332a0a;
+    --danger-light: #2a0f0f;
+    --success-light: #0a1f14;
+    --info-light: #0a1a2a;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.5);
+    --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.6);
+    --shadow-glow: 0 0 30px rgba(99, 102, 241, 0.05);
+  }
+}
+
+/* ============================================
    MAIN WRAPPER
    ============================================ */
 
@@ -54,7 +79,7 @@
   margin: 0 auto;
   padding: 2rem;
   font-family: var(--font);
-  background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 50%, #0c0c0c 100%);
+  background: linear-gradient(135deg, var(--bg) 0%, var(--bg-card) 50%, var(--bg) 100%);
   min-height: 100vh;
   position: relative;
 }
@@ -87,6 +112,16 @@
   background: radial-gradient(circle, rgba(99, 102, 241, 0.03) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .booking-form-wrapper::before {
+    opacity: 0.15;
+  }
+  
+  .booking-form-wrapper::after {
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+  }
 }
 
 /* ============================================
@@ -174,6 +209,22 @@
   font-size: 0.9rem;
 }
 
+@media (prefers-color-scheme: dark) {
+  .booking-hero-overlay {
+    background: linear-gradient(135deg, 
+      rgba(99, 102, 241, 0.25) 0%,
+      rgba(139, 92, 246, 0.1) 50%,
+      rgba(168, 85, 247, 0.15) 100%
+    );
+  }
+  
+  .booking-hero-badge {
+    background: rgba(30, 41, 59, 0.95);
+    color: var(--primary);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
 /* ============================================
    HEADER
    ============================================ */
@@ -256,13 +307,14 @@
   border-radius: var(--radius);
   padding: 1.75rem 2rem;
   box-shadow: var(--shadow-md);
-  border: 2px solid #cbd5e1;
+  border: 2px solid var(--text-light);
   transition: var(--transition-smooth);
   margin-bottom: 2.5rem;
   position: relative;
   z-index: 1;
   overflow: hidden;
   animation: fadeInUp 0.6s ease 0.1s both;
+  width: 100%;
 }
 
 .booking-flight-card::before {
@@ -316,10 +368,12 @@
 }
 
 .flight-summary {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 2rem;
+  width: 100%;
+  flex-wrap: wrap;
 }
 
 .flight-airline {
@@ -327,15 +381,15 @@
   flex-direction: column;
   gap: 0.25rem;
   padding-right: 1.5rem;
-  border-right: 2px solid #e2e8f0;
+  border-right: 2px solid var(--text-light);
   min-width: 150px;
+  flex-shrink: 0;
 }
 
 .airline-name {
   font-weight: 700;
   font-size: 1.1rem;
-
-  color: black;
+  color: var(--text);
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -343,7 +397,6 @@
 
 .airline-name::before {
   content: '✈️';
-  color: #0a1f14;
   font-size: 1.2rem;
 }
 
@@ -420,8 +473,9 @@
   align-items: flex-end;
   gap: 0.5rem;
   padding-left: 1.5rem;
-  border-left: 2px solid #e2e8f0;
+  border-left: 2px solid var(--text-light);
   min-width: 200px;
+  flex-shrink: 0;
 }
 
 .flight-times {
@@ -439,7 +493,7 @@
   padding: 0.2rem 0.6rem;
   background: var(--bg);
   border-radius: var(--radius-sm);
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--text-light);
 }
 
 .flight-times .time-separator {
@@ -452,7 +506,7 @@
   background: linear-gradient(135deg, var(--primary-light), var(--bg));
   padding: 0.5rem 1rem;
   border-radius: var(--radius-sm);
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--text-light);
   margin-left: auto;
 }
 
@@ -490,15 +544,50 @@
   margin-top: 0.25rem;
 }
 
+@media (prefers-color-scheme: dark) {
+  .booking-flight-card {
+    border-color: var(--text-light);
+  }
+  
+  .booking-flight-card:hover {
+    border-color: var(--primary);
+  }
+  
+  .flight-airline {
+    border-right-color: var(--text-light);
+  }
+  
+  .flight-info-right {
+    border-left-color: var(--text-light);
+  }
+  
+  .flight-number {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--text-light);
+  }
+  
+  .flight-times .time {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: var(--text-light);
+  }
+  
+  .flight-price {
+    background: rgba(99, 102, 241, 0.05);
+    border-color: var(--text-light);
+  }
+  
+  .airline-name {
+    color: var(--text);
+  }
+}
+
 /* ============================================
    FORM GRID
    ============================================ */
 
 .booking-form-grid {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 2rem;
-  align-items: start;
+  display: block;
+  width: 100%;
 }
 
 /* ============================================
@@ -510,16 +599,27 @@
   border-radius: var(--radius);
   padding: 2.5rem;
   box-shadow: var(--shadow-md);
-  border: 2px solid #cbd5e1;
+  border: 2px solid var(--text-light);
   transition: var(--transition-smooth);
   position: relative;
   z-index: 1;
   animation: fadeInUp 0.6s ease 0.2s both;
+  width: 100%;
 }
 
 .booking-form:hover {
   box-shadow: var(--shadow-lg);
   border-color: var(--primary);
+}
+
+@media (prefers-color-scheme: dark) {
+  .booking-form {
+    border-color: var(--text-light);
+  }
+  
+  .booking-form:hover {
+    border-color: var(--primary);
+  }
 }
 
 /* ============================================
@@ -529,7 +629,7 @@
 .form-section {
   margin-bottom: 2.5rem;
   padding-bottom: 2rem;
-  border-bottom: 2px solid #e2e8f0;
+  border-bottom: 2px solid var(--text-light);
   position: relative;
 }
 
@@ -563,6 +663,12 @@
 @keyframes pulse-bar {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.6; }
+}
+
+@media (prefers-color-scheme: dark) {
+  .form-section {
+    border-bottom-color: var(--text-light);
+  }
 }
 
 /* ============================================
@@ -626,7 +732,7 @@
 .field {
   width: 100%;
   padding: 0.65rem 0.9rem;
-  border: 2px solid #94a3b8;
+  border: 2px solid var(--text-light);
   border-radius: var(--radius-sm);
   font-size: 0.95rem;
   font-family: var(--font);
@@ -642,7 +748,7 @@
 .field:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.08), var(--shadow-glow);
-  background: white;
+  background: var(--bg-card);
   transform: scale(1.01);
 }
 
@@ -652,7 +758,7 @@
 }
 
 .field::placeholder {
-  color: #94a3b8;
+  color: var(--text-light);
   opacity: 1;
   transition: var(--transition);
 }
@@ -662,7 +768,7 @@
 }
 
 .field:disabled {
-  background: #0c0c0c;
+  background: var(--bg);
   cursor: not-allowed;
   opacity: 0.7;
 }
@@ -681,6 +787,29 @@ textarea.field {
 
 .field--error:focus {
   box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  .field {
+    background: var(--bg-card);
+    border-color: var(--text-light);
+    color: var(--text);
+  }
+  
+  .field:focus {
+    background: var(--bg-card);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1), var(--shadow-glow);
+  }
+  
+  .field:hover {
+    background: var(--bg-hover);
+    border-color: var(--primary);
+  }
+  
+  .field::placeholder {
+    color: var(--text-light);
+  }
 }
 
 /* ============================================
@@ -723,12 +852,23 @@ select.field {
 
 select.field option {
   padding: 0.5rem;
-  background: white;
+  background: var(--bg-card);
   color: var(--text);
 }
 
 select.field option:hover {
   background: var(--primary-light);
+}
+
+@media (prefers-color-scheme: dark) {
+  select.field {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238b5cf6' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  }
+  
+  select.field option {
+    background: var(--bg-card);
+    color: var(--text);
+  }
 }
 
 /* ============================================
@@ -771,6 +911,12 @@ input[type="date"].field::-webkit-calendar-picker-indicator:hover {
   transform: scale(1.1);
 }
 
+@media (prefers-color-scheme: dark) {
+  input[type="date"].field::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+  }
+}
+
 /* ============================================
    PASSENGER SECTIONS
    ============================================ */
@@ -780,7 +926,7 @@ input[type="date"].field::-webkit-calendar-picker-indicator:hover {
   border-radius: var(--radius-sm);
   padding: 1.5rem;
   margin-bottom: 1.25rem;
-  border: 2px solid #e2e8f0;
+  border: 2px solid var(--text-light);
   transition: var(--transition-smooth);
   position: relative;
   overflow: hidden;
@@ -831,7 +977,7 @@ input[type="date"].field::-webkit-calendar-picker-indicator:hover {
   background: linear-gradient(135deg, var(--primary-light), var(--bg));
   padding: 0.15rem 0.8rem;
   border-radius: var(--radius-full);
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--text-light);
 }
 
 .passenger-summary {
@@ -841,7 +987,28 @@ input[type="date"].field::-webkit-calendar-picker-indicator:hover {
   color: var(--text-secondary);
   text-align: right;
   padding: 0.5rem 0;
-  border-top: 2px solid #e2e8f0;
+  border-top: 2px solid var(--text-light);
+}
+
+@media (prefers-color-scheme: dark) {
+  .passenger-section {
+    background: rgba(255, 255, 255, 0.02);
+    border-color: var(--text-light);
+  }
+  
+  .passenger-section:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: var(--primary);
+  }
+  
+  .passenger-type {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--text-light);
+  }
+  
+  .passenger-summary {
+    border-top-color: var(--text-light);
+  }
 }
 
 /* ============================================
@@ -869,7 +1036,7 @@ input[type="date"].field::-webkit-calendar-picker-indicator:hover {
 
 .price-row:hover {
   background: var(--bg-hover);
-  border-color: #e2e8f0;
+  border-color: var(--text-light);
 }
 
 .price-row.total {
@@ -895,6 +1062,18 @@ input[type="date"].field::-webkit-calendar-picker-indicator:hover {
   background-clip: text;
 }
 
+@media (prefers-color-scheme: dark) {
+  .price-row:hover {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: var(--text-light);
+  }
+  
+  .price-row.total {
+    background: rgba(99, 102, 241, 0.08);
+    border-color: rgba(99, 102, 241, 0.15);
+  }
+}
+
 /* ============================================
    FORM ACTIONS
    ============================================ */
@@ -904,8 +1083,14 @@ input[type="date"].field::-webkit-calendar-picker-indicator:hover {
   gap: 1rem;
   justify-content: flex-end;
   padding-top: 1.5rem;
-  border-top: 2px solid #e2e8f0;
+  border-top: 2px solid var(--text-light);
   margin-top: 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .form-actions {
+    border-top-color: var(--text-light);
+  }
 }
 
 /* ============================================
@@ -989,7 +1174,7 @@ input[type="date"].field::-webkit-calendar-picker-indicator:hover {
 .btn--ghost {
   background: transparent;
   color: var(--text-secondary);
-  border-color: #94a3b8;
+  border-color: var(--text-light);
 }
 
 .btn--ghost:hover {
@@ -1004,6 +1189,19 @@ input[type="date"].field::-webkit-calendar-picker-indicator:hover {
   transform: translateY(0);
 }
 
+@media (prefers-color-scheme: dark) {
+  .btn--ghost {
+    border-color: var(--text-light);
+    color: var(--text-secondary);
+  }
+  
+  .btn--ghost:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+}
+
 /* ============================================
    LOADING STATE
    ============================================ */
@@ -1016,7 +1214,13 @@ input[type="date"].field::-webkit-calendar-picker-indicator:hover {
   background: var(--bg-card);
   border-radius: var(--radius);
   box-shadow: var(--shadow-md);
-  border: 2px solid #cbd5e1;
+  border: 2px solid var(--text-light);
+}
+
+@media (prefers-color-scheme: dark) {
+  .booking-form-loading {
+    border-color: var(--text-light);
+  }
 }
 
 /* ============================================
@@ -1028,7 +1232,6 @@ input[type="date"].field::-webkit-calendar-picker-indicator:hover {
   padding: 1.25rem 1.5rem;
   background: linear-gradient(135deg, var(--secondary-light), var(--bg));
   border-radius: var(--radius-sm);
-  border-left: 4px solid var(--secondary);
   border: 2px solid rgba(245, 158, 11, 0.15);
   transition: var(--transition-smooth);
   position: relative;
@@ -1053,6 +1256,17 @@ input[type="date"].field::-webkit-calendar-picker-indicator:hover {
 
 .booking-info .faint strong {
   color: var(--text);
+}
+
+@media (prefers-color-scheme: dark) {
+  .booking-info {
+    background: rgba(245, 158, 11, 0.06);
+    border-color: rgba(245, 158, 11, 0.15);
+  }
+  
+  .booking-info:hover {
+    border-color: rgba(245, 158, 11, 0.3);
+  }
 }
 
 /* ============================================
@@ -1083,22 +1297,42 @@ input[type="date"].field::-webkit-calendar-picker-indicator:hover {
 .alert--error {
   background: var(--danger-light);
   color: #991b1b;
-  border-color: #ef4444;
-  border-left-color: #ef4444;
+  border-color: var(--danger);
+  border-left-color: var(--danger);
 }
 
 .alert--success {
   background: var(--success-light);
   color: #065f46;
-  border-color: #10b981;
-  border-left-color: #10b981;
+  border-color: var(--success);
+  border-left-color: var(--success);
 }
 
 .alert--info {
   background: var(--info-light);
   color: #1e40af;
-  border-color: #3b82f6;
-  border-left-color: #3b82f6;
+  border-color: var(--info);
+  border-left-color: var(--info);
+}
+
+@media (prefers-color-scheme: dark) {
+  .alert--error {
+    background: rgba(239, 68, 68, 0.1);
+    color: #fca5a5;
+    border-color: rgba(239, 68, 68, 0.2);
+  }
+  
+  .alert--success {
+    background: rgba(16, 185, 129, 0.1);
+    color: #6ee7b7;
+    border-color: rgba(16, 185, 129, 0.2);
+  }
+  
+  .alert--info {
+    background: rgba(59, 130, 246, 0.1);
+    color: #93c5fd;
+    border-color: rgba(59, 130, 246, 0.2);
+  }
 }
 
 /* ============================================
@@ -1143,33 +1377,36 @@ input[type="date"].field::-webkit-calendar-picker-indicator:hover {
     gap: 1.5rem;
   }
 
-  .booking-flight-card {
-    position: static;
+  .flight-summary {
+    flex-direction: column;
+    align-items: stretch;
   }
 
-  .flight-summary {
-    grid-template-columns: 1fr;
+  .flight-route {
+    flex-direction: column;
     gap: 1rem;
   }
 
   .flight-airline {
     border-right: none;
-    border-bottom: 2px solid #e2e8f0;
+    border-bottom: 2px solid var(--text-light);
     padding-right: 0;
     padding-bottom: 1rem;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     min-width: unset;
+    width: 100%;
   }
 
-  .flight-route {
+  .route-display {
     flex-wrap: wrap;
+    justify-content: center;
   }
 
   .flight-info-right {
     border-left: none;
-    border-top: 2px solid #e2e8f0;
+    border-top: 2px solid var(--text-light);
     padding-left: 0;
     padding-top: 1rem;
     min-width: unset;
@@ -1483,233 +1720,6 @@ input[type="date"].field::-webkit-calendar-picker-indicator:hover {
 }
 
 /* ============================================
-   DARK MODE SUPPORT
-   ============================================ */
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0f172a;
-    --bg-card: #1e293b;
-    --bg-hover: #2d3748;
-    --text: #0c0c0c;
-    --text-secondary: #94a3b8;
-    --text-light: #64748b;
-    --primary-light: #1e3a5f;
-    --secondary-light: #332a0a;
-    --danger-light: #2a0f0f;
-    --success-light: #0a1f14;
-    --info-light: #0a1a2a;
-    --shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.5);
-    --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.6);
-    --shadow-glow: 0 0 30px rgba(99, 102, 241, 0.05);
-  }
-
-  .booking-form-wrapper {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
-  }
-
-  .booking-form-wrapper::before {
-    opacity: 0.15;
-    background-image: url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1920&q=80');
-  }
-
-  .booking-form-wrapper::after {
-    background: radial-gradient(circle, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
-  }
-
-  .booking-hero-overlay {
-    background: linear-gradient(135deg, 
-      rgba(99, 102, 241, 0.25) 0%,
-      rgba(139, 92, 246, 0.1) 50%,
-      rgba(168, 85, 247, 0.15) 100%
-    );
-  }
-
-  .booking-hero-badge {
-    background: rgba(30, 41, 59, 0.95);
-    color: var(--primary);
-    border-color: rgba(255, 255, 255, 0.1);
-  }
-
-  .booking-form {
-    background: var(--bg-card);
-    border-color: #475569;
-  }
-
-  .booking-form:hover {
-    border-color: var(--primary);
-  }
-
-  .booking-flight-card {
-    background: var(--bg-card);
-    border-color: #475569;
-  }
-
-  .booking-flight-card:hover {
-    border-color: var(--primary);
-    box-shadow: var(--shadow-xl), var(--shadow-glow);
-  }
-
-  .form-section {
-    border-bottom-color: #475569;
-  }
-
-  .form-actions {
-    border-top-color: #475569;
-  }
-
-  .field {
-    background: var(--bg-card);
-    border-color: #475569;
-    color: var(--text);
-  }
-
-  .field:focus {
-    background: var(--bg-card);
-    border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1), var(--shadow-glow);
-  }
-
-  .field:hover {
-    background: var(--bg-hover);
-    border-color: var(--primary);
-  }
-
-  .field::placeholder {
-    color: #64748b;
-  }
-
-  select.field option {
-    background: var(--bg-card);
-    color: var(--text);
-  }
-
-  select.field {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238b5cf6' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-  }
-
-  .btn--ghost {
-    border-color: #475569;
-    color: var(--text-secondary);
-  }
-
-  .btn--ghost:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: var(--primary);
-    color: var(--primary);
-  }
-
-  input[type="date"].field::-webkit-calendar-picker-indicator {
-    filter: invert(1);
-  }
-
-  .passenger-section {
-    background: rgba(255, 255, 255, 0.02);
-    border-color: #475569;
-  }
-
-  .passenger-section:hover {
-    background: rgba(255, 255, 255, 0.04);
-    border-color: var(--primary);
-  }
-
-  .passenger-type {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: #475569;
-  }
-
-  .passenger-summary {
-    border-top-color: #475569;
-  }
-
-  .booking-info {
-    background: rgba(245, 158, 11, 0.06);
-    border-color: rgba(245, 158, 11, 0.15);
-  }
-
-  .booking-info:hover {
-    border-color: rgba(245, 158, 11, 0.3);
-  }
-
-  .booking-info .faint {
-    color: var(--text-secondary);
-  }
-
-  .booking-info .faint strong {
-    color: var(--text);
-  }
-
-  .alert--error {
-    background: rgba(239, 68, 68, 0.1);
-    color: #fca5a5;
-    border-color: rgba(239, 68, 68, 0.2);
-  }
-
-  .alert--success {
-    background: rgba(16, 185, 129, 0.1);
-    color: #6ee7b7;
-    border-color: rgba(16, 185, 129, 0.2);
-  }
-
-  .alert--info {
-    background: rgba(59, 130, 246, 0.1);
-    color: #93c5fd;
-    border-color: rgba(59, 130, 246, 0.2);
-  }
-
-  .flight-number {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: #475569;
-  }
-
-  .flight-times .time {
-    background: rgba(255, 255, 255, 0.03);
-    border-color: #475569;
-  }
-
-  .flight-price {
-    background: rgba(99, 102, 241, 0.05);
-    border-color: #475569;
-  }
-
-  .flight-airline {
-    border-right-color: #475569;
-  }
-
-  .flight-info-right {
-    border-left-color: #475569;
-  }
-
-  .price-row:hover {
-    background: rgba(255, 255, 255, 0.03);
-    border-color: #475569;
-  }
-
-  .price-row.total {
-    background: rgba(99, 102, 241, 0.08);
-    border-color: rgba(99, 102, 241, 0.15);
-  }
-
-  .booking-form-header h1 {
-    background: var(--primary-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .form-section-title::before {
-    animation: pulse-bar-dark 2s ease-in-out infinite;
-  }
-
-  @keyframes pulse-bar-dark {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
-}
-
-/* ============================================
    SCROLLBAR STYLING
    ============================================ */
 
@@ -1732,208 +1742,6 @@ input[type="date"].field::-webkit-calendar-picker-indicator:hover {
 
 @media (prefers-color-scheme: dark) {
   .booking-form-wrapper::-webkit-scrollbar-track {
-    background: #1e293b;
-  }
-}
-/* ============================================
-   FORM GRID - CHANGED TO BLOCK LAYOUT
-   ============================================ */
-
-.booking-form-grid {
-  display: block; /* Changed from grid to block */
-  width: 100%;
-}
-
-/* ============================================
-   FLIGHT DETAILS CARD - FULL WIDTH
-   ============================================ */
-
-.booking-flight-card {
-  background: var(--bg-card);
-  border-radius: var(--radius);
-  padding: 1.75rem 2rem;
-  box-shadow: var(--shadow-md);
-  border: 2px solid #cbd5e1;
-  transition: var(--transition-smooth);
-  margin-bottom: 2rem;
-  position: relative;
-  z-index: 1;
-  overflow: hidden;
-  animation: fadeInUp 0.6s ease 0.1s both;
-  width: 100%; /* Full width */
-}
-
-/* ============================================
-   FLIGHT SUMMARY - WIDE LAYOUT
-   ============================================ */
-
-.flight-summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
-  width: 100%;
-  flex-wrap: wrap;
-}
-
-/* ============================================
-   FLIGHT ROUTE - EXPANDED
-   ============================================ */
-
-.flight-route {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
-  flex: 1;
-  min-width: 0;
-}
-
-.flight-airline {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  padding-right: 1.5rem;
-  border-right: 2px solid #e2e8f0;
-  min-width: 150px;
-  flex-shrink: 0;
-}
-
-.route-display {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  flex: 1;
-  justify-content: center;
-}
-
-.flight-info-right {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.5rem;
-  padding-left: 1.5rem;
-  border-left: 2px solid #e2e8f0;
-  min-width: 200px;
-  flex-shrink: 0;
-}
-
-/* ============================================
-   BOOKING FORM - FULL WIDTH
-   ============================================ */
-
-.booking-form {
-  background: var(--bg-card);
-  border-radius: var(--radius);
-  padding: 2.5rem;
-  box-shadow: var(--shadow-md);
-  border: 2px solid #cbd5e1;
-  transition: var(--transition-smooth);
-  position: relative;
-  z-index: 1;
-  animation: fadeInUp 0.6s ease 0.2s both;
-  width: 100%; /* Full width */
-}
-
-/* ============================================
-   RESPONSIVE: TABLET AND BELOW
-   ============================================ */
-
-@media (max-width: 992px) {
-  .flight-summary {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .flight-route {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .flight-airline {
-    border-right: none;
-    border-bottom: 2px solid #e2e8f0;
-    padding-right: 0;
-    padding-bottom: 1rem;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    min-width: unset;
-    width: 100%;
-  }
-
-  .route-display {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .flight-info-right {
-    border-left: none;
-    border-top: 2px solid #e2e8f0;
-    padding-left: 0;
-    padding-top: 1rem;
-    min-width: unset;
-    width: 100%;
-    align-items: center;
-  }
-
-  .flight-times {
-    justify-content: center;
-  }
-
-  .flight-price {
-    text-align: center;
-    width: 100%;
-  }
-}
-
-/* ============================================
-   RESPONSIVE: MOBILE
-   ============================================ */
-
-@media (max-width: 768px) {
-  .booking-flight-card {
-    padding: 1rem;
-  }
-
-  .booking-form {
-    padding: 1rem;
-  }
-
-  .route-display {
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-
-  .route-arrow {
-    transform: rotate(90deg);
-    font-size: 1.2rem;
-  }
-
-  .flight-times {
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  .flight-times .time-separator {
-    display: none;
-  }
-
-  .flight-airline {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-
-  .origin .city, .destination .city {
-    font-size: 1rem;
-  }
-
-  .flight-price .price-value {
-    font-size: 1rem;
-  }
-
-  .flight-price {
-    padding: 0.5rem 0.75rem;
+    background: var(--bg);
   }
 }

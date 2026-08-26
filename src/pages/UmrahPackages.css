@@ -1,11 +1,13 @@
 /* frontend/src/pages/UmrahPackages.css */
-/* Theme: Navy + Gold - Matching Rohan Travels website */
+/* Theme: Navy + Gold - Works on Light & Dark */
 
 .umrah-wrapper {
-    /* Palette: Navy + Gold theme matching the website */
+    /* Palette: Navy + Gold theme - adapts to light/dark */
     --page: #f4f6f9;
     --card: #ffffff;
     --ink: #1a2332;
+    --ink-light: #475569;
+    --ink-muted: #64748b;
     --navy: #0a2463;
     --navy-light: #e8edf7;
     --navy-dark: #061a4a;
@@ -15,8 +17,12 @@
     --line: #d9e3ef;
     --muted: #5c6474;
     --success: #15803d;
+    --success-bg: #eafaf1;
     --warning: #aa6b16;
+    --warning-bg: #fef9e7;
     --danger: #c2410c;
+    --danger-bg: #fdedec;
+    --white: #ffffff;
 
     --display: 'Inter', system-ui, -apple-system, sans-serif;
     --body: 'Inter', system-ui, -apple-system, sans-serif;
@@ -36,7 +42,7 @@
    HERO — Navy + Gold
    ============================================ */
 .umrah-hero {
-    background: linear-gradient(135deg, #0a2463 0%, #1a4a8a 50%, #2a6aaa 100%);
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 50%, var(--navy-light) 100%);
     border-radius: var(--r);
     padding: 2.5rem 2.5rem;
     margin-bottom: 2.5rem;
@@ -89,7 +95,7 @@
     line-height: 1.05;
     letter-spacing: -0.02em;
     margin: 0.6rem 0 0;
-    color: #ffffff;
+    color: var(--white);
 }
 
 .umrah-hero h1 em {
@@ -159,7 +165,7 @@
 }
 
 .filter-group input::placeholder {
-    color: #9aa8a0;
+    color: var(--ink-muted);
 }
 
 .filter-group input:focus-visible {
@@ -220,7 +226,7 @@
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: #ffffff;
+    color: var(--white);
     background: linear-gradient(90deg, var(--gold), var(--gold-strong));
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -249,7 +255,7 @@
     place-items: center;
     border-radius: 50%;
     background: var(--navy);
-    color: #ffffff;
+    color: var(--white);
     font-family: var(--mono);
     font-size: 0.7rem;
     font-weight: 700;
@@ -301,17 +307,17 @@
 
 .pkg-status[data-tone='go'] {
     color: var(--success);
-    background: #eafaf1;
+    background: var(--success-bg);
 }
 
 .pkg-status[data-tone='warn'] {
     color: var(--warning);
-    background: #fef9e7;
+    background: var(--warning-bg);
 }
 
 .pkg-status[data-tone='stop'] {
     color: var(--danger);
-    background: #fdedec;
+    background: var(--danger-bg);
 }
 
 .pkg-status[data-tone='neutral'] {
@@ -614,7 +620,6 @@
     from {
         background-position: 100% 0;
     }
-
     to {
         background-position: 0 0;
     }
@@ -678,7 +683,7 @@
 
 .umrah-wrapper .btn--primary {
     background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
-    color: #ffffff;
+    color: var(--white);
     box-shadow: 0 4px 12px rgba(10, 36, 99, 0.2);
 }
 
@@ -712,6 +717,32 @@
 .umrah-wrapper :focus-visible {
     outline: 2px solid var(--navy);
     outline-offset: 2px;
+}
+
+/* ============================================
+   SEARCH INFO
+   ============================================ */
+.umrah-search-info {
+    margin-bottom: 1rem;
+}
+
+.umrah-count {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+
+.search-badge {
+    display: inline-block;
+    padding: 2px 12px;
+    border-radius: 9999px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    background: var(--navy-light);
+    color: var(--navy);
+    border: 1px solid rgba(10, 36, 99, 0.1);
 }
 
 /* ============================================
@@ -776,7 +807,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-
     .pkg-card,
     .pkg-book,
     .pkg-book svg,
@@ -799,8 +829,10 @@
 @media (prefers-color-scheme: dark) {
     .umrah-wrapper {
         --page: #0f172a;
-        --card: #1a2332;
-        --ink: #0c0c0c;
+        --card: #1e293b;
+        --ink: #f1f5f9;
+        --ink-light: #cbd5e1;
+        --ink-muted: #94a3b8;
         --navy: #818cf8;
         --navy-light: #1e3a5f;
         --navy-dark: #061a4a;
@@ -810,16 +842,20 @@
         --line: #334155;
         --muted: #94a3b8;
         --success: #6ee7b7;
+        --success-bg: rgba(16, 185, 129, 0.12);
         --warning: #fbbf24;
+        --warning-bg: rgba(245, 158, 11, 0.12);
         --danger: #fca5a5;
+        --danger-bg: rgba(239, 68, 68, 0.12);
+        --white: #f1f5f9;
     }
 
     .umrah-hero {
-        background: linear-gradient(135deg, #061a4a 0%, #0a2463 50%, #1a4a8a 100%);
+        background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 50%, var(--navy-light) 100%);
     }
 
     .umrah-hero h1 {
-        color: #0c0c0c;
+        color: var(--white);
     }
 
     .umrah-hero h1 em {
@@ -835,6 +871,10 @@
         border-color: var(--line);
     }
 
+    .filter-group label {
+        color: var(--ink-light);
+    }
+
     .filter-group input {
         background: var(--page);
         border-color: var(--line);
@@ -842,12 +882,16 @@
     }
 
     .filter-group input::placeholder {
-        color: #64748b;
+        color: var(--ink-muted);
     }
 
     .filter-group input:focus-visible {
         border-color: var(--navy);
         box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    }
+
+    .filter-actions {
+        border-top-color: var(--line);
     }
 
     .pkg-card {
@@ -874,12 +918,24 @@
         color: var(--ink);
     }
 
+    .pkg-flight {
+        color: var(--ink-muted);
+    }
+
     .pkg-code {
         color: var(--navy);
     }
 
+    .pkg-city {
+        color: var(--ink-muted);
+    }
+
     .pkg-when {
         color: var(--ink);
+    }
+
+    .pkg-rail-nights {
+        color: var(--ink-muted);
     }
 
     .pkg-rail-track {
@@ -910,7 +966,11 @@
     }
 
     .pkg-stay-meta {
-        color: var(--muted);
+        color: var(--ink-muted);
+    }
+
+    .pkg-price-eyebrow {
+        color: var(--ink-muted);
     }
 
     .pkg-price-amount {
@@ -921,12 +981,16 @@
         border-top-color: var(--line);
     }
 
+    .pkg-shares dt {
+        color: var(--ink-muted);
+    }
+
     .pkg-shares dd {
         color: var(--ink);
     }
 
     .pkg-extras {
-        color: var(--muted);
+        color: var(--ink-muted);
     }
 
     .pkg-foot {
@@ -935,7 +999,7 @@
     }
 
     .pkg-seats {
-        color: var(--muted);
+        color: var(--ink-muted);
     }
 
     .pkg-book {
@@ -950,35 +1014,36 @@
 
     .pkg-status {
         background: var(--page);
-        color: var(--muted);
+        color: var(--ink-muted);
     }
 
     .pkg-status[data-tone='go'] {
         color: var(--success);
-        background: rgba(16, 185, 129, 0.12);
+        background: var(--success-bg);
     }
 
     .pkg-status[data-tone='warn'] {
         color: var(--warning);
-        background: rgba(245, 158, 11, 0.12);
+        background: var(--warning-bg);
     }
 
     .pkg-status[data-tone='stop'] {
         color: var(--danger);
-        background: rgba(239, 68, 68, 0.12);
+        background: var(--danger-bg);
     }
 
     .umrah-wrapper .btn--primary {
         background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-        color: #ffffff;
+        color: var(--white);
     }
 
     .umrah-wrapper .btn--primary:hover {
         background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
     }
 
     .umrah-wrapper .btn--ghost {
-        color: var(--muted);
+        color: var(--ink-muted);
         border-color: var(--line);
     }
 
@@ -997,7 +1062,7 @@
     }
 
     .empty-state p {
-        color: var(--muted);
+        color: var(--ink-muted);
     }
 
     .sk {
@@ -1006,40 +1071,24 @@
     }
 
     .pagination .page-info {
-        color: var(--muted);
+        color: var(--ink-muted);
     }
-}
 
-/* Add to UmrahPackages.css */
+    .umrah-count {
+        color: var(--ink-muted);
+    }
 
-.umrah-search-info {
-    margin-bottom: 1rem;
-}
-
-.umrah-count {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.9rem;
-    color: var(--muted);
-}
-
-.search-badge {
-    display: inline-block;
-    padding: 2px 12px;
-    border-radius: 9999px;
-    font-size: 0.7rem;
-    font-weight: 600;
-    background: var(--primary-light);
-    color: var(--primary);
-    border: 1px solid rgba(10, 36, 99, 0.1);
-}
-
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
     .search-badge {
         background: rgba(99, 102, 241, 0.15);
         color: var(--navy);
         border-color: rgba(99, 102, 241, 0.2);
+    }
+
+    .umrah-wrapper .btn:disabled {
+        opacity: 0.4;
+    }
+
+    .umrah-wrapper :focus-visible {
+        outline-color: var(--navy);
     }
 }

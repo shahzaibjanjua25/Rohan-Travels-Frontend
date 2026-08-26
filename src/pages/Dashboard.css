@@ -1,4 +1,4 @@
-/* Dashboard.css - Premium Dashboard Styling (Matching AdminBookings Theme) */
+/* Dashboard.css - Premium Dashboard Styling - Full Dark Mode Support */
 
 /* ============================================
    ROOT VARIABLES
@@ -66,6 +66,39 @@
 }
 
 /* ============================================
+   DARK MODE OVERRIDES
+   ============================================ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --dash-bg-primary: #0f172a;
+    --dash-bg-secondary: #1e293b;
+    --dash-bg-tertiary: #2d3748;
+    --dash-border: #334155;
+    --dash-border-light: #2d3748;
+    
+    --dash-text-primary: #f1f5f9;
+    --dash-text-secondary: #cbd5e1;
+    --dash-text-muted: #94a3b8;
+    
+    --dash-primary-light: #1e3a5f;
+    --dash-secondary-light: #332a0a;
+    --dash-success-bg: rgba(16, 185, 129, 0.1);
+    --dash-warning-bg: rgba(245, 158, 11, 0.1);
+    --dash-danger-bg: rgba(239, 68, 68, 0.1);
+    --dash-info-bg: rgba(59, 130, 246, 0.1);
+    
+    --dash-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --dash-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+    --dash-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+    --dash-shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
+    
+    --dash-primary-gradient: linear-gradient(135deg, #1e3a5f 0%, #0a2463 50%, #1a4a8a 100%);
+    --dash-primary: #818cf8;
+    --dash-primary-dark: #6366f1;
+  }
+}
+
+/* ============================================
    MAIN WRAPPER
    ============================================ */
 .dashboard-wrapper {
@@ -73,6 +106,8 @@
   margin: 0 auto;
   padding: var(--space-5);
   animation: dashFadeIn 0.5s ease;
+  background: var(--dash-bg-primary);
+  min-height: 100vh;
 }
 
 @keyframes dashFadeIn {
@@ -187,6 +222,17 @@
   box-shadow: 0 8px 24px rgba(10, 36, 99, 0.35);
 }
 
+@media (prefers-color-scheme: dark) {
+  .period-selector .btn--active {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+  }
+  
+  .period-selector .btn--active:hover {
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35);
+  }
+}
+
 /* ============================================
    STATS GRID
    ============================================ */
@@ -291,6 +337,33 @@
 .stat-card__icon--info {
   background: var(--dash-info-bg);
   color: var(--dash-info);
+}
+
+@media (prefers-color-scheme: dark) {
+  .stat-card__icon--primary {
+    background: rgba(99, 102, 241, 0.15);
+    color: #818cf8;
+  }
+  
+  .stat-card__icon--success {
+    background: rgba(16, 185, 129, 0.15);
+    color: #6ee7b7;
+  }
+  
+  .stat-card__icon--warning {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+  }
+  
+  .stat-card__icon--danger {
+    background: rgba(239, 68, 68, 0.15);
+    color: #fca5a5;
+  }
+  
+  .stat-card__icon--info {
+    background: rgba(59, 130, 246, 0.15);
+    color: #93c5fd;
+  }
 }
 
 .stat-card__trend {
@@ -457,6 +530,16 @@
   background: var(--dash-border);
 }
 
+@media (prefers-color-scheme: dark) {
+  .chart-bar--positive {
+    background: linear-gradient(180deg, #6ee7b7, #34d399);
+  }
+  
+  .chart-bar--negative {
+    background: linear-gradient(180deg, #fca5a5, #f87171);
+  }
+}
+
 .chart-bar__tooltip {
   position: absolute;
   bottom: calc(100% + 8px);
@@ -578,6 +661,13 @@
   font-weight: 600;
 }
 
+@media (prefers-color-scheme: dark) {
+  .routes-card__badge {
+    background: rgba(99, 102, 241, 0.15);
+    color: #818cf8;
+  }
+}
+
 .route-item {
   display: flex;
   align-items: center;
@@ -658,8 +748,14 @@
   font-size: var(--font-sm);
 }
 
+@media (prefers-color-scheme: dark) {
+  .route-item__revenue {
+    color: #818cf8;
+  }
+}
+
 /* ============================================
-   BOOKINGS TABLE - MATCHING ADMINBOOKINGS
+   BOOKINGS TABLE
    ============================================ */
 .bookings-table-wrapper {
   background: var(--dash-bg-secondary);
@@ -707,23 +803,19 @@
 }
 
 /* ============================================
-   TABLE HEADERS - GRADIENT ACROSS ENTIRE ROW
+   TABLE HEADERS - GRADIENT
    ============================================ */
-
-/* Apply gradient to the entire header row (tr) */
 .table thead tr,
 table thead tr {
-  background: linear-gradient(135deg, #0a2463 0%, #1a4a8a 50%, #2a6aaa 100%) !important;
+  background: var(--dash-primary-gradient) !important;
 }
 
-/* Remove background from thead itself */
 .table thead,
 table thead {
   background: transparent !important;
   border-bottom: none !important;
 }
 
-/* Make th elements transparent to show the gradient behind */
 .table thead th,
 table thead th {
   background: transparent !important;
@@ -740,21 +832,18 @@ table thead th {
   white-space: nowrap !important;
 }
 
-/* First th - rounded left corner */
 .table thead th:first-child,
 table thead th:first-child {
   padding-left: 24px !important;
   border-radius: 8px 0 0 0 !important;
 }
 
-/* Last th - rounded right corner */
 .table thead th:last-child,
 table thead th:last-child {
   padding-right: 24px !important;
   border-radius: 0 8px 0 0 !important;
 }
 
-/* Hover effect */
 .table thead th:hover,
 table thead th:hover {
   color: #ffffff !important;
@@ -762,7 +851,6 @@ table thead th:hover {
   transform: translateY(-1px);
 }
 
-/* Right alignment */
 .table thead th.right,
 table thead th.right {
   text-align: right !important;
@@ -780,17 +868,17 @@ table thead th.right {
 }
 
 .table tbody tr:hover {
-  background: linear-gradient(135deg, #f8f9fc 0%, #f0f2f7 100%) !important;
+  background: var(--dash-bg-tertiary) !important;
   transform: scale(1.002);
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
 }
 
 .table tbody tr:nth-child(even) {
-  background: #fafbfc;
+  background: rgba(0, 0, 0, 0.02);
 }
 
 .table tbody tr:nth-child(even):hover {
-  background: linear-gradient(135deg, #f8f9fc 0%, #f0f2f7 100%) !important;
+  background: var(--dash-bg-tertiary) !important;
 }
 
 .table tbody td {
@@ -799,6 +887,7 @@ table thead th.right {
   background: transparent;
   transition: all var(--transition-fast);
   border-bottom: 1px solid var(--dash-border-light);
+  color: var(--dash-text-secondary);
 }
 
 .table tbody tr:last-child td {
@@ -814,10 +903,8 @@ table thead th.right {
 }
 
 /* ============================================
-   TABLE CELLS - MATCHING ADMINBOOKINGS
+   TABLE CELLS
    ============================================ */
-
-/* Booking Reference */
 .booking-ref {
   font-family: 'JetBrains Mono', monospace;
   font-weight: 600;
@@ -840,7 +927,17 @@ table thead th.right {
   text-decoration: none;
 }
 
-/* Customer Info */
+@media (prefers-color-scheme: dark) {
+  .booking-ref {
+    color: #818cf8;
+    background: rgba(99, 102, 241, 0.1);
+  }
+  
+  .booking-ref:hover {
+    border-color: #818cf8;
+  }
+}
+
 .customer-info {
   display: flex;
   flex-direction: column;
@@ -863,22 +960,32 @@ table thead th.right {
   color: var(--dash-primary);
 }
 
-/* Monospace Utility */
+@media (prefers-color-scheme: dark) {
+  .customer-name {
+    color: var(--dash-text-primary);
+  }
+  
+  .customer-email {
+    color: var(--dash-text-muted);
+  }
+  
+  .customer-info:hover .customer-email {
+    color: #818cf8;
+  }
+}
+
 .mono {
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* Right alignment */
 .right {
   text-align: right;
 }
 
-/* Center alignment */
 .center {
   text-align: center;
 }
 
-/* Amount cell with currency styling */
 .table tbody td .amount {
   font-family: 'JetBrains Mono', monospace;
   font-weight: 700;
@@ -888,6 +995,13 @@ table thead th.right {
   padding: 2px 12px;
   border-radius: var(--dash-radius-sm);
   display: inline-block;
+}
+
+@media (prefers-color-scheme: dark) {
+  .table tbody td .amount {
+    color: #818cf8;
+    background: rgba(99, 102, 241, 0.1);
+  }
 }
 
 /* ============================================
@@ -927,6 +1041,33 @@ table thead th.right {
 .badge--info {
   background: var(--dash-info-bg);
   color: var(--dash-info);
+}
+
+@media (prefers-color-scheme: dark) {
+  .badge--primary {
+    background: rgba(99, 102, 241, 0.15);
+    color: #818cf8;
+  }
+  
+  .badge--success {
+    background: rgba(16, 185, 129, 0.15);
+    color: #6ee7b7;
+  }
+  
+  .badge--warning {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+  }
+  
+  .badge--danger {
+    background: rgba(239, 68, 68, 0.15);
+    color: #fca5a5;
+  }
+  
+  .badge--info {
+    background: rgba(59, 130, 246, 0.15);
+    color: #93c5fd;
+  }
 }
 
 /* ============================================
@@ -995,6 +1136,27 @@ table thead th.right {
   box-shadow: 0 4px 16px rgba(231, 76, 60, 0.35);
 }
 
+@media (prefers-color-scheme: dark) {
+  .btn--primary {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+  }
+  
+  .btn--primary:hover {
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35);
+  }
+  
+  .btn--ghost {
+    color: var(--dash-text-secondary);
+    border-color: var(--dash-border);
+  }
+  
+  .btn--ghost:hover {
+    background: var(--dash-bg-tertiary);
+    border-color: var(--dash-text-muted);
+  }
+}
+
 /* ============================================
    EMPTY STATE
    ============================================ */
@@ -1032,6 +1194,21 @@ table thead th.right {
 .empty-state .faint {
   color: var(--dash-text-muted);
   margin-bottom: var(--space-4);
+}
+
+@media (prefers-color-scheme: dark) {
+  .empty-state {
+    background: var(--dash-bg-secondary);
+    border-color: var(--dash-border);
+  }
+  
+  .empty-state h3 {
+    color: var(--dash-text-primary);
+  }
+  
+  .empty-state .faint {
+    color: var(--dash-text-muted);
+  }
 }
 
 /* ============================================
@@ -1315,6 +1492,20 @@ table thead th.right {
 
 .table__scroll::-webkit-scrollbar-thumb:hover {
   background: var(--dash-text-muted);
+}
+
+@media (prefers-color-scheme: dark) {
+  .table__scroll::-webkit-scrollbar-track {
+    background: var(--dash-bg-tertiary);
+  }
+  
+  .table__scroll::-webkit-scrollbar-thumb {
+    background: var(--dash-border);
+  }
+  
+  .table__scroll::-webkit-scrollbar-thumb:hover {
+    background: var(--dash-text-muted);
+  }
 }
 
 /* ============================================

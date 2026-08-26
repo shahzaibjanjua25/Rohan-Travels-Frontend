@@ -1,10 +1,93 @@
-/* Account.css */
+/* Account.css - Full Dark Mode Support */
 
+/* ============================================
+   ROOT VARIABLES
+   ============================================ */
+:root {
+  --primary: #0a2463;
+  --primary-dark: #061a4a;
+  --primary-light: #e8edf7;
+  --primary-gradient: linear-gradient(135deg, #0a2463 0%, #1a4a8a 50%, #2a6aaa 100%);
+  
+  --success: #2ecc71;
+  --success-bg: #eafaf1;
+  --danger: #e74c3c;
+  --danger-bg: #fdedec;
+  
+  --text-primary: #1a2332;
+  --text-secondary: #4a5568;
+  --text-muted: #8a94a6;
+  --bg-primary: #f4f6f9;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f8f9fc;
+  --border: #e2e8f0;
+  --border-light: #f0f2f5;
+  
+  --shadow-sm: 0 1px 3px rgba(10, 36, 99, 0.06);
+  --shadow-md: 0 4px 16px rgba(10, 36, 99, 0.08);
+  --shadow-lg: 0 8px 32px rgba(10, 36, 99, 0.12);
+  
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+  
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-8: 48px;
+  
+  --font-xs: 11px;
+  --font-sm: 13px;
+  --font-base: 15px;
+  --font-lg: 20px;
+  --font-xl: 24px;
+  --font-2xl: 30px;
+  
+  --transition-base: 0.25s ease;
+}
+
+/* ============================================
+   DARK MODE OVERRIDES
+   ============================================ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-tertiary: #2d3748;
+    --border: #334155;
+    --border-light: #2d3748;
+    
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    
+    --primary-light: #1e3a5f;
+    --primary-gradient: linear-gradient(135deg, #1e3a5f 0%, #0a2463 50%, #1a4a8a 100%);
+    --primary: #818cf8;
+    
+    --success-bg: rgba(16, 185, 129, 0.1);
+    --danger-bg: rgba(239, 68, 68, 0.1);
+    
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* ============================================
+   WRAPPER
+   ============================================ */
 .account-wrapper {
   max-width: 1200px;
   margin: 0 auto;
   padding: var(--space-5);
   animation: accountFadeIn 0.5s ease;
+  background: var(--bg-primary);
+  min-height: 100vh;
 }
 
 @keyframes accountFadeIn {
@@ -18,7 +101,9 @@
   }
 }
 
-/* Header */
+/* ============================================
+   HEADER
+   ============================================ */
 .account-header {
   margin-bottom: var(--space-6);
 }
@@ -72,7 +157,21 @@
   color: var(--success);
 }
 
-/* Grid */
+@media (prefers-color-scheme: dark) {
+  .role-badge.admin {
+    background: rgba(99, 102, 241, 0.15);
+    color: #818cf8;
+  }
+  
+  .role-badge.user {
+    background: rgba(16, 185, 129, 0.15);
+    color: #6ee7b7;
+  }
+}
+
+/* ============================================
+   GRID
+   ============================================ */
 .account-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -80,7 +179,9 @@
   margin-bottom: var(--space-6);
 }
 
-/* Cards */
+/* ============================================
+   CARDS
+   ============================================ */
 .account-card {
   background: var(--bg-secondary);
   border-radius: var(--radius-lg);
@@ -116,7 +217,9 @@
   color: var(--text-muted);
 }
 
-/* Buttons */
+/* ============================================
+   BUTTONS
+   ============================================ */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -153,7 +256,20 @@
   transform: none;
 }
 
-/* Ledger / Transactions */
+@media (prefers-color-scheme: dark) {
+  .btn--primary {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+  }
+  
+  .btn--primary:hover {
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35);
+  }
+}
+
+/* ============================================
+   LEDGER / TRANSACTIONS
+   ============================================ */
 .account-transactions {
   padding: var(--space-6);
 }
@@ -205,7 +321,9 @@
   color: var(--danger);
 }
 
-/* Empty State */
+/* ============================================
+   EMPTY STATE
+   ============================================ */
 .empty-transactions {
   text-align: center;
   padding: var(--space-6) var(--space-4);
@@ -222,7 +340,9 @@
   margin: 0;
 }
 
-/* Table */
+/* ============================================
+   TABLE
+   ============================================ */
 .table-scroll {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -239,6 +359,10 @@
   border-bottom: 2px solid var(--border-light);
 }
 
+.table thead tr {
+  background: var(--bg-tertiary);
+}
+
 .table th {
   padding: var(--space-3) var(--space-4);
   text-align: left;
@@ -253,6 +377,7 @@
   padding: var(--space-3) var(--space-4);
   border-bottom: 1px solid var(--border-light);
   vertical-align: middle;
+  color: var(--text-secondary);
 }
 
 .table tbody tr:hover {
@@ -263,6 +388,9 @@
   border-bottom: none;
 }
 
+/* ============================================
+   UTILITY
+   ============================================ */
 .right {
   text-align: right;
 }
@@ -281,7 +409,9 @@
   justify-content: center;
 }
 
-/* Responsive */
+/* ============================================
+   RESPONSIVE
+   ============================================ */
 @media (max-width: 992px) {
   .account-grid {
     grid-template-columns: 1fr;
@@ -335,5 +465,79 @@
   .table td {
     padding: var(--space-2);
     font-size: var(--font-xs);
+  }
+  
+  .balance-display {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-1);
+  }
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+.account-wrapper::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.account-wrapper::-webkit-scrollbar-track {
+  background: var(--bg-tertiary);
+}
+
+.account-wrapper::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 3px;
+  transition: var(--transition-base);
+}
+
+.account-wrapper::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+@media (prefers-color-scheme: dark) {
+  .account-wrapper::-webkit-scrollbar-thumb {
+    background: #818cf8;
+  }
+  
+  .account-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #a78bfa;
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+  .account-wrapper {
+    padding: 0;
+    background: white;
+  }
+
+  .account-card {
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+
+  .btn {
+    display: none !important;
+  }
+
+  .table thead {
+    background: #f1f5f9 !important;
+    border-bottom-color: #ddd !important;
+  }
+
+  .table th {
+    color: #1a2332 !important;
+  }
+
+  .table td {
+    border-bottom-color: #ddd !important;
+  }
+
+  .balance-display {
+    border: 1px solid #ddd;
   }
 }

@@ -1,9 +1,70 @@
-/* frontend/src/pages/UmrahBookingForm.css */
+/* frontend/src/pages/UmrahBookingForm.css - Full Dark Mode Support */
+
+/* ============================================
+   ROOT VARIABLES
+   ============================================ */
+:root {
+  --umrah-bg-primary: #f4f6f9;
+  --umrah-bg-secondary: #ffffff;
+  --umrah-bg-tertiary: #f8fafc;
+  --umrah-text-primary: #1a2332;
+  --umrah-text-secondary: #4a5568;
+  --umrah-text-muted: #8a94a6;
+  --umrah-text-light: #6b7a8f;
+  --umrah-border: #e2e8f0;
+  --umrah-border-light: #f1f5f9;
+  --umrah-primary: #0a2463;
+  --umrah-primary-dark: #1a4a8a;
+  --umrah-primary-light: #e8edf7;
+  --umrah-primary-gradient: linear-gradient(135deg, #0a2463 0%, #1a4a8a 50%, #2a6aaa 100%);
+  --umrah-gold: #ffa10b;
+  --umrah-gold-strong: #e08e09;
+  --umrah-gold-soft: #fff8e7;
+  --umrah-success: #10b981;
+  --umrah-danger: #ef4444;
+  --umrah-warning: #f59e0b;
+  --umrah-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --umrah-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --umrah-radius: 16px;
+  --umrah-radius-sm: 10px;
+  --umrah-radius-full: 9999px;
+  --umrah-transition: all 0.3s ease;
+}
+
+/* ============================================
+   DARK MODE OVERRIDES
+   ============================================ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --umrah-bg-primary: #0f172a;
+    --umrah-bg-secondary: #1e293b;
+    --umrah-bg-tertiary: #2d3748;
+    --umrah-text-primary: #f1f5f9;
+    --umrah-text-secondary: #cbd5e1;
+    --umrah-text-muted: #94a3b8;
+    --umrah-text-light: #94a3b8;
+    --umrah-border: #334155;
+    --umrah-border-light: #2d3748;
+    --umrah-primary: #818cf8;
+    --umrah-primary-dark: #a78bfa;
+    --umrah-primary-light: #1e3a5f;
+    --umrah-primary-gradient: linear-gradient(135deg, #1e3a5f 0%, #0a2463 50%, #1a4a8a 100%);
+    --umrah-gold-soft: #2a2410;
+    --umrah-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --umrah-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* ============================================
+   WRAPPER
+   ============================================ */
 .umrah-booking-wrapper {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
   animation: fadeIn 0.4s ease;
+  background: var(--umrah-bg-primary);
+  min-height: 100vh;
 }
 
 @keyframes fadeIn {
@@ -23,16 +84,19 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #0a2463;
+  color: var(--umrah-primary);
   margin-bottom: 1.5rem;
-  transition: all 0.3s ease;
+  transition: var(--umrah-transition);
 }
 
 .umrah-booking-wrapper .eyebrow:hover {
-  color: #1a4a8a;
+  color: var(--umrah-primary-dark);
   transform: translateX(-4px);
 }
 
+/* ============================================
+   GRID
+   ============================================ */
 .umrah-booking-grid {
   display: grid;
   grid-template-columns: 1fr 2fr;
@@ -40,7 +104,9 @@
   align-items: start;
 }
 
-/* Summary */
+/* ============================================
+   SUMMARY
+   ============================================ */
 .umrah-booking-summary {
   position: sticky;
   top: 2rem;
@@ -49,16 +115,16 @@
 .umrah-booking-summary h2 {
   font-size: 1.2rem;
   font-weight: 700;
-  color: #1a2332;
+  color: var(--umrah-text-primary);
   margin: 0 0 1rem 0;
 }
 
 .summary-card {
-  background: white;
-  border-radius: 16px;
-  border: 1px solid #e2e8f0;
+  background: var(--umrah-bg-secondary);
+  border-radius: var(--umrah-radius);
+  border: 1px solid var(--umrah-border);
   padding: 1.5rem;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  box-shadow: var(--umrah-shadow);
 }
 
 .summary-header {
@@ -66,7 +132,7 @@
   justify-content: space-between;
   align-items: center;
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid #0c0c0c;
+  border-bottom: 1px solid var(--umrah-border-light);
   margin-bottom: 0.75rem;
 }
 
@@ -74,15 +140,23 @@
   font-size: 1.1rem;
   font-weight: 700;
   margin: 0;
+  color: var(--umrah-text-primary);
 }
 
 .airline-tag {
   font-size: 0.7rem;
   font-weight: 600;
   padding: 0.2rem 0.6rem;
-  background: #e8edf7;
-  color: #0a2463;
+  background: var(--umrah-primary-light);
+  color: var(--umrah-primary);
   border-radius: 4px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .airline-tag {
+    background: rgba(99, 102, 241, 0.1);
+    color: #818cf8;
+  }
 }
 
 .summary-route {
@@ -102,17 +176,17 @@
 .route-point .code {
   font-size: 1.2rem;
   font-weight: 700;
-  color: #0a2463;
+  color: var(--umrah-primary);
 }
 
 .route-point .city {
   font-size: 0.7rem;
-  color: #8a94a6;
+  color: var(--umrah-text-muted);
 }
 
 .summary-route .arrow {
   font-size: 1.2rem;
-  color: #d4af37;
+  color: var(--umrah-gold);
 }
 
 .summary-dates {
@@ -120,8 +194,8 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 0.5rem;
   padding: 0.75rem 0;
-  background: #f8fafc;
-  border-radius: 8px;
+  background: var(--umrah-bg-tertiary);
+  border-radius: var(--umrah-radius-sm);
   margin: 0.5rem 0;
   text-align: center;
 }
@@ -129,7 +203,7 @@
 .summary-dates .label {
   font-size: 0.6rem;
   text-transform: uppercase;
-  color: #8a94a6;
+  color: var(--umrah-text-muted);
   font-weight: 600;
   display: block;
 }
@@ -137,6 +211,7 @@
 .summary-dates .value {
   font-weight: 600;
   font-size: 0.85rem;
+  color: var(--umrah-text-primary);
 }
 
 .summary-hotels {
@@ -148,14 +223,14 @@
 
 .hotel-summary {
   padding: 0.5rem;
-  background: #f8fafc;
-  border-radius: 8px;
+  background: var(--umrah-bg-tertiary);
+  border-radius: var(--umrah-radius-sm);
 }
 
 .hotel-summary .city {
   font-size: 0.6rem;
   text-transform: uppercase;
-  color: #8a94a6;
+  color: var(--umrah-text-muted);
   font-weight: 700;
   display: block;
 }
@@ -164,16 +239,17 @@
   font-weight: 600;
   font-size: 0.8rem;
   display: block;
+  color: var(--umrah-text-primary);
 }
 
 .hotel-summary .detail {
   font-size: 0.7rem;
-  color: #6b7a8f;
+  color: var(--umrah-text-light);
 }
 
 .summary-pricing {
   padding-top: 0.75rem;
-  border-top: 1px solid #0c0c0c;
+  border-top: 1px solid var(--umrah-border-light);
   margin-top: 0.5rem;
 }
 
@@ -182,34 +258,36 @@
   justify-content: space-between;
   padding: 0.2rem 0;
   font-size: 0.85rem;
-  color: #4a5568;
+  color: var(--umrah-text-secondary);
 }
 
 .price-row .price {
   font-weight: 600;
-  color: #1a2332;
+  color: var(--umrah-text-primary);
 }
 
-/* Form */
+/* ============================================
+   FORM
+   ============================================ */
 .umrah-booking-form {
-  background: white;
-  border-radius: 16px;
-  border: 1px solid #e2e8f0;
+  background: var(--umrah-bg-secondary);
+  border-radius: var(--umrah-radius);
+  border: 1px solid var(--umrah-border);
   padding: 2rem;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  box-shadow: var(--umrah-shadow);
 }
 
 .umrah-booking-form h2 {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #1a2332;
+  color: var(--umrah-text-primary);
   margin: 0 0 1.5rem 0;
 }
 
 .form-section {
   margin-bottom: 2rem;
   padding-bottom: 2rem;
-  border-bottom: 1px solid #0c0c0c;
+  border-bottom: 1px solid var(--umrah-border-light);
 }
 
 .form-section:last-child {
@@ -221,7 +299,7 @@
 .form-section h3 {
   font-size: 1rem;
   font-weight: 600;
-  color: #1a2332;
+  color: var(--umrah-text-primary);
   margin: 0 0 1rem 0;
 }
 
@@ -236,7 +314,9 @@
   margin: 0;
 }
 
-/* Room Options */
+/* ============================================
+   ROOM OPTIONS
+   ============================================ */
 .room-options {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -249,19 +329,27 @@
   justify-content: center;
   gap: 0.5rem;
   padding: 0.75rem 1rem;
-  border: 2px solid #e2e8f0;
-  border-radius: 10px;
+  border: 2px solid var(--umrah-border);
+  border-radius: var(--umrah-radius-sm);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--umrah-transition);
+  background: var(--umrah-bg-secondary);
 }
 
 .room-option:hover {
-  border-color: #94a3b8;
+  border-color: var(--umrah-text-muted);
 }
 
 .room-option.selected {
-  border-color: #0a2463;
-  background: #e8edf7;
+  border-color: var(--umrah-primary);
+  background: var(--umrah-primary-light);
+}
+
+@media (prefers-color-scheme: dark) {
+  .room-option.selected {
+    background: rgba(99, 102, 241, 0.1);
+    border-color: #818cf8;
+  }
 }
 
 .room-option input[type="radio"] {
@@ -271,20 +359,23 @@
 .room-option .room-label {
   font-weight: 600;
   font-size: 0.9rem;
+  color: var(--umrah-text-primary);
 }
 
 .room-option .room-price {
   font-size: 0.8rem;
-  color: #6b7a8f;
+  color: var(--umrah-text-light);
 }
 
-/* Passenger Cards */
+/* ============================================
+   PASSENGER CARDS
+   ============================================ */
 .passenger-card {
-  background: #f8fafc;
-  border-radius: 12px;
+  background: var(--umrah-bg-tertiary);
+  border-radius: var(--umrah-radius-sm);
   padding: 1rem;
   margin-bottom: 1rem;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--umrah-border);
 }
 
 .passenger-card:last-child {
@@ -301,7 +392,7 @@
 .passenger-number {
   font-weight: 600;
   font-size: 0.9rem;
-  color: #1a2332;
+  color: var(--umrah-text-primary);
 }
 
 .passenger-fields {
@@ -310,7 +401,9 @@
   gap: 0.75rem;
 }
 
-/* Customer Fields */
+/* ============================================
+   CUSTOMER FIELDS
+   ============================================ */
 .customer-fields {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -332,26 +425,42 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #4a5568;
+  color: var(--umrah-text-secondary);
 }
 
 .field-group input,
 .field-group select,
 .field-group textarea {
   padding: 0.6rem 0.8rem;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 8px;
+  border: 1.5px solid var(--umrah-border);
+  border-radius: var(--umrah-radius-sm);
   font-size: 0.9rem;
-  transition: all 0.2s;
+  transition: var(--umrah-transition);
   outline: none;
   font-family: inherit;
+  background: var(--umrah-bg-secondary);
+  color: var(--umrah-text-primary);
+}
+
+.field-group input:hover,
+.field-group select:hover,
+.field-group textarea:hover {
+  border-color: var(--umrah-text-muted);
 }
 
 .field-group input:focus,
 .field-group select:focus,
 .field-group textarea:focus {
-  border-color: #0a2463;
-  box-shadow: 0 0 0 3px rgba(10,36,99,0.1);
+  border-color: var(--umrah-primary);
+  box-shadow: 0 0 0 3px rgba(10, 36, 99, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  .field-group input:focus,
+  .field-group select:focus,
+  .field-group textarea:focus {
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  }
 }
 
 .field-group textarea {
@@ -359,12 +468,14 @@
   min-height: 80px;
 }
 
-/* Price Breakdown */
+/* ============================================
+   PRICE BREAKDOWN
+   ============================================ */
 .price-breakdown {
-  background: #f8fafc;
-  border-radius: 12px;
+  background: var(--umrah-bg-tertiary);
+  border-radius: var(--umrah-radius-sm);
   padding: 1.5rem;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--umrah-border);
 }
 
 .breakdown-row {
@@ -372,58 +483,80 @@
   justify-content: space-between;
   padding: 0.4rem 0;
   font-size: 0.9rem;
-  color: #4a5568;
+  color: var(--umrah-text-secondary);
 }
 
 .breakdown-total {
   display: flex;
   justify-content: space-between;
   padding: 0.75rem 0 0.5rem 0;
-  border-top: 2px solid #e2e8f0;
+  border-top: 2px solid var(--umrah-border);
   margin-top: 0.5rem;
   font-size: 1.1rem;
 }
 
 .breakdown-total .total-price {
   font-weight: 800;
-  color: #0a2463;
+  color: var(--umrah-primary);
   font-size: 1.3rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .breakdown-total .total-price {
+    color: #818cf8;
+  }
 }
 
 .booking-note {
   margin-top: 1rem;
   padding: 0.75rem 1rem;
-  background: #fff8e7;
-  border-radius: 8px;
-  border-left: 4px solid #d4af37;
+  background: var(--umrah-gold-soft);
+  border-radius: var(--umrah-radius-sm);
+  border-left: 4px solid var(--umrah-gold);
 }
 
 .booking-note p {
   margin: 0;
   font-size: 0.85rem;
-  color: #4a5568;
+  color: var(--umrah-text-secondary);
 }
 
-/* Form Actions */
+@media (prefers-color-scheme: dark) {
+  .booking-note {
+    background: rgba(255, 161, 11, 0.06);
+    border-left-color: var(--umrah-gold);
+  }
+  
+  .booking-note p {
+    color: var(--umrah-text-secondary);
+  }
+}
+
+/* ============================================
+   FORM ACTIONS
+   ============================================ */
 .form-actions {
   display: flex;
   gap: 1rem;
   justify-content: flex-end;
   padding-top: 1.5rem;
-  border-top: 2px solid #e2e8f0;
+  border-top: 2px solid var(--umrah-border);
   margin-top: 1.5rem;
 }
 
+/* ============================================
+   BUTTONS
+   ============================================ */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   padding: 0.6rem 1.5rem;
-  border-radius: 10px;
+  border-radius: var(--umrah-radius-sm);
   font-weight: 600;
   font-size: 0.9rem;
-  transition: all 0.2s ease;
+  transition: var(--umrah-transition);
   border: none;
   cursor: pointer;
   text-decoration: none;
@@ -431,24 +564,34 @@
 }
 
 .btn--primary {
-  background: linear-gradient(135deg, #0a2463 0%, #1a4a8a 50%, #2a6aaa 100%);
+  background: var(--umrah-primary-gradient);
   color: white;
 }
 
 .btn--primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(10,36,99,0.25);
+  box-shadow: 0 4px 12px rgba(10, 36, 99, 0.25);
+}
+
+@media (prefers-color-scheme: dark) {
+  .btn--primary {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+  }
+  
+  .btn--primary:hover {
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+  }
 }
 
 .btn--gold {
-  background: linear-gradient(135deg, #ffa10b 0%, #e08e09 100%);
+  background: linear-gradient(135deg, var(--umrah-gold) 0%, var(--umrah-gold-strong) 100%);
   color: #0f172a;
-  box-shadow: 0 4px 12px rgba(255,161,11,0.25);
+  box-shadow: 0 4px 12px rgba(255, 161, 11, 0.25);
 }
 
 .btn--gold:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255,161,11,0.35);
+  box-shadow: 0 6px 20px rgba(255, 161, 11, 0.35);
 }
 
 .btn--gold:disabled {
@@ -459,13 +602,13 @@
 
 .btn--ghost {
   background: transparent;
-  color: #4a5568;
-  border: 1.5px solid #e2e8f0;
+  color: var(--umrah-text-secondary);
+  border: 1.5px solid var(--umrah-border);
 }
 
 .btn--ghost:hover {
-  background: #f8fafc;
-  border-color: #94a3b8;
+  background: var(--umrah-bg-tertiary);
+  border-color: var(--umrah-text-muted);
 }
 
 .btn--sm {
@@ -474,7 +617,7 @@
 }
 
 .btn--danger {
-  background: #ef4444;
+  background: var(--umrah-danger);
   color: white;
 }
 
@@ -482,14 +625,57 @@
   background: #dc2626;
 }
 
-/* Center */
+/* ============================================
+   FLIGHT DETAILS SUMMARY
+   ============================================ */
+.flight-details-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 12px 0;
+  border-top: 1px solid var(--umrah-border);
+  border-bottom: 1px solid var(--umrah-border);
+  margin: 8px 0;
+}
+
+.flight-detail-item {
+  display: flex;
+  flex-direction: column;
+  padding: 4px 0;
+}
+
+.flight-detail-item .label {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  color: var(--umrah-text-muted);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.flight-detail-item .value {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--umrah-text-primary);
+}
+
+.flight-detail-item .time-value {
+  font-size: 0.75rem;
+  color: var(--umrah-text-light);
+  font-weight: 500;
+}
+
+/* ============================================
+   CENTER
+   ============================================ */
 .center {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Responsive */
+/* ============================================
+   RESPONSIVE
+   ============================================ */
 @media (max-width: 1024px) {
   .umrah-booking-grid {
     grid-template-columns: 1fr;
@@ -544,6 +730,14 @@
 }
 
 @media (max-width: 480px) {
+  .umrah-booking-wrapper {
+    padding: 0.75rem;
+  }
+  
+  .umrah-booking-form {
+    padding: 1rem;
+  }
+  
   .passenger-fields {
     grid-template-columns: 1fr;
   }
@@ -564,62 +758,7 @@
   .summary-route .arrow {
     transform: rotate(90deg);
   }
-}
-/* ✨ NEW: Flight Details Summary */
-.flight-details-summary {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  padding: 12px 0;
-  border-top: 1px solid #e2e8f0;
-  border-bottom: 1px solid #e2e8f0;
-  margin: 8px 0;
-}
-
-.flight-detail-item {
-  display: flex;
-  flex-direction: column;
-  padding: 4px 0;
-}
-
-.flight-detail-item .label {
-  font-size: 0.6rem;
-  text-transform: uppercase;
-  color: #8a94a6;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-}
-
-.flight-detail-item .value {
-  font-weight: 600;
-  font-size: 0.85rem;
-  color: #1a2332;
-}
-
-.flight-detail-item .time-value {
-  font-size: 0.75rem;
-  color: #6b7a8f;
-  font-weight: 500;
-}
-
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  .flight-details-summary {
-    border-top-color: #334155;
-    border-bottom-color: #334155;
-  }
   
-  .flight-detail-item .value {
-    color: #0c0c0c;
-  }
-  
-  .flight-detail-item .time-value {
-    color: #94a3b8;
-  }
-}
-
-/* Responsive */
-@media (max-width: 480px) {
   .flight-details-summary {
     grid-template-columns: 1fr 1fr;
     gap: 4px;
@@ -632,5 +771,76 @@
   
   .flight-detail-item .time-value {
     font-size: 0.7rem;
+  }
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+.umrah-booking-wrapper::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.umrah-booking-wrapper::-webkit-scrollbar-track {
+  background: var(--umrah-bg-tertiary);
+}
+
+.umrah-booking-wrapper::-webkit-scrollbar-thumb {
+  background: var(--umrah-primary);
+  border-radius: 3px;
+  transition: var(--umrah-transition);
+}
+
+.umrah-booking-wrapper::-webkit-scrollbar-thumb:hover {
+  background: var(--umrah-text-muted);
+}
+
+@media (prefers-color-scheme: dark) {
+  .umrah-booking-wrapper::-webkit-scrollbar-thumb {
+    background: #818cf8;
+  }
+  
+  .umrah-booking-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #a78bfa;
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+  .umrah-booking-wrapper {
+    padding: 0;
+    background: white;
+  }
+
+  .umrah-booking-form {
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+
+  .summary-card {
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+
+  .btn {
+    display: none !important;
+  }
+
+  .form-actions {
+    display: none !important;
+  }
+
+  .field-group input,
+  .field-group select,
+  .field-group textarea {
+    border-color: #ddd !important;
+  }
+
+  .flight-details-summary {
+    border-top-color: #ddd !important;
+    border-bottom-color: #ddd !important;
   }
 }

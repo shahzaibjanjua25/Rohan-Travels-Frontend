@@ -1,306 +1,536 @@
-/* frontend/src/pages/admin/AdminUmrahPackageForm.css */
+/* frontend/src/pages/admin/AdminUmrahPackageForm.css - Full Dark Mode Support */
+
+/* ============================================
+   ROOT VARIABLES
+   ============================================ */
+:root {
+    --admin-bg-primary: #f4f6f9;
+    --admin-bg-secondary: #ffffff;
+    --admin-bg-tertiary: #f8fafc;
+    --admin-text-primary: #1a2332;
+    --admin-text-secondary: #4a5568;
+    --admin-text-muted: #8a94a6;
+    --admin-border: #e2e8f0;
+    --admin-border-light: #f1f5f9;
+    --admin-primary: #0a2463;
+    --admin-primary-dark: #061a4a;
+    --admin-primary-light: #e8edf7;
+    --admin-primary-gradient: linear-gradient(135deg, #0a2463 0%, #1a4a8a 50%, #2a6aaa 100%);
+    --admin-danger: #ef4444;
+    --admin-danger-bg: #fef2f2;
+    --admin-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    --admin-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+    --admin-radius: 16px;
+    --admin-radius-sm: 8px;
+    --admin-radius-md: 10px;
+    --admin-transition: all 0.2s ease;
+}
+
+/* ============================================
+   DARK MODE OVERRIDES
+   ============================================ */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --admin-bg-primary: #0f172a;
+        --admin-bg-secondary: #1e293b;
+        --admin-bg-tertiary: #2d3748;
+        --admin-text-primary: #f1f5f9;
+        --admin-text-secondary: #cbd5e1;
+        --admin-text-muted: #94a3b8;
+        --admin-border: #334155;
+        --admin-border-light: #2d3748;
+        --admin-primary: #818cf8;
+        --admin-primary-light: #1e3a5f;
+        --admin-primary-gradient: linear-gradient(135deg, #1e3a5f 0%, #0a2463 50%, #1a4a8a 100%);
+        --admin-danger: #fca5a5;
+        --admin-danger-bg: rgba(239, 68, 68, 0.15);
+        --admin-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        --admin-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+    }
+}
+
+/* ============================================
+   WRAPPER
+   ============================================ */
 .admin-umrah-form-wrapper {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 2rem;
-  animation: fadeIn 0.4s ease;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem;
+    animation: fadeIn 0.4s ease;
+    background: var(--admin-bg-primary);
+    min-height: 100vh;
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
+/* ============================================
+   HEADER
+   ============================================ */
 .admin-umrah-form-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-  gap: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
 .admin-umrah-form-header .eyebrow {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #8a94a6;
-  font-weight: 600;
-  margin: 0 0 0.15rem 0;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--admin-text-muted);
+    font-weight: 600;
+    margin: 0 0 0.15rem 0;
 }
 
 .admin-umrah-form-header h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  margin: 0;
-  background: linear-gradient(135deg, #0a2463 0%, #1a4a8a 50%, #2a6aaa 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    background: var(--admin-primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .admin-umrah-form-header .faint {
-  color: #8a94a6;
-  font-size: 0.9rem;
-  margin: 0;
+    color: var(--admin-text-muted);
+    font-size: 0.9rem;
+    margin: 0;
 }
 
+/* ============================================
+   FORM
+   ============================================ */
 .admin-umrah-form {
-  background: white;
-  border-radius: 16px;
-  border: 1px solid #e2e8f0;
-  padding: 2rem;
+    background: var(--admin-bg-secondary);
+    border-radius: var(--admin-radius);
+    border: 1px solid var(--admin-border);
+    padding: 2rem;
+    box-shadow: var(--admin-shadow);
+    transition: var(--admin-transition);
 }
 
+.admin-umrah-form:hover {
+    box-shadow: var(--admin-shadow-md);
+}
+
+/* ============================================
+   FORM SECTIONS
+   ============================================ */
 .form-section {
-  margin-bottom: 2rem;
-  padding-bottom: 2rem;
-  border-bottom: 1px solid #0c0c0c;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--admin-border-light);
 }
 
 .form-section:last-child {
-  border-bottom: none;
-  margin-bottom: 0;
-  padding-bottom: 0;
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
 }
 
 .form-section h3 {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #1a2332;
-  margin: 0 0 1rem 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--admin-text-primary);
+    margin: 0 0 1rem 0;
 }
 
 .form-section h4 {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #4a5568;
-  margin: 0 0 0.5rem 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--admin-text-secondary);
+    margin: 0 0 0.5rem 0;
 }
 
+/* ============================================
+   FORM ROWS
+   ============================================ */
 .form-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  margin-bottom: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
 }
 
 .form-row:last-child {
-  margin-bottom: 0;
+    margin-bottom: 0;
 }
 
+/* ============================================
+   FIELD GROUP
+   ============================================ */
 .field-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
 }
 
 .field-group.full {
-  grid-column: 1 / -1;
+    grid-column: 1 / -1;
 }
 
 .field-group.half {
-  grid-column: span 1;
+    grid-column: span 1;
 }
 
 .field-group label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #4a5568;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--admin-text-secondary);
 }
 
 .field-group input,
 .field-group select,
 .field-group textarea {
-  padding: 0.6rem 0.8rem;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  transition: all 0.2s ease;
-  outline: none;
-  font-family: inherit;
+    padding: 0.6rem 0.8rem;
+    border: 1.5px solid var(--admin-border);
+    border-radius: var(--admin-radius-sm);
+    font-size: 0.9rem;
+    transition: var(--admin-transition);
+    outline: none;
+    font-family: inherit;
+    background: var(--admin-bg-secondary);
+    color: var(--admin-text-primary);
+}
+
+.field-group input:hover,
+.field-group select:hover,
+.field-group textarea:hover {
+    border-color: var(--admin-text-muted);
 }
 
 .field-group input:focus,
 .field-group select:focus,
 .field-group textarea:focus {
-  border-color: #0a2463;
-  box-shadow: 0 0 0 3px rgba(10,36,99,0.1);
+    border-color: var(--admin-primary);
+    box-shadow: 0 0 0 3px rgba(10, 36, 99, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+    .field-group input:focus,
+    .field-group select:focus,
+    .field-group textarea:focus {
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    }
 }
 
 .field-group input.error,
 .field-group select.error {
-  border-color: #ef4444;
+    border-color: var(--admin-danger);
 }
 
 .field-group textarea {
-  resize: vertical;
-  min-height: 80px;
+    resize: vertical;
+    min-height: 80px;
 }
 
 .error-text {
-  font-size: 0.75rem;
-  color: #ef4444;
+    font-size: 0.75rem;
+    color: var(--admin-danger);
 }
 
+/* ============================================
+   HOTEL FIELDS
+   ============================================ */
 .hotel-fields {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
 }
 
 .hotel-fields .field-group {
-  grid-column: span 1;
+    grid-column: span 1;
 }
 
 .hotel-fields .field-group:first-child {
-  grid-column: span 2;
-}
-
-.includes-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 0.5rem;
-}
-
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.85rem;
-  color: #4a5568;
-  cursor: pointer;
-}
-
-.checkbox-label input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
-  accent-color: #0a2463;
-  cursor: pointer;
-}
-
-.form-actions {
-  display: flex;
-  gap: 1rem;
-  justify-content: flex-end;
-  padding-top: 1.5rem;
-  border-top: 2px solid #e2e8f0;
-  margin-top: 1rem;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.3rem;
-  padding: 0.5rem 1.25rem;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.85rem;
-  transition: all 0.2s ease;
-  border: none;
-  cursor: pointer;
-  text-decoration: none;
-  font-family: inherit;
-}
-
-.btn--primary {
-  background: linear-gradient(135deg, #0a2463 0%, #1a4a8a 50%, #2a6aaa 100%);
-  color: white;
-}
-
-.btn--primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(10,36,99,0.25);
-}
-
-.btn--primary:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.btn--ghost {
-  background: transparent;
-  color: #4a5568;
-  border: 1.5px solid #e2e8f0;
-}
-
-.btn--ghost:hover {
-  background: #f8fafc;
-  border-color: #94a3b8;
-}
-
-.btn--sm {
-  padding: 0.25rem 0.6rem;
-  font-size: 0.7rem;
-}
-
-.center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Responsive */
-@media (max-width: 1024px) {
-  .form-row {
-    grid-template-columns: 1fr 1fr;
-  }
+    grid-column: span 2;
 }
 
 @media (max-width: 768px) {
-  .admin-umrah-form-wrapper {
-    padding: 1rem;
-  }
+    .hotel-fields {
+        grid-template-columns: 1fr;
+    }
+    
+    .hotel-fields .field-group:first-child {
+        grid-column: span 1;
+    }
+}
 
-  .admin-umrah-form-header {
-    flex-direction: column;
-    align-items: stretch;
-  }
+/* ============================================
+   INCLUDES GRID
+   ============================================ */
+.includes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 0.5rem;
+}
 
-  .admin-umrah-form-header h1 {
-    font-size: 1.5rem;
-  }
+/* ============================================
+   CHECKBOX
+   ============================================ */
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    color: var(--admin-text-secondary);
+    cursor: pointer;
+    transition: var(--admin-transition);
+}
 
-  .admin-umrah-form {
-    padding: 1.25rem;
-  }
+.checkbox-label:hover {
+    color: var(--admin-text-primary);
+}
 
-  .form-row {
-    grid-template-columns: 1fr;
-  }
+.checkbox-label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--admin-primary);
+    cursor: pointer;
+}
 
-  .field-group.half {
-    grid-column: span 1;
-  }
+@media (prefers-color-scheme: dark) {
+    .checkbox-label input[type="checkbox"] {
+        accent-color: #818cf8;
+    }
+}
 
-  .hotel-fields {
-    grid-template-columns: 1fr;
-  }
+/* ============================================
+   FORM ACTIONS
+   ============================================ */
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--admin-border);
+    margin-top: 1rem;
+}
 
-  .hotel-fields .field-group:first-child {
-    grid-column: span 1;
-  }
-
-  .form-actions {
-    flex-direction: column;
-  }
-
-  .form-actions .btn {
-    width: 100%;
+/* ============================================
+   BUTTONS
+   ============================================ */
+.btn {
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
-  }
+    gap: 0.3rem;
+    padding: 0.5rem 1.25rem;
+    border-radius: var(--admin-radius-sm);
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: var(--admin-transition);
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: inherit;
+}
+
+.btn--primary {
+    background: var(--admin-primary-gradient);
+    color: white;
+}
+
+.btn--primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(10, 36, 99, 0.25);
+}
+
+.btn--primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+@media (prefers-color-scheme: dark) {
+    .btn--primary {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+    }
+    
+    .btn--primary:hover {
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+    }
+}
+
+.btn--ghost {
+    background: transparent;
+    color: var(--admin-text-secondary);
+    border: 1.5px solid var(--admin-border);
+}
+
+.btn--ghost:hover {
+    background: var(--admin-bg-tertiary);
+    border-color: var(--admin-text-muted);
+}
+
+.btn--sm {
+    padding: 0.25rem 0.6rem;
+    font-size: 0.7rem;
+}
+
+/* ============================================
+   UTILITY
+   ============================================ */
+.center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 1024px) {
+    .form-row {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-umrah-form-wrapper {
+        padding: 1rem;
+    }
+
+    .admin-umrah-form-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .admin-umrah-form-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .admin-umrah-form {
+        padding: 1.25rem;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .field-group.half {
+        grid-column: span 1;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .form-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
 }
 
 @media (max-width: 480px) {
-  .includes-grid {
-    grid-template-columns: 1fr 1fr;
-  }
+    .admin-umrah-form-wrapper {
+        padding: 0.75rem;
+    }
+
+    .admin-umrah-form {
+        padding: 1rem;
+    }
+
+    .admin-umrah-form-header h1 {
+        font-size: 1.2rem;
+    }
+
+    .form-section h3 {
+        font-size: 1rem;
+    }
+
+    .form-section h4 {
+        font-size: 0.85rem;
+    }
+
+    .includes-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .field-group label {
+        font-size: 0.7rem;
+    }
+
+    .field-group input,
+    .field-group select,
+    .field-group textarea {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.6rem;
+    }
+
+    .btn {
+        font-size: 0.8rem;
+        padding: 0.4rem 1rem;
+    }
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+.admin-umrah-form-wrapper::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.admin-umrah-form-wrapper::-webkit-scrollbar-track {
+    background: var(--admin-bg-tertiary);
+}
+
+.admin-umrah-form-wrapper::-webkit-scrollbar-thumb {
+    background: var(--admin-border);
+    border-radius: 3px;
+    transition: var(--admin-transition);
+}
+
+.admin-umrah-form-wrapper::-webkit-scrollbar-thumb:hover {
+    background: var(--admin-text-muted);
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+    .admin-umrah-form-wrapper {
+        padding: 0;
+    }
+
+    .admin-umrah-form-header {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+
+    .admin-umrah-form {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+
+    .btn {
+        display: none !important;
+    }
+
+    .form-actions {
+        display: none !important;
+    }
+
+    .form-section {
+        border-bottom-color: #ddd !important;
+    }
+
+    .field-group input,
+    .field-group select,
+    .field-group textarea {
+        border-color: #ddd !important;
+    }
 }

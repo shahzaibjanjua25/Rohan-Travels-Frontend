@@ -1,4 +1,4 @@
-/* AdminNotifications.css - Premium Admin Notifications Styling */
+/* AdminNotifications.css - Premium Admin Notifications Styling - Full Dark Mode Support */
 
 /* ============================================
    ROOT VARIABLES
@@ -65,6 +65,38 @@
 }
 
 /* ============================================
+   DARK MODE OVERRIDES
+   ============================================ */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --admin-bg-primary: #0f172a;
+        --admin-bg-secondary: #1e293b;
+        --admin-bg-tertiary: #2d3748;
+        --admin-border: #334155;
+        --admin-border-light: #2d3748;
+        
+        --admin-text-primary: #f1f5f9;
+        --admin-text-secondary: #cbd5e1;
+        --admin-text-muted: #94a3b8;
+        
+        --admin-primary-light: #1e3a5f;
+        --admin-secondary-light: #332a0a;
+        --admin-success-bg: rgba(16, 185, 129, 0.1);
+        --admin-warning-bg: rgba(245, 158, 11, 0.1);
+        --admin-danger-bg: rgba(239, 68, 68, 0.1);
+        --admin-info-bg: rgba(59, 130, 246, 0.1);
+        
+        --admin-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+        --admin-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+        --admin-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+        --admin-shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
+        
+        --admin-primary-gradient: linear-gradient(135deg, #1e3a5f 0%, #0a2463 50%, #1a4a8a 100%);
+        --admin-primary: #818cf8;
+    }
+}
+
+/* ============================================
    WRAPPER
    ============================================ */
 .admin-notifications-wrapper {
@@ -72,6 +104,8 @@
     margin: 0 auto;
     padding: var(--space-5);
     animation: fadeIn 0.4s ease;
+    background: var(--admin-bg-primary);
+    min-height: 100vh;
 }
 
 @keyframes fadeIn {
@@ -79,7 +113,6 @@
         opacity: 0;
         transform: translateY(20px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
@@ -156,7 +189,6 @@
         opacity: 0;
         transform: translateY(-10px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
@@ -251,7 +283,7 @@
 /* Unread indicator */
 .notification-item--unread {
     border-left: 4px solid var(--admin-primary);
-    background: linear-gradient(135deg, #f8f9fc 0%, #ffffff 100%);
+    background: linear-gradient(135deg, var(--admin-bg-tertiary) 0%, var(--admin-bg-secondary) 100%);
 }
 
 .notification-item--unread::before {
@@ -266,12 +298,9 @@
 }
 
 @keyframes pulseBar {
-
-    0%,
-    100% {
+    0%, 100% {
         opacity: 1;
     }
-
     50% {
         opacity: 0.4;
     }
@@ -485,12 +514,9 @@
 }
 
 @keyframes pulse {
-
-    0%,
-    100% {
+    0%, 100% {
         opacity: 1;
     }
-
     50% {
         opacity: 0.6;
     }
@@ -530,12 +556,9 @@
 }
 
 @keyframes float {
-
-    0%,
-    100% {
+    0%, 100% {
         transform: translateY(0);
     }
-
     50% {
         transform: translateY(-10px);
     }
@@ -560,6 +583,28 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+/* ============================================
+   USER BADGE
+   ============================================ */
+.notification-item__user {
+    font-size: var(--font-xs);
+    color: var(--admin-primary);
+    background: var(--admin-primary-light);
+    padding: 2px 10px;
+    border-radius: var(--admin-radius-sm);
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .notification-item__user {
+        color: #818cf8;
+        background: rgba(99, 102, 241, 0.1);
+    }
 }
 
 /* ============================================
@@ -698,6 +743,20 @@
     background: var(--admin-text-muted);
 }
 
+@media (prefers-color-scheme: dark) {
+    .admin-notifications-wrapper::-webkit-scrollbar-track {
+        background: var(--admin-bg-tertiary);
+    }
+    
+    .admin-notifications-wrapper::-webkit-scrollbar-thumb {
+        background: var(--admin-border);
+    }
+    
+    .admin-notifications-wrapper::-webkit-scrollbar-thumb:hover {
+        background: var(--admin-text-muted);
+    }
+}
+
 /* ============================================
    PRINT STYLES
    ============================================ */
@@ -732,18 +791,4 @@
     .alert {
         display: none !important;
     }
-}
-
-/* Add this to AdminNotifications.css */
-
-.notification-item__user {
-    font-size: var(--font-xs);
-    color: var(--admin-primary);
-    background: var(--admin-primary-light);
-    padding: 2px 10px;
-    border-radius: var(--admin-radius-sm);
-    white-space: nowrap;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
 }

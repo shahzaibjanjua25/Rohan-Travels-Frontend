@@ -1,8 +1,86 @@
+/* Settings.css - Full Dark Mode Support */
+
+/* ============================================
+   ROOT VARIABLES
+   ============================================ */
+:root {
+  --primary: #0a2463;
+  --primary-dark: #061a4a;
+  --primary-light: #e8edf7;
+  --primary-gradient: linear-gradient(135deg, #0a2463 0%, #1a4a8a 50%, #2a6aaa 100%);
+  
+  --text-primary: #1a2332;
+  --text-secondary: #4a5568;
+  --text-muted: #8a94a6;
+  --bg-primary: #f4f6f9;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f8f9fc;
+  --border: #e2e8f0;
+  --border-light: #f0f2f5;
+  
+  --shadow-sm: 0 1px 3px rgba(10, 36, 99, 0.06);
+  --shadow-md: 0 4px 16px rgba(10, 36, 99, 0.08);
+  --shadow-lg: 0 8px 32px rgba(10, 36, 99, 0.12);
+  
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+  
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-8: 48px;
+  
+  --font-xs: 11px;
+  --font-sm: 13px;
+  --font-base: 15px;
+  --font-lg: 20px;
+  --font-xl: 24px;
+  --font-2xl: 30px;
+  
+  --transition-base: 0.25s ease;
+}
+
+/* ============================================
+   DARK MODE OVERRIDES
+   ============================================ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-tertiary: #2d3748;
+    --border: #334155;
+    --border-light: #2d3748;
+    
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    
+    --primary-light: #1e3a5f;
+    --primary-gradient: linear-gradient(135deg, #1e3a5f 0%, #0a2463 50%, #1a4a8a 100%);
+    --primary: #818cf8;
+    --primary-dark: #6366f1;
+    
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* ============================================
+   WRAPPER
+   ============================================ */
 .settings-wrapper {
   max-width: 1200px;
   margin: 0 auto;
   padding: var(--space-5);
   animation: settingsFadeIn 0.5s ease;
+  background: var(--bg-primary);
+  min-height: 100vh;
 }
 
 @keyframes settingsFadeIn {
@@ -16,6 +94,9 @@
   }
 }
 
+/* ============================================
+   HEADER
+   ============================================ */
 .settings-header {
   margin-bottom: var(--space-6);
 }
@@ -45,12 +126,18 @@
   margin: 0;
 }
 
+/* ============================================
+   GRID
+   ============================================ */
 .settings-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--space-6);
 }
 
+/* ============================================
+   CARD
+   ============================================ */
 .settings-card {
   background: var(--bg-secondary);
   border-radius: var(--radius-lg);
@@ -71,6 +158,9 @@
   color: var(--text-primary);
 }
 
+/* ============================================
+   FORM
+   ============================================ */
 .settings-form {
   display: flex;
   flex-direction: column;
@@ -89,6 +179,9 @@
   color: var(--text-secondary);
 }
 
+/* ============================================
+   INPUT FIELDS
+   ============================================ */
 .field {
   width: 100%;
   padding: 10px 14px;
@@ -110,6 +203,12 @@
   box-shadow: 0 0 0 3px rgba(10, 36, 99, 0.1);
 }
 
+@media (prefers-color-scheme: dark) {
+  .field:focus {
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  }
+}
+
 .field:disabled {
   opacity: 0.6;
   cursor: not-allowed;
@@ -122,6 +221,9 @@
   margin-top: var(--space-1);
 }
 
+/* ============================================
+   BUTTONS
+   ============================================ */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -158,6 +260,17 @@
   transform: none;
 }
 
+@media (prefers-color-scheme: dark) {
+  .btn--primary {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+  }
+  
+  .btn--primary:hover {
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35);
+  }
+}
+
 .btn--ghost {
   background: transparent;
   color: var(--text-secondary);
@@ -170,7 +283,9 @@
   transform: translateY(-2px);
 }
 
-/* Responsive */
+/* ============================================
+   RESPONSIVE
+   ============================================ */
 @media (max-width: 768px) {
   .settings-grid {
     grid-template-columns: 1fr;
@@ -203,5 +318,74 @@
     font-size: var(--font-sm);
     height: 38px;
     padding: 8px 18px;
+  }
+  
+  .settings-grid {
+    gap: var(--space-3);
+  }
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+.settings-wrapper::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.settings-wrapper::-webkit-scrollbar-track {
+  background: var(--bg-tertiary);
+}
+
+.settings-wrapper::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 3px;
+  transition: var(--transition-base);
+}
+
+.settings-wrapper::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+@media (prefers-color-scheme: dark) {
+  .settings-wrapper::-webkit-scrollbar-thumb {
+    background: #818cf8;
+  }
+  
+  .settings-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #a78bfa;
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+  .settings-wrapper {
+    padding: 0;
+    background: white;
+  }
+
+  .settings-card {
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+
+  .settings-card:hover {
+    box-shadow: none;
+  }
+
+  .btn {
+    display: none !important;
+  }
+
+  .field {
+    border-color: #ddd !important;
+  }
+
+  .settings-header h1 {
+    background: #0a2463 !important;
+    -webkit-text-fill-color: white !important;
+    color: white !important;
   }
 }

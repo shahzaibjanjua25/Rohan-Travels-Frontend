@@ -1,4 +1,4 @@
-/* UserFlights.css - Updated with Gold/Navy Theme */
+/* UserFlights.css - Updated with Gold/Navy Theme - Full Dark Mode Support */
 
 /* ============================================
    ROOT VARIABLES - Gold/Navy Theme
@@ -54,6 +54,30 @@
 }
 
 /* ============================================
+   DARK MODE OVERRIDES
+   ============================================ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f172a;
+    --bg-card: #1e293b;
+    --bg-hover: #2d3748;
+    --text: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-light: #94a3b8;
+    --primary-light: #1e3a5f;
+    --secondary-light: #332a0a;
+    --danger-light: #2a0f0f;
+    --success-light: #0a1f14;
+    --info-light: #0a1a2a;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.5);
+    --primary-gradient: linear-gradient(135deg, #061a4a 0%, #0a2463 50%, #1a4a8a 100%);
+    --brand-soft: #2a2410;
+  }
+}
+
+/* ============================================
    MAIN WRAPPER
    ============================================ */
 
@@ -62,7 +86,7 @@
   margin: 0 auto;
   padding: 2rem;
   font-family: var(--font);
-  background: linear-gradient(180deg, #f8fafc 0%, #0c0c0c 100%);
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-card) 100%);
   min-height: 100vh;
 }
 
@@ -122,6 +146,16 @@
   text-align: center;
 }
 
+@media (prefers-color-scheme: dark) {
+  .flights-hero-overlay {
+    background: linear-gradient(135deg, 
+      rgba(10, 36, 99, 0.25) 0%,
+      rgba(26, 74, 138, 0.1) 50%,
+      rgba(255, 161, 11, 0.15) 100%
+    );
+  }
+}
+
 .flights-hero-overlay h2 {
   color: white;
   font-size: clamp(1.8rem, 3.5vw, 2.8rem);
@@ -160,6 +194,14 @@
 .flights-hero-badge::before {
   content: '⭐';
   font-size: 0.9rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .flights-hero-badge {
+    background: rgba(30, 41, 59, 0.95);
+    color: var(--brand);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
 }
 
 /* ============================================
@@ -206,12 +248,20 @@
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--text-secondary);
-  border: 2px solid #cbd5e1;
+  border: 2px solid var(--text-light);
   white-space: nowrap;
 }
 
 .count-badge span {
   color: var(--primary);
+}
+
+@media (prefers-color-scheme: dark) {
+  .count-badge {
+    background: var(--bg-card);
+    border-color: var(--text-light);
+    color: var(--text-secondary);
+  }
 }
 
 /* ============================================
@@ -222,7 +272,7 @@
   background: var(--bg-card);
   border-radius: var(--radius);
   padding: 1.5rem;
-  border: 2px solid #cbd5e1;
+  border: 2px solid var(--text-light);
   margin-bottom: 2rem;
   transition: var(--transition-smooth);
   box-shadow: var(--shadow-md);
@@ -231,6 +281,16 @@
 .user-flights-filters:hover {
   border-color: var(--brand);
   box-shadow: var(--shadow-lg);
+}
+
+@media (prefers-color-scheme: dark) {
+  .user-flights-filters {
+    border-color: var(--text-light);
+  }
+  
+  .user-flights-filters:hover {
+    border-color: var(--brand);
+  }
 }
 
 .filters-grid {
@@ -257,7 +317,7 @@
 .filter-group .field {
   width: 100%;
   padding: 0.65rem 0.9rem;
-  border: 1.5px solid #e2e8f0;
+  border: 1.5px solid var(--text-light);
   border-radius: var(--radius-sm);
   font-size: 0.95rem;
   font-family: var(--font);
@@ -287,12 +347,33 @@
   cursor: pointer;
 }
 
+@media (prefers-color-scheme: dark) {
+  .filter-group .field {
+    background: var(--bg-card);
+    border-color: var(--text-light);
+    color: var(--text);
+  }
+  
+  .filter-group .field:hover {
+    border-color: var(--brand);
+  }
+  
+  .filter-group .field:focus {
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px rgba(255, 161, 11, 0.15);
+  }
+  
+  .filter-group .field--select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffa10b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  }
+}
+
 .filter-actions {
   display: flex;
   gap: 0.75rem;
   margin-top: 0.5rem;
   justify-content: flex-end;
-  border-top: 2px solid #e2e8f0;
+  border-top: 2px solid var(--text-light);
   padding-top: 1rem;
 }
 
@@ -302,6 +383,12 @@
   font-size: 0.8rem;
 }
 
+@media (prefers-color-scheme: dark) {
+  .filter-actions {
+    border-top-color: var(--text-light);
+  }
+}
+
 /* ============================================
    TABLE CONTAINER
    ============================================ */
@@ -309,7 +396,7 @@
 .table-container {
   background: var(--bg-card);
   border-radius: var(--radius);
-  border: 2px solid #cbd5e1;
+  border: 2px solid var(--text-light);
   overflow: hidden;
   box-shadow: var(--shadow-md);
   transition: var(--transition-smooth);
@@ -319,6 +406,16 @@
 .table-container:hover {
   box-shadow: var(--shadow-lg);
   border-color: var(--brand);
+}
+
+@media (prefers-color-scheme: dark) {
+  .table-container {
+    border-color: var(--text-light);
+  }
+  
+  .table-container:hover {
+    border-color: var(--brand);
+  }
 }
 
 /* ============================================
@@ -333,7 +430,7 @@
 }
 
 .flights-table thead {
-  background: linear-gradient(135deg, #0a2463 0%, #1a4a8a 50%, #2a6aaa 100%);
+  background: var(--primary-gradient);
   border-bottom: none;
 }
 
@@ -361,7 +458,7 @@
 
 .flights-table td {
   padding: 0.85rem 1rem;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--text-light);
   color: var(--text-secondary);
   vertical-align: middle;
 }
@@ -379,11 +476,30 @@
 }
 
 .flights-table tbody tr:nth-child(even) {
-  background: #fafbfc;
+  background: rgba(0, 0, 0, 0.02);
 }
 
 .flights-table tbody tr:nth-child(even):hover {
   background: var(--bg-hover);
+}
+
+@media (prefers-color-scheme: dark) {
+  .flights-table td {
+    border-bottom-color: var(--text-light);
+    color: var(--text-secondary);
+  }
+  
+  .flights-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.02);
+  }
+  
+  .flights-table tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.02);
+  }
+  
+  .flights-table tbody tr:nth-child(even):hover {
+    background: rgba(255, 255, 255, 0.04);
+  }
 }
 
 /* ============================================
@@ -413,7 +529,7 @@
   gap: 1rem;
   flex-wrap: wrap;
   padding: 0.85rem 1.25rem;
-  background: linear-gradient(135deg, #0a2463 0%, #1a4a8a 50%, #2a6aaa 100%);
+  background: var(--primary-gradient);
   border-radius: var(--radius) var(--radius) 0 0;
   color: white;
   box-shadow: var(--shadow-md);
@@ -421,6 +537,16 @@
 
 .route-group__header:hover {
   background: linear-gradient(135deg, #061a4a 0%, #0a2463 50%, #1a4a8a 100%);
+}
+
+@media (prefers-color-scheme: dark) {
+  .route-group__header {
+    background: linear-gradient(135deg, #061a4a 0%, #0a2463 50%, #1a4a8a 100%);
+  }
+  
+  .route-group__header:hover {
+    background: linear-gradient(135deg, #030d1a 0%, #061a4a 50%, #0a2463 100%);
+  }
 }
 
 .route-group__title {
@@ -521,6 +647,20 @@
   color: var(--text-light);
 }
 
+@media (prefers-color-scheme: dark) {
+  .flight-number {
+    color: var(--text);
+  }
+  
+  .flight-airline {
+    color: var(--text-secondary);
+  }
+  
+  .flight-aircraft {
+    color: var(--text-light);
+  }
+}
+
 /* Trip Badge - Gold Theme */
 .trip-badge {
   display: inline-flex;
@@ -537,7 +677,7 @@
 .trip-badge--one_way {
   background: var(--bg);
   color: var(--text-secondary);
-  border-color: #cbd5e1;
+  border-color: var(--text-light);
 }
 
 .trip-badge--round_trip {
@@ -550,6 +690,26 @@
   background: var(--secondary-light);
   color: #92400e;
   border-color: rgba(245, 158, 11, 0.25);
+}
+
+@media (prefers-color-scheme: dark) {
+  .trip-badge--one_way {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+    border-color: var(--text-light);
+  }
+  
+  .trip-badge--round_trip {
+    background: rgba(59, 130, 246, 0.15);
+    color: #93c5fd;
+    border-color: rgba(59, 130, 246, 0.25);
+  }
+  
+  .trip-badge--multi_city {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+    border-color: rgba(245, 158, 11, 0.25);
+  }
 }
 
 .trip-return {
@@ -618,6 +778,40 @@
   color: var(--text-light);
 }
 
+@media (prefers-color-scheme: dark) {
+  .multi-city-route {
+    color: var(--text-secondary);
+  }
+  
+  .round-trip-route {
+    color: var(--text-secondary);
+  }
+  
+  .direct-route {
+    color: var(--text-secondary);
+  }
+  
+  .return-arrow {
+    color: var(--secondary);
+  }
+  
+  .segment-code {
+    color: var(--text-secondary);
+  }
+  
+  .stops-info {
+    color: var(--text-light);
+  }
+  
+  .trip-return {
+    color: var(--text-light);
+  }
+  
+  .multi-city-label {
+    color: var(--text-light);
+  }
+}
+
 /* Time Cell */
 .time-cell {
   display: flex;
@@ -652,7 +846,7 @@
   font-weight: 500;
   background: var(--bg);
   color: var(--text-secondary);
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--text-light);
 }
 
 .travel-type-tag.generic {
@@ -668,12 +862,32 @@
   border-color: rgba(10, 36, 99, 0.2);
 }
 
+@media (prefers-color-scheme: dark) {
+  .travel-type-tag {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+    border-color: var(--text-light);
+  }
+  
+  .travel-type-tag.generic {
+    background: rgba(16, 185, 129, 0.15);
+    color: #6ee7b7;
+    border-color: rgba(16, 185, 129, 0.25);
+  }
+  
+  .travel-type-tag.more {
+    background: rgba(10, 36, 99, 0.15);
+    color: #a5b4fc;
+    border-color: rgba(10, 36, 99, 0.2);
+  }
+}
+
 /* Price - Gold Accent */
 .price-value {
   font-weight: 700;
   font-size: 0.95rem;
   color: var(--brand);
-  background: linear-gradient(135deg, #ffa10b 0%, #e08e09 100%);
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-strong) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -689,6 +903,16 @@
 .seats-value.low {
   color: var(--danger);
   font-weight: 700;
+}
+
+@media (prefers-color-scheme: dark) {
+  .seats-value {
+    color: var(--text-secondary);
+  }
+  
+  .seats-value.low {
+    color: #fca5a5;
+  }
 }
 
 /* Status Badge */
@@ -759,7 +983,7 @@
 }
 
 .btn--primary {
-  background: linear-gradient(135deg, #0a2463 0%, #1a4a8a 50%, #2a6aaa 100%);
+  background: var(--primary-gradient);
   color: white;
   border-color: var(--primary);
   box-shadow: 0 4px 16px rgba(10, 36, 99, 0.3);
@@ -776,7 +1000,7 @@
 }
 
 .btn--gold {
-  background: linear-gradient(135deg, #ffa10b 0%, #e08e09 100%);
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-strong) 100%);
   color: #0f172a;
   border-color: var(--brand);
   box-shadow: 0 4px 16px rgba(255, 161, 11, 0.3);
@@ -791,7 +1015,7 @@
 .btn--ghost {
   background: transparent;
   color: var(--text-secondary);
-  border-color: #94a3b8;
+  border-color: var(--text-light);
 }
 
 .btn--ghost:hover {
@@ -812,6 +1036,19 @@
   font-size: 0.75rem;
 }
 
+@media (prefers-color-scheme: dark) {
+  .btn--ghost {
+    border-color: var(--text-light);
+    color: var(--text-secondary);
+  }
+  
+  .btn--ghost:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--brand);
+    color: var(--brand);
+  }
+}
+
 /* ============================================
    EMPTY STATE
    ============================================ */
@@ -821,7 +1058,7 @@
   padding: 4rem 2rem;
   background: var(--bg-card);
   border-radius: var(--radius);
-  border: 2px solid #cbd5e1;
+  border: 2px solid var(--text-light);
 }
 
 .empty-icon {
@@ -840,6 +1077,21 @@
   margin: 0 0 1.5rem 0;
 }
 
+@media (prefers-color-scheme: dark) {
+  .empty-state {
+    background: var(--bg-card);
+    border-color: var(--text-light);
+  }
+  
+  .empty-state h3 {
+    color: var(--text);
+  }
+  
+  .empty-state .faint {
+    color: var(--text-light);
+  }
+}
+
 /* ============================================
    PAGINATION
    ============================================ */
@@ -856,7 +1108,7 @@
 
 .pagination button {
   padding: 0.4rem 0.9rem;
-  border: 2px solid #94a3b8;
+  border: 2px solid var(--text-light);
   border-radius: var(--radius-sm);
   background: var(--bg-card);
   color: var(--text-secondary);
@@ -878,7 +1130,7 @@
 }
 
 .pagination button.active {
-  background: linear-gradient(135deg, #0a2463 0%, #1a4a8a 50%, #2a6aaa 100%);
+  background: var(--primary-gradient);
   color: white;
   border-color: var(--primary);
   box-shadow: 0 4px 12px rgba(10, 36, 99, 0.3);
@@ -894,6 +1146,26 @@
   color: var(--text-light);
   font-size: 0.85rem;
   padding: 0 0.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .pagination button {
+    background: var(--bg-card);
+    border-color: var(--text-light);
+    color: var(--text-secondary);
+  }
+  
+  .pagination button:hover:not(:disabled) {
+    background: rgba(255, 161, 11, 0.1);
+    border-color: var(--brand);
+    color: var(--brand);
+  }
+  
+  .pagination button.active {
+    background: var(--primary-gradient);
+    color: white;
+    border-color: var(--primary);
+  }
 }
 
 /* ============================================
@@ -914,6 +1186,14 @@
 
 .active-filter-badge strong {
   font-weight: 700;
+}
+
+@media (prefers-color-scheme: dark) {
+  .active-filter-badge {
+    background: rgba(255, 161, 11, 0.15);
+    color: var(--brand);
+    border-color: rgba(255, 161, 11, 0.2);
+  }
 }
 
 /* ============================================
@@ -1183,284 +1463,6 @@
 }
 
 /* ============================================
-   DARK MODE - Gold/Navy Theme
-   ============================================ */
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0f172a;
-    --bg-card: #1e293b;
-    --bg-hover: #2d3748;
-    --text: #0c0c0c;
-    --text-secondary: #94a3b8;
-    --text-light: #64748b;
-    --primary-light: #1e3a5f;
-    --secondary-light: #332a0a;
-    --danger-light: #2a0f0f;
-    --success-light: #0a1f14;
-    --shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.5);
-  }
-
-  .user-flights-wrapper {
-    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
-  }
-
-  .flights-hero-overlay {
-    background: linear-gradient(135deg, 
-      rgba(10, 36, 99, 0.25) 0%,
-      rgba(26, 74, 138, 0.1) 50%,
-      rgba(255, 161, 11, 0.15) 100%
-    );
-  }
-
-  .flights-hero-badge {
-    background: rgba(30, 41, 59, 0.95);
-    color: var(--brand);
-    border-color: rgba(255, 255, 255, 0.1);
-  }
-
-  .user-flights-filters {
-    background: var(--bg-card);
-    border-color: #475569;
-  }
-
-  .user-flights-filters:hover {
-    border-color: var(--brand);
-  }
-
-  .filter-actions {
-    border-top-color: #475569;
-  }
-
-  .table-container {
-    background: var(--bg-card);
-    border-color: #475569;
-  }
-
-  .table-container:hover {
-    border-color: var(--brand);
-  }
-
-  .flights-table thead {
-    background: linear-gradient(135deg, #061a4a 0%, #0a2463 50%, #1a4a8a 100%);
-    border-bottom: none;
-  }
-
-  .flights-table thead th {
-    color: #ffffff;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .flights-table td {
-    border-bottom-color: #334155;
-    color: var(--text-secondary);
-  }
-
-  .flights-table tbody tr:hover {
-    background: rgba(255, 255, 255, 0.02);
-  }
-
-  .flights-table tbody tr:nth-child(even) {
-    background: rgba(255, 255, 255, 0.02);
-  }
-
-  .flights-table tbody tr:nth-child(even):hover {
-    background: rgba(255, 255, 255, 0.04);
-  }
-
-  .flight-number {
-    color: var(--text);
-  }
-
-  .flight-airline {
-    color: var(--text-secondary);
-  }
-
-  .flight-aircraft {
-    color: var(--text-light);
-  }
-
-  .price-value {
-    background: linear-gradient(135deg, #ffa10b 0%, #e08e09 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .count-badge {
-    background: var(--bg-card);
-    border-color: #475569;
-    color: var(--text-secondary);
-  }
-
-  .btn--ghost {
-    border-color: #475569;
-    color: var(--text-secondary);
-  }
-
-  .btn--ghost:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: var(--brand);
-    color: var(--brand);
-  }
-
-  .btn--primary {
-    background: linear-gradient(135deg, #061a4a 0%, #0a2463 50%, #1a4a8a 100%);
-  }
-
-  .trip-badge--one_way {
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--text-secondary);
-    border-color: #475569;
-  }
-
-  .trip-badge--round_trip {
-    background: rgba(59, 130, 246, 0.15);
-    color: #93c5fd;
-    border-color: rgba(59, 130, 246, 0.25);
-  }
-
-  .trip-badge--multi_city {
-    background: rgba(245, 158, 11, 0.15);
-    color: #fbbf24;
-    border-color: rgba(245, 158, 11, 0.25);
-  }
-
-  .travel-type-tag {
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--text-secondary);
-    border-color: #334155;
-  }
-
-  .travel-type-tag.generic {
-    background: rgba(16, 185, 129, 0.15);
-    color: #6ee7b7;
-    border-color: rgba(16, 185, 129, 0.25);
-  }
-
-  .travel-type-tag.more {
-    background: rgba(10, 36, 99, 0.15);
-    color: #a5b4fc;
-    border-color: rgba(10, 36, 99, 0.2);
-  }
-
-  .seats-value {
-    color: var(--text-secondary);
-  }
-
-  .seats-value.low {
-    color: #fca5a5;
-  }
-
-  .status-badge {
-    color: white;
-  }
-
-  .empty-state {
-    background: var(--bg-card);
-    border-color: #475569;
-  }
-
-  .empty-state h3 {
-    color: var(--text);
-  }
-
-  .route-group .flights-table thead {
-    background: linear-gradient(135deg, #061a4a 0%, #0a2463 50%, #1a4a8a 100%);
-    border-bottom: none;
-  }
-
-  .active-filter-badge {
-    background: rgba(255, 161, 11, 0.15);
-    color: #ffa10b;
-    border-color: rgba(255, 161, 11, 0.2);
-  }
-
-  .route-group__header {
-    background: linear-gradient(135deg, #061a4a 0%, #0a2463 50%, #1a4a8a 100%);
-  }
-
-  .route-group__header:hover {
-    background: linear-gradient(135deg, #030d1a 0%, #061a4a 50%, #0a2463 100%);
-  }
-
-  .route-group__from strong {
-    color: var(--brand);
-  }
-
-  .multi-city-route {
-    color: var(--text-secondary);
-  }
-
-  .direct-route {
-    color: var(--text-secondary);
-  }
-
-  .round-trip-route {
-    color: var(--text-secondary);
-  }
-
-  .return-arrow {
-    color: var(--secondary);
-  }
-
-  .segment-code {
-    color: var(--text-secondary);
-  }
-
-  .stops-info {
-    color: var(--text-light);
-  }
-
-  .trip-return {
-    color: var(--text-light);
-  }
-
-  .multi-city-label {
-    color: var(--text-light);
-  }
-
-  .filter-group .field {
-    background: var(--bg-card);
-    border-color: #475569;
-    color: var(--text);
-  }
-
-  .filter-group .field:hover {
-    border-color: var(--brand);
-  }
-
-  .filter-group .field:focus {
-    border-color: var(--brand);
-    box-shadow: 0 0 0 3px rgba(255, 161, 11, 0.15);
-  }
-
-  .filter-group .field--select {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffa10b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-  }
-
-  .pagination button {
-    background: var(--bg-card);
-    border-color: #475569;
-    color: var(--text-secondary);
-  }
-
-  .pagination button:hover:not(:disabled) {
-    background: rgba(255, 161, 11, 0.1);
-    border-color: var(--brand);
-    color: var(--brand);
-  }
-
-  .pagination button.active {
-    background: linear-gradient(135deg, #061a4a 0%, #0a2463 50%, #1a4a8a 100%);
-    color: white;
-    border-color: var(--primary);
-  }
-}
-
-/* ============================================
    SCROLLBAR
    ============================================ */
 
@@ -1474,12 +1476,12 @@
 }
 
 .table-container::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #ffa10b 0%, #e08e09 100%);
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-strong) 100%);
   border-radius: 3px;
 }
 
 .table-container::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #e08e09 0%, #d47a05 100%);
+  background: linear-gradient(135deg, var(--brand-strong) 0%, #d47a05 100%);
 }
 
 /* ============================================
@@ -1505,7 +1507,7 @@
   }
 
   .flights-table thead {
-    background: #0c0c0c !important;
+    background: #f1f5f9 !important;
   }
 
   .flights-table thead th {
@@ -1518,7 +1520,7 @@
   }
 
   .route-group__header {
-    background: #0c0c0c !important;
+    background: #f1f5f9 !important;
     color: #0f172a !important;
   }
 
