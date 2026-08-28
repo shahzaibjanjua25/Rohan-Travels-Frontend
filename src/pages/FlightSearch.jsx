@@ -250,7 +250,7 @@ export default function FlightSearch() {
     }
   }, []);
   if (form.travelType) {
-    flights = flights.filter(flight => flightMatchesTravelType(flight, form.travelType));
+    setFlights(prevFlights => prevFlights.filter(flight => flightMatchesTravelType(flight, form.travelType)));
   }
   useEffect(() => {
     const query = Object.fromEntries([...params].filter(([, v]) => v !== ''));

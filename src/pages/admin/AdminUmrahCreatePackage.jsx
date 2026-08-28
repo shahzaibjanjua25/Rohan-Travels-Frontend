@@ -7,29 +7,92 @@ import Alert from '../../components/ui/Alert';
 import Spinner from '../../components/ui/Spinner';
 import './AdminUmrahPackageForm.css';
 
-// ✨ REMOVED: AIRLINES dropdown array - no longer needed
-
+// ============================================
+// COMPLETE AIRPORTS LIST WITH ALL SAUDI AIRPORTS + CUSTOM
+// ============================================
 const AIRPORTS = [
-  { code: 'ISB', city: 'Islamabad' },
-  { code: 'LHE', city: 'Lahore' },
-  { code: 'KHI', city: 'Karachi' },
-  { code: 'PEW', city: 'Peshawar' },
-  { code: 'MUX', city: 'Multan' },
-  { code: 'SKT', city: 'Sialkot' },
-  { code: 'UET', city: 'Quetta' },
-  { code: 'LYP', city: 'Faisalabad' },
-  { code: 'GWD', city: 'Gwadar' },
-  { code: 'RYK', city: 'Rahim Yar Khan' },
-  { code: 'JED', city: 'Jeddah' },
-  { code: 'RUH', city: 'Riyadh' },
-  { code: 'MED', city: 'Madinah' },
-  { code: 'DMM', city: 'Dammam' },
-  { code: 'DXB', city: 'Dubai' },
-  { code: 'AUH', city: 'Abu Dhabi' },
-  { code: 'DOH', city: 'Doha' },
-  { code: 'BAH', city: 'Manama' },
-  { code: 'KWI', city: 'Kuwait City' },
-  { code: 'MCT', city: 'Muscat' }
+  // ===== PAKISTAN AIRPORTS =====
+  { code: 'ISB', city: 'Islamabad', country: 'Pakistan' },
+  { code: 'LHE', city: 'Lahore', country: 'Pakistan' },
+  { code: 'KHI', city: 'Karachi', country: 'Pakistan' },
+  { code: 'PEW', city: 'Peshawar', country: 'Pakistan' },
+  { code: 'MUX', city: 'Multan', country: 'Pakistan' },
+  { code: 'SKT', city: 'Sialkot', country: 'Pakistan' },
+  { code: 'UET', city: 'Quetta', country: 'Pakistan' },
+  { code: 'LYP', city: 'Faisalabad', country: 'Pakistan' },
+  { code: 'GWD', city: 'Gwadar', country: 'Pakistan' },
+  { code: 'RYK', city: 'Rahim Yar Khan', country: 'Pakistan' },
+  { code: 'KDU', city: 'Skardu', country: 'Pakistan' },
+  { code: 'GIL', city: 'Gilgit', country: 'Pakistan' },
+  { code: 'CJL', city: 'Chitral', country: 'Pakistan' },
+  { code: 'DSK', city: 'Dera Ismail Khan', country: 'Pakistan' },
+  { code: 'PAJ', city: 'Panjgur', country: 'Pakistan' },
+  { code: 'DBA', city: 'Dalbandin', country: 'Pakistan' },
+  { code: 'SGI', city: 'Sargodha', country: 'Pakistan' },
+  { code: 'MWD', city: 'Mianwali', country: 'Pakistan' },
+  { code: 'ZIA', city: 'Zhob', country: 'Pakistan' },
+  
+  // ===== SAUDI ARABIA AIRPORTS (ALL) =====
+  { code: 'JED', city: 'Jeddah', country: 'Saudi Arabia' },
+  { code: 'RUH', city: 'Riyadh', country: 'Saudi Arabia' },
+  { code: 'DMM', city: 'Dammam', country: 'Saudi Arabia' },
+  { code: 'MED', city: 'Madinah', country: 'Saudi Arabia' },
+  { code: 'TIF', city: 'Taif', country: 'Saudi Arabia' },
+  { code: 'AHB', city: 'Abha', country: 'Saudi Arabia' },
+  { code: 'GIZ', city: 'Jazan', country: 'Saudi Arabia' },
+  { code: 'HOF', city: 'Hofuf', country: 'Saudi Arabia' },
+  { code: 'TUU', city: 'Tabuk', country: 'Saudi Arabia' },
+  { code: 'EJN', city: 'Al Ula', country: 'Saudi Arabia' },
+  { code: 'ELQ', city: 'Gassim', country: 'Saudi Arabia' },
+  { code: 'HBT', city: 'Hail', country: 'Saudi Arabia' },
+  { code: 'RAE', city: 'Arar', country: 'Saudi Arabia' },
+  { code: 'URY', city: 'Gurayat', country: 'Saudi Arabia' },
+  { code: 'YNB', city: 'Yanbu', country: 'Saudi Arabia' },
+  { code: 'AQI', city: 'Qaisumah', country: 'Saudi Arabia' },
+  { code: 'NQS', city: 'King Khalid Military City', country: 'Saudi Arabia' },
+  { code: 'DHA', city: 'Dhahran', country: 'Saudi Arabia' },
+  
+  // ===== UAE AIRPORTS =====
+  { code: 'DXB', city: 'Dubai', country: 'UAE' },
+  { code: 'AUH', city: 'Abu Dhabi', country: 'UAE' },
+  { code: 'SHJ', city: 'Sharjah', country: 'UAE' },
+  { code: 'RKT', city: 'Ras Al Khaimah', country: 'UAE' },
+  
+  // ===== GULF COOPERATION COUNCIL (GCC) =====
+  { code: 'DOH', city: 'Doha', country: 'Qatar' },
+  { code: 'BAH', city: 'Manama', country: 'Bahrain' },
+  { code: 'KWI', city: 'Kuwait City', country: 'Kuwait' },
+  { code: 'MCT', city: 'Muscat', country: 'Oman' },
+  { code: 'SLL', city: 'Salalah', country: 'Oman' },
+  
+  // ===== OTHER MAJOR INTERNATIONAL AIRPORTS =====
+  { code: 'IST', city: 'Istanbul', country: 'Turkey' },
+  { code: 'SAW', city: 'Istanbul', country: 'Turkey' },
+  { code: 'ANK', city: 'Ankara', country: 'Turkey' },
+  { code: 'LHR', city: 'London', country: 'UK' },
+  { code: 'LGW', city: 'London', country: 'UK' },
+  { code: 'MAN', city: 'Manchester', country: 'UK' },
+  { code: 'BHX', city: 'Birmingham', country: 'UK' },
+  { code: 'JFK', city: 'New York', country: 'USA' },
+  { code: 'LAX', city: 'Los Angeles', country: 'USA' },
+  { code: 'ORD', city: 'Chicago', country: 'USA' },
+  { code: 'IAH', city: 'Houston', country: 'USA' },
+  { code: 'CDG', city: 'Paris', country: 'France' },
+  { code: 'FRA', city: 'Frankfurt', country: 'Germany' },
+  { code: 'AMS', city: 'Amsterdam', country: 'Netherlands' },
+  { code: 'SIN', city: 'Singapore', country: 'Singapore' },
+  { code: 'KUL', city: 'Kuala Lumpur', country: 'Malaysia' },
+  { code: 'BKK', city: 'Bangkok', country: 'Thailand' },
+  { code: 'NRT', city: 'Tokyo', country: 'Japan' },
+  { code: 'ICN', city: 'Seoul', country: 'South Korea' },
+  { code: 'HKG', city: 'Hong Kong', country: 'Hong Kong' },
+  { code: 'BEY', city: 'Beirut', country: 'Lebanon' },
+  { code: 'AMM', city: 'Amman', country: 'Jordan' },
+  { code: 'CAI', city: 'Cairo', country: 'Egypt' },
+  { code: 'JNB', city: 'Johannesburg', country: 'South Africa' },
+  
+  // ===== CUSTOM OPTION =====
+  { code: 'CUSTOM', city: 'Custom Airport', country: 'Custom' },
 ];
 
 // Room types with all options
@@ -70,11 +133,11 @@ export default function AdminUmrahCreatePackage() {
   const [formData, setFormData] = useState({
     packageName: '',
     description: '',
-    airline: '', // ✨ Now a text field, not dropdown
+    airline: '',
     airlineCode: '',
     flightNumber: '',
-    origin: { airportCode: '', city: '' },
-    destination: { airportCode: '', city: '' },
+    origin: { airportCode: '', city: '', country: '' },
+    destination: { airportCode: '', city: '', country: '' },
     departureDate: '',
     departureTime: '00:00',
     arrivalDate: '',
@@ -86,7 +149,11 @@ export default function AdminUmrahCreatePackage() {
     duration: 14,
     flightType: 'direct',
     stops: 0,
-    baggageAllowance: { departure: '23 KG', arrival: '46 KG' },
+    baggageAllowance: { 
+      departure: '23 KG', 
+      arrival: '46 KG', 
+      return: '' // âœ¨ NEW: Return baggage
+    },
     makkahHotel: { name: '', distance: '', nights: 8 },
     makkahReturnHotel: { name: '', distance: '', nights: 2 },
     madinahHotel: { name: '', distance: '', nights: 6 },
@@ -98,10 +165,14 @@ export default function AdminUmrahCreatePackage() {
     isActive: true,
     isFeatured: false,
     includes: ['Visa', 'Ticket', 'Accommodation', 'Transport'],
-    // Ziyarat fields
     ziyaratEnabled: false,
     ziyaratPrice: 5000,
-    ziyaratDescription: 'Guided Ziyarat tour of holy sites including: Mount Uhud, Quba Mosque, Cave of Hira, and more.'
+    ziyaratDescription: 'Guided Ziyarat tour of holy sites including: Mount Uhud, Quba Mosque, Cave of Hira, and more.',
+    // Custom airport fields
+    customOriginName: '',
+    customOriginCity: '',
+    customDestinationName: '',
+    customDestinationCity: '',
   });
 
   const handleChange = (e) => {
@@ -161,18 +232,40 @@ export default function AdminUmrahCreatePackage() {
   };
 
   const handleOriginChange = (code) => {
+    if (code === 'CUSTOM') {
+      setFormData(prev => ({
+        ...prev,
+        origin: { airportCode: 'CUSTOM', city: '', country: '' }
+      }));
+      return;
+    }
     const airport = AIRPORTS.find(a => a.code === code);
     setFormData(prev => ({
       ...prev,
-      origin: { airportCode: code, city: airport?.city || '' }
+      origin: { 
+        airportCode: code, 
+        city: airport?.city || '', 
+        country: airport?.country || '' 
+      }
     }));
   };
 
   const handleDestinationChange = (code) => {
+    if (code === 'CUSTOM') {
+      setFormData(prev => ({
+        ...prev,
+        destination: { airportCode: 'CUSTOM', city: '', country: '' }
+      }));
+      return;
+    }
     const airport = AIRPORTS.find(a => a.code === code);
     setFormData(prev => ({
       ...prev,
-      destination: { airportCode: code, city: airport?.city || '' }
+      destination: { 
+        airportCode: code, 
+        city: airport?.city || '', 
+        country: airport?.country || '' 
+      }
     }));
   };
 
@@ -180,10 +273,20 @@ export default function AdminUmrahCreatePackage() {
     const errors = {};
 
     if (!formData.packageName.trim()) errors.packageName = 'Package name is required';
-    if (!formData.airline.trim()) errors.airline = 'Airline name is required'; // ✨ Updated validation
+    if (!formData.airline.trim()) errors.airline = 'Airline name is required';
     if (!formData.flightNumber.trim()) errors.flightNumber = 'Flight number is required';
+    
+    // Check for custom or valid airport code
     if (!formData.origin.airportCode) errors['origin.airportCode'] = 'Origin airport is required';
+    if (formData.origin.airportCode === 'CUSTOM' && !formData.customOriginCity.trim()) {
+      errors['origin.customCity'] = 'Custom origin city is required';
+    }
+    
     if (!formData.destination.airportCode) errors['destination.airportCode'] = 'Destination airport is required';
+    if (formData.destination.airportCode === 'CUSTOM' && !formData.customDestinationCity.trim()) {
+      errors['destination.customCity'] = 'Custom destination city is required';
+    }
+    
     if (!formData.departureDate) errors.departureDate = 'Departure date is required';
     if (!formData.arrivalDate) errors.arrivalDate = 'Arrival date is required';
     if (!formData.returnDate) errors.returnDate = 'Return date is required';
@@ -209,13 +312,42 @@ export default function AdminUmrahCreatePackage() {
     setError('');
 
     try {
+      // Build origin with custom fields if needed
+      let origin = { ...formData.origin };
+      let destination = { ...formData.destination };
+      
+      if (formData.origin.airportCode === 'CUSTOM') {
+        origin = {
+          airportCode: 'CUSTOM',
+          city: formData.customOriginCity || 'Custom City',
+          country: 'Custom',
+          airportName: formData.customOriginName || formData.customOriginCity || 'Custom Airport'
+        };
+      }
+      
+      if (formData.destination.airportCode === 'CUSTOM') {
+        destination = {
+          airportCode: 'CUSTOM',
+          city: formData.customDestinationCity || 'Custom City',
+          country: 'Custom',
+          airportName: formData.customDestinationName || formData.customDestinationCity || 'Custom Airport'
+        };
+      }
+
       const payload = {
         ...formData,
+        origin,
+        destination,
         departureDate: new Date(formData.departureDate).toISOString(),
         arrivalDate: new Date(formData.arrivalDate).toISOString(),
         returnDate: new Date(formData.returnDate).toISOString(),
         returnArrivalDate: new Date(formData.returnArrivalDate).toISOString(),
         totalSeats: parseInt(formData.totalSeats) || 0,
+        baggageAllowance: {
+          departure: formData.baggageAllowance.departure || '23 KG',
+          arrival: formData.baggageAllowance.arrival || '46 KG',
+          return: formData.baggageAllowance.return || '', // âœ¨ NEW: Return baggage
+        },
         makkahHotel: {
           name: formData.makkahHotel.name,
           distance: formData.makkahHotel.distance || '',
@@ -332,7 +464,6 @@ export default function AdminUmrahCreatePackage() {
         <div className="form-section">
           <h3>Flight Details</h3>
           <div className="form-row">
-            {/* ✨ UPDATED: Airline - Now a text input instead of dropdown */}
             <div className="field-group">
               <label>Airline *</label>
               <input
@@ -378,13 +509,15 @@ export default function AdminUmrahCreatePackage() {
             <div className="field-group">
               <label>Origin *</label>
               <select
-                value={formData.origin.airportCode}
+                value={formData.origin.airportCode || ''}
                 onChange={(e) => handleOriginChange(e.target.value)}
                 className={validationErrors['origin.airportCode'] ? 'error' : ''}
               >
                 <option value="">Select Origin</option>
                 {AIRPORTS.map(a => (
-                  <option key={a.code} value={a.code}>{a.code} - {a.city}</option>
+                  <option key={a.code} value={a.code}>
+                    {a.code} - {a.city}, {a.country}
+                  </option>
                 ))}
               </select>
               {validationErrors['origin.airportCode'] && (
@@ -394,13 +527,15 @@ export default function AdminUmrahCreatePackage() {
             <div className="field-group">
               <label>Destination *</label>
               <select
-                value={formData.destination.airportCode}
+                value={formData.destination.airportCode || ''}
                 onChange={(e) => handleDestinationChange(e.target.value)}
                 className={validationErrors['destination.airportCode'] ? 'error' : ''}
               >
                 <option value="">Select Destination</option>
                 {AIRPORTS.map(a => (
-                  <option key={a.code} value={a.code}>{a.code} - {a.city}</option>
+                  <option key={a.code} value={a.code}>
+                    {a.code} - {a.city}, {a.country}
+                  </option>
                 ))}
               </select>
               {validationErrors['destination.airportCode'] && (
@@ -408,6 +543,81 @@ export default function AdminUmrahCreatePackage() {
               )}
             </div>
           </div>
+
+          {/* Custom Airport Inputs */}
+          {formData.origin.airportCode === 'CUSTOM' && (
+            <div className="form-row">
+              <div className="field-group">
+                <label>Custom Origin Airport Name</label>
+                <input
+                  type="text"
+                  value={formData.customOriginName}
+                  onChange={(e) => {
+                    setFormData(prev => ({
+                      ...prev,
+                      customOriginName: e.target.value
+                    }));
+                  }}
+                  placeholder="e.g., King Khalid International Airport"
+                />
+              </div>
+              <div className="field-group">
+                <label>Custom Origin City *</label>
+                <input
+                  type="text"
+                  value={formData.customOriginCity}
+                  onChange={(e) => {
+                    setFormData(prev => ({
+                      ...prev,
+                      customOriginCity: e.target.value
+                    }));
+                  }}
+                  placeholder="e.g., Riyadh"
+                  className={validationErrors['origin.customCity'] ? 'error' : ''}
+                />
+                {validationErrors['origin.customCity'] && (
+                  <span className="error-text">{validationErrors['origin.customCity']}</span>
+                )}
+              </div>
+            </div>
+          )}
+
+          {formData.destination.airportCode === 'CUSTOM' && (
+            <div className="form-row">
+              <div className="field-group">
+                <label>Custom Destination Airport Name</label>
+                <input
+                  type="text"
+                  value={formData.customDestinationName}
+                  onChange={(e) => {
+                    setFormData(prev => ({
+                      ...prev,
+                      customDestinationName: e.target.value
+                    }));
+                  }}
+                  placeholder="e.g., Prince Mohammad bin Abdulaziz International Airport"
+                />
+              </div>
+              <div className="field-group">
+                <label>Custom Destination City *</label>
+                <input
+                  type="text"
+                  value={formData.customDestinationCity}
+                  onChange={(e) => {
+                    setFormData(prev => ({
+                      ...prev,
+                      customDestinationCity: e.target.value
+                    }));
+                  }}
+                  placeholder="e.g., Madinah"
+                  className={validationErrors['destination.customCity'] ? 'error' : ''}
+                />
+                {validationErrors['destination.customCity'] && (
+                  <span className="error-text">{validationErrors['destination.customCity']}</span>
+                )}
+              </div>
+            </div>
+          )}
 
           <div className="form-row">
             <div className="field-group">
@@ -537,6 +747,7 @@ export default function AdminUmrahCreatePackage() {
             </div>
           </div>
 
+          {/* Baggage Section with Return Baggage */}
           <div className="form-row">
             <div className="field-group">
               <label>Baggage - Departure</label>
@@ -557,6 +768,19 @@ export default function AdminUmrahCreatePackage() {
                 onChange={handleChange}
                 placeholder="e.g., 46 KG"
               />
+            </div>
+            <div className="field-group">
+              <label>Return Baggage</label>
+              <input
+                type="text"
+                name="baggageAllowance.return"
+                value={formData.baggageAllowance.return || ''}
+                onChange={handleChange}
+                placeholder="e.g., 30 KG"
+              />
+              <span className="field-helper" style={{ fontSize: '11px', color: '#94a3b8' }}>
+                Baggage allowance for the return journey
+              </span>
             </div>
           </div>
         </div>

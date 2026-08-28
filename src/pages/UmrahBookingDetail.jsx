@@ -51,7 +51,7 @@ export default function UmrahBookingDetail() {
   };
 
   const getRoomLabel = (type) => {
-    const map = { quad: 'Quad Sharing', triple: 'Triple Sharing', double: 'Double Sharing' };
+    const map = { quad: 'Quad Sharing', triple: 'Triple Sharing', double: 'Double Sharing', single: 'Single', sharing: 'Sharing' };
     return map[type] || type || 'N/A';
   };
 
@@ -148,6 +148,13 @@ export default function UmrahBookingDetail() {
 
   const canCancel = ['pending', 'confirmed'].includes(booking.status);
   const isCancelled = booking.status === 'cancelled';
+  
+  // Check if origin/destination are custom
+  const isOriginCustom = booking.package?.origin?.airportCode === 'CUSTOM' || 
+    (booking.package?.origin?.airportCode && !['JED', 'RUH', 'DMM', 'MED', 'TIF', 'AHB', 'GIZ', 'HOF', 'TUU', 'EJN', 'ELQ', 'HBT', 'RAE', 'URY', 'YNB', 'AQI', 'NQS', 'DHA', 'ISB', 'LHE', 'KHI', 'PEW', 'MUX', 'SKT', 'UET', 'LYP', 'GWD', 'RYK', 'KDU', 'GIL', 'CJL', 'DSK', 'PAJ', 'DBA', 'SGI', 'MWD', 'ZIA', 'DXB', 'AUH', 'SHJ', 'RKT', 'DOH', 'BAH', 'KWI', 'MCT', 'SLL', 'IST', 'SAW', 'ANK', 'LHR', 'LGW', 'MAN', 'BHX', 'JFK', 'LAX', 'ORD', 'IAH', 'CDG', 'FRA', 'AMS', 'SIN', 'KUL', 'BKK', 'NRT', 'ICN', 'HKG', 'BEY', 'AMM', 'CAI', 'JNB'].includes(booking.package?.origin?.airportCode));
+  
+  const isDestCustom = booking.package?.destination?.airportCode === 'CUSTOM' || 
+    (booking.package?.destination?.airportCode && !['JED', 'RUH', 'DMM', 'MED', 'TIF', 'AHB', 'GIZ', 'HOF', 'TUU', 'EJN', 'ELQ', 'HBT', 'RAE', 'URY', 'YNB', 'AQI', 'NQS', 'DHA', 'ISB', 'LHE', 'KHI', 'PEW', 'MUX', 'SKT', 'UET', 'LYP', 'GWD', 'RYK', 'KDU', 'GIL', 'CJL', 'DSK', 'PAJ', 'DBA', 'SGI', 'MWD', 'ZIA', 'DXB', 'AUH', 'SHJ', 'RKT', 'DOH', 'BAH', 'KWI', 'MCT', 'SLL', 'IST', 'SAW', 'ANK', 'LHR', 'LGW', 'MAN', 'BHX', 'JFK', 'LAX', 'ORD', 'IAH', 'CDG', 'FRA', 'AMS', 'SIN', 'KUL', 'BKK', 'NRT', 'ICN', 'HKG', 'BEY', 'AMM', 'CAI', 'JNB'].includes(booking.package?.destination?.airportCode));
 
   return (
     <div className="umrah-booking-detail-wrapper">
@@ -188,13 +195,21 @@ export default function UmrahBookingDetail() {
             </div>
             <div className="package-route">
               <div className="route-point">
-                <span className="code">{booking.package?.origin?.airportCode || 'N/A'}</span>
-                <span className="city">{booking.package?.origin?.city || 'N/A'}</span>
+                <span className="code">
+                  {isOriginCustom ? '✈️' : (booking.package?.origin?.airportCode || 'N/A')}
+                </span>
+                <span className="city">
+                  {isOriginCustom ? booking.package?.origin?.city || 'Custom' : (booking.package?.origin?.city || 'N/A')}
+                </span>
               </div>
               <span className="arrow">→</span>
               <div className="route-point">
-                <span className="code">{booking.package?.destination?.airportCode || 'N/A'}</span>
-                <span className="city">{booking.package?.destination?.city || 'N/A'}</span>
+                <span className="code">
+                  {isDestCustom ? '✈️' : (booking.package?.destination?.airportCode || 'N/A')}
+                </span>
+                <span className="city">
+                  {isDestCustom ? booking.package?.destination?.city || 'Custom' : (booking.package?.destination?.city || 'N/A')}
+                </span>
               </div>
             </div>
             <div className="package-dates">
@@ -211,6 +226,32 @@ export default function UmrahBookingDetail() {
                 <span className="value">{booking.package?.duration || 0} Days</span>
               </div>
             </div>
+
+            {/* ✨ Baggage Information */}
+            {(booking.package?.baggageAllowance?.departure || 
+              booking.package?.baggageAllowance?.arrival || 
+              booking.package?.baggageAllowance?.return) && (
+              <div className="package-baggage">
+                <span className="baggage-label">Baggage Allowance</span>
+                <div className="baggage-items">
+                  {booking.package?.baggageAllowance?.departure && (
+                    <span className="baggage-item">
+                      🛫 Departure: {booking.package.baggageAllowance.departure}
+                    </span>
+                  )}
+                  {booking.package?.baggageAllowance?.arrival && (
+                    <span className="baggage-item">
+                      🛬 Arrival: {booking.package.baggageAllowance.arrival}
+                    </span>
+                  )}
+                  {booking.package?.baggageAllowance?.return && (
+                    <span className="baggage-item return-baggage">
+                      🔄 Return: {booking.package.baggageAllowance.return}
+                    </span>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -226,6 +267,16 @@ export default function UmrahBookingDetail() {
                 <span>{booking.package?.makkahHotel?.nights || 0} Nights</span>
               </div>
             </div>
+            {booking.package?.makkahReturnHotel?.name && (
+              <div className="hotel-card">
+                <div className="hotel-city">🕋 Makkah (Return)</div>
+                <div className="hotel-name">{booking.package.makkahReturnHotel.name}</div>
+                <div className="hotel-detail">
+                  <span>{booking.package.makkahReturnHotel.distance || ''}</span>
+                  <span>{booking.package.makkahReturnHotel.nights || 0} Nights</span>
+                </div>
+              </div>
+            )}
             <div className="hotel-card">
               <div className="hotel-city">🕌 Madinah</div>
               <div className="hotel-name">{booking.package?.madinahHotel?.name || 'N/A'}</div>
@@ -300,6 +351,21 @@ export default function UmrahBookingDetail() {
             </table>
           </div>
         </div>
+
+        {/* Ziyarat Details */}
+        {booking.ziyaratEnabled && (
+          <div className="detail-section ziyarat-section">
+            <h2>🕌 Ziyarat Package</h2>
+            <div className="ziyarat-info">
+              <p style={{ fontWeight: '600', color: 'var(--umrah-gold)' }}>
+                + {money(booking.ziyaratPrice || 0, booking.pricing?.currency || 'PKR')}
+              </p>
+              <p style={{ color: 'var(--umrah-text-secondary)', marginTop: '4px' }}>
+                Guided Ziyarat tour included
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Customer Details */}
         <div className="detail-section customer-section">

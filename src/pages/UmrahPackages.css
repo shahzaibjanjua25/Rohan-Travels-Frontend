@@ -620,6 +620,7 @@
     from {
         background-position: 100% 0;
     }
+
     to {
         background-position: 0 0;
     }
@@ -807,6 +808,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+
     .pkg-card,
     .pkg-book,
     .pkg-book svg,
@@ -1090,5 +1092,81 @@
 
     .umrah-wrapper :focus-visible {
         outline-color: var(--navy);
+    }
+}
+
+/* Add to UmrahPackages.css - Baggage Display Styles */
+
+/* ============================================
+   BAGGAGE DISPLAY
+   ============================================ */
+
+.pkg-baggage {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--line);
+}
+
+.baggage-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 12px;
+    margin-top: 4px;
+}
+
+.baggage-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--ink-light);
+    background: var(--page);
+    padding: 2px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--line);
+}
+
+.baggage-item.baggage-return {
+    background: var(--gold-soft);
+    border-color: var(--gold);
+    color: var(--gold-strong);
+}
+
+@media (prefers-color-scheme: dark) {
+    .baggage-item {
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--ink-muted);
+        border-color: var(--line);
+    }
+
+    .baggage-item.baggage-return {
+        background: rgba(255, 161, 11, 0.1);
+        border-color: var(--gold);
+        color: var(--gold);
+    }
+}
+
+/* Custom Airport indicator */
+.pkg-code.custom-airport {
+    font-size: 1.2rem;
+    color: var(--gold);
+}
+
+.pkg-city.custom-city {
+    font-style: italic;
+    color: var(--gold-strong);
+}
+
+/* Responsive adjustments */
+@media (max-width: 560px) {
+    .baggage-details {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .baggage-item {
+        font-size: 0.7rem;
+        padding: 2px 8px;
     }
 }

@@ -72,6 +72,7 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -456,6 +457,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
+
   .field-group input:focus,
   .field-group select:focus,
   .field-group textarea:focus {
@@ -526,7 +528,7 @@
     background: rgba(255, 161, 11, 0.06);
     border-left-color: var(--umrah-gold);
   }
-  
+
   .booking-note p {
     color: var(--umrah-text-secondary);
   }
@@ -577,7 +579,7 @@
   .btn--primary {
     background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
   }
-  
+
   .btn--primary:hover {
     box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
   }
@@ -733,11 +735,11 @@
   .umrah-booking-wrapper {
     padding: 0.75rem;
   }
-  
+
   .umrah-booking-form {
     padding: 1rem;
   }
-  
+
   .passenger-fields {
     grid-template-columns: 1fr;
   }
@@ -758,17 +760,17 @@
   .summary-route .arrow {
     transform: rotate(90deg);
   }
-  
+
   .flight-details-summary {
     grid-template-columns: 1fr 1fr;
     gap: 4px;
     padding: 8px 0;
   }
-  
+
   .flight-detail-item .value {
     font-size: 0.8rem;
   }
-  
+
   .flight-detail-item .time-value {
     font-size: 0.7rem;
   }
@@ -800,7 +802,7 @@
   .umrah-booking-wrapper::-webkit-scrollbar-thumb {
     background: #818cf8;
   }
-  
+
   .umrah-booking-wrapper::-webkit-scrollbar-thumb:hover {
     background: #a78bfa;
   }
@@ -842,5 +844,68 @@
   .flight-details-summary {
     border-top-color: #ddd !important;
     border-bottom-color: #ddd !important;
+  }
+}
+
+/* Add to UmrahBookingForm.css */
+
+/* ============================================
+   BAGGAGE DISPLAY IN SUMMARY
+   ============================================ */
+
+.summary-baggage {
+  padding-top: 12px;
+  border-top: 1px solid var(--umrah-border);
+  margin-top: 8px;
+}
+
+.summary-baggage .baggage-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--umrah-text-muted);
+  margin-bottom: 6px;
+}
+
+.summary-baggage .baggage-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.summary-baggage .baggage-item {
+  font-size: 0.75rem;
+  padding: 2px 10px;
+  background: var(--umrah-bg-tertiary);
+  border-radius: 4px;
+  border: 1px solid var(--umrah-border);
+  color: var(--umrah-text-secondary);
+}
+
+.summary-baggage .baggage-item.return-baggage {
+  background: var(--umrah-gold-soft);
+  border-color: var(--umrah-gold);
+  color: var(--umrah-gold-strong);
+  font-weight: 600;
+}
+
+@media (prefers-color-scheme: dark) {
+  .summary-baggage .baggage-item {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--umrah-border);
+    color: var(--umrah-text-muted);
+  }
+
+  .summary-baggage .baggage-item.return-baggage {
+    background: rgba(255, 161, 11, 0.1);
+    border-color: var(--umrah-gold);
+    color: var(--umrah-gold);
+  }
+}
+
+@media (max-width: 480px) {
+  .summary-baggage .baggage-items {
+    flex-direction: column;
+    gap: 4px;
   }
 }

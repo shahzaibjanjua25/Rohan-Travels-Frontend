@@ -94,7 +94,6 @@ export default function UmrahPackages() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     
-    // Initialize filters from URL params
     const [filters, setFilters] = useState({
         departureDate: searchParams.get('departureDate') || '',
         airline: searchParams.get('airline') || '',
@@ -103,7 +102,6 @@ export default function UmrahPackages() {
         maxPrice: searchParams.get('maxPrice') || '',
     });
 
-    // Load packages when search params change
     useEffect(() => {
         let cancelled = false;
 
@@ -111,15 +109,12 @@ export default function UmrahPackages() {
             setLoading(true);
             setError('');
             try {
-                // Build params from searchParams
                 const params = {};
                 for (const [key, value] of searchParams.entries()) {
                     if (value && value !== '') {
                         params[key] = value;
                     }
                 }
-
-                // Add default limit
                 params.limit = 20;
 
                 const response = await umrahService.getPackages(params);
@@ -146,7 +141,6 @@ export default function UmrahPackages() {
         };
     }, [searchParams]);
 
-    // Sync filters when URL params change
     useEffect(() => {
         setFilters({
             departureDate: searchParams.get('departureDate') || '',
@@ -281,7 +275,6 @@ export default function UmrahPackages() {
 
             {error && <Alert kind="error">{error}</Alert>}
 
-            {/* Show search info */}
             {!loading && !error && (
                 <div className="umrah-search-info">
                     {hasActiveFilters ? (
@@ -321,6 +314,12 @@ export default function UmrahPackages() {
                         const price = lowestPrice(pkg);
                         const bookHref = `/umrah/packages/${pkg._id}/book`;
 
+                        // Check if origin/destination are custom
+                        const isOriginCustom = pkg.origin?.airportCode === 'CUSTOM' || 
+                            (pkg.origin?.airportCode && !AIRLINE_MARKS[pkg.origin?.airportCode]);
+                        const isDestCustom = pkg.destination?.airportCode === 'CUSTOM' || 
+                            (pkg.destination?.airportCode && !AIRLINE_MARKS[pkg.destination?.airportCode]);
+
                         return (
                             <article key={pkg._id} className="pkg-card">
                                 {pkg.isFeatured && <p className="pkg-flag">⭐ Featured</p>}
@@ -345,14 +344,22 @@ export default function UmrahPackages() {
 
                                 <div className="pkg-route">
                                     <div className="pkg-port">
-                                        <span className="pkg-code">{pkg.origin?.airportCode || '—'}</span>
-                                        <span className="pkg-city">{pkg.origin?.city || 'Origin TBC'}</span>
+                                        <span className="pkg-code">
+                                            {isOriginCustom ? '✈️' : (pkg.origin?.airportCode || '—')}
+                                        </span>
+                                        <span className="pkg-city">
+                                            {isOriginCustom ? pkg.origin?.city || 'Custom' : (pkg.origin?.city || 'Origin TBC')}
+                                        </span>
                                         <span className="pkg-when">{date(pkg.departureDate)}</span>
                                     </div>
                                     <PlaneRail duration={pkg.duration} />
                                     <div className="pkg-port pkg-port--end">
-                                        <span className="pkg-code">{pkg.destination?.airportCode || '—'}</span>
-                                        <span className="pkg-city">{pkg.destination?.city || 'Destination TBC'}</span>
+                                        <span className="pkg-code">
+                                            {isDestCustom ? '✈️' : (pkg.destination?.airportCode || '—')}
+                                        </span>
+                                        <span className="pkg-city">
+                                            {isDestCustom ? pkg.destination?.city || 'Custom' : (pkg.destination?.city || 'Destination TBC')}
+                                        </span>
                                         <span className="pkg-when">{date(pkg.returnDate)}</span>
                                     </div>
                                 </div>
@@ -392,7 +399,6 @@ export default function UmrahPackages() {
                                     <p className="pkg-price-eyebrow">From, per person</p>
                                     <p className="pkg-price-amount">{money(price)}</p>
 
-                                    {/* ✨ UPDATED: Show all sharing prices including single and sharing */}
                                     {(pkg.sharingPrices?.single > 0 ||
                                         pkg.sharingPrices?.double > 0 ||
                                         pkg.sharingPrices?.triple > 0 ||
@@ -439,6 +445,30 @@ export default function UmrahPackages() {
                                             )}
                                             {pkg.infantPrice > 0 && <span>Infant {money(pkg.infantPrice)}</span>}
                                         </p>
+                                    )}
+
+                                    {/* âœ¨ NEW: Show Baggage Information */}
+                                    {(pkg.baggageAllowance?.departure || pkg.baggageAllowance?.arrival || pkg.baggageAllowance?.return) && (
+                                        <div className="pkg-baggage">
+                                            <p className="pkg-price-eyebrow" style={{ marginTop: '8px' }}>Baggage Allowance</p>
+                                            <div className="baggage-details">
+                                                {pkg.baggageAllowance?.departure && (
+                                                    <span className="baggage-item">
+                                                        🛫 Departure: {pkg.baggageAllowance.departure}
+                                                    </span>
+                                                )}
+                                                {pkg.baggageAllowance?.arrival && (
+                                                    <span className="baggage-item">
+                                                        🛬 Arrival: {pkg.baggageAllowance.arrival}
+                                                    </span>
+                                                )}
+                                                {pkg.baggageAllowance?.return && (
+                                                    <span className="baggage-item baggage-return">
+                                                        🔄 Return: {pkg.baggageAllowance.return}
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </div>
                                     )}
                                 </div>
 

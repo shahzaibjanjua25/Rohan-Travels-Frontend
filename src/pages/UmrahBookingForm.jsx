@@ -34,8 +34,6 @@ export default function UmrahBookingForm() {
     passportNumber: ''
   });
   const [specialRequests, setSpecialRequests] = useState('');
-  
-  // ✨ NEW: Ziyarat state
   const [ziyaratEnabled, setZiyaratEnabled] = useState(false);
 
   useEffect(() => {
@@ -92,7 +90,6 @@ export default function UmrahBookingForm() {
     return prices[roomType] || packageData.perPersonPrice || 0;
   };
 
-  // ✨ UPDATED: Calculate total including Ziyarat
   const calculateTotal = () => {
     if (!packageData) return 0;
     const sharingPrice = getSharingPrice();
@@ -104,7 +101,6 @@ export default function UmrahBookingForm() {
     total += children * (packageData.childWithoutBedPrice || 0);
     total += infants * (packageData.infantPrice || 0);
     
-    // ✨ NEW: Add Ziyarat price if enabled
     if (ziyaratEnabled && packageData.ziyaratEnabled && packageData.ziyaratPrice > 0) {
       total += packageData.ziyaratPrice;
     }
@@ -168,7 +164,6 @@ export default function UmrahBookingForm() {
     });
   };
 
-  // ✨ UPDATED: Submit handler with ziyarat
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -187,7 +182,7 @@ export default function UmrahBookingForm() {
         })),
         customerDetails,
         specialRequests,
-        ziyaratEnabled: ziyaratEnabled || false  // ✨ NEW
+        ziyaratEnabled: ziyaratEnabled || false
       };
 
       const response = await umrahService.createBooking(payload);
@@ -256,6 +251,13 @@ export default function UmrahBookingForm() {
   const childCount = passengers.filter(p => p.type === 'child').length;
   const infantCount = passengers.filter(p => p.type === 'infant').length;
 
+  // Check if origin/destination are custom
+  const isOriginCustom = packageData.origin?.airportCode === 'CUSTOM' || 
+    (packageData.origin?.airportCode && !['JED', 'RUH', 'DMM', 'MED', 'TIF', 'AHB', 'GIZ', 'HOF', 'TUU', 'EJN', 'ELQ', 'HBT', 'RAE', 'URY', 'YNB', 'AQI', 'NQS', 'DHA', 'ISB', 'LHE', 'KHI', 'PEW', 'MUX', 'SKT', 'UET', 'LYP', 'GWD', 'RYK', 'KDU', 'GIL', 'CJL', 'DSK', 'PAJ', 'DBA', 'SGI', 'MWD', 'ZIA', 'DXB', 'AUH', 'SHJ', 'RKT', 'DOH', 'BAH', 'KWI', 'MCT', 'SLL', 'IST', 'SAW', 'ANK', 'LHR', 'LGW', 'MAN', 'BHX', 'JFK', 'LAX', 'ORD', 'IAH', 'CDG', 'FRA', 'AMS', 'SIN', 'KUL', 'BKK', 'NRT', 'ICN', 'HKG', 'BEY', 'AMM', 'CAI', 'JNB'].includes(packageData.origin?.airportCode));
+  
+  const isDestCustom = packageData.destination?.airportCode === 'CUSTOM' || 
+    (packageData.destination?.airportCode && !['JED', 'RUH', 'DMM', 'MED', 'TIF', 'AHB', 'GIZ', 'HOF', 'TUU', 'EJN', 'ELQ', 'HBT', 'RAE', 'URY', 'YNB', 'AQI', 'NQS', 'DHA', 'ISB', 'LHE', 'KHI', 'PEW', 'MUX', 'SKT', 'UET', 'LYP', 'GWD', 'RYK', 'KDU', 'GIL', 'CJL', 'DSK', 'PAJ', 'DBA', 'SGI', 'MWD', 'ZIA', 'DXB', 'AUH', 'SHJ', 'RKT', 'DOH', 'BAH', 'KWI', 'MCT', 'SLL', 'IST', 'SAW', 'ANK', 'LHR', 'LGW', 'MAN', 'BHX', 'JFK', 'LAX', 'ORD', 'IAH', 'CDG', 'FRA', 'AMS', 'SIN', 'KUL', 'BKK', 'NRT', 'ICN', 'HKG', 'BEY', 'AMM', 'CAI', 'JNB'].includes(packageData.destination?.airportCode));
+
   return (
     <div className="umrah-booking-wrapper">
       <Link to="/umrah" className="eyebrow" style={{ textDecoration: 'none' }}>
@@ -274,17 +276,25 @@ export default function UmrahBookingForm() {
 
             <div className="summary-route">
               <div className="route-point">
-                <span className="code">{packageData.origin?.airportCode || 'N/A'}</span>
-                <span className="city">{packageData.origin?.city || 'N/A'}</span>
+                <span className="code">
+                  {isOriginCustom ? '✈️' : (packageData.origin?.airportCode || 'N/A')}
+                </span>
+                <span className="city">
+                  {isOriginCustom ? packageData.origin?.city || 'Custom' : (packageData.origin?.city || 'N/A')}
+                </span>
               </div>
               <span className="arrow">→</span>
               <div className="route-point">
-                <span className="code">{packageData.destination?.airportCode || 'N/A'}</span>
-                <span className="city">{packageData.destination?.city || 'N/A'}</span>
+                <span className="code">
+                  {isDestCustom ? '✈️' : (packageData.destination?.airportCode || 'N/A')}
+                </span>
+                <span className="city">
+                  {isDestCustom ? packageData.destination?.city || 'Custom' : (packageData.destination?.city || 'N/A')}
+                </span>
               </div>
             </div>
 
-            {/* ✨ NEW: Flight Details with Date & Time */}
+            {/* Flight Details with Date & Time */}
             <div className="flight-details-summary">
               <div className="flight-detail-item">
                 <span className="label">Departure</span>
@@ -347,6 +357,32 @@ export default function UmrahBookingForm() {
               </div>
             </div>
 
+            {/* ✨ Baggage Information in Summary */}
+            {(packageData.baggageAllowance?.departure || 
+              packageData.baggageAllowance?.arrival || 
+              packageData.baggageAllowance?.return) && (
+              <div className="summary-baggage">
+                <p className="baggage-label">Baggage Allowance</p>
+                <div className="baggage-items">
+                  {packageData.baggageAllowance?.departure && (
+                    <span className="baggage-item">
+                      🛫 {packageData.baggageAllowance.departure}
+                    </span>
+                  )}
+                  {packageData.baggageAllowance?.arrival && (
+                    <span className="baggage-item">
+                      🛬 {packageData.baggageAllowance.arrival}
+                    </span>
+                  )}
+                  {packageData.baggageAllowance?.return && (
+                    <span className="baggage-item return-baggage">
+                      🔄 {packageData.baggageAllowance.return}
+                    </span>
+                  )}
+                </div>
+              </div>
+            )}
+
             <div className="summary-pricing">
               <div className="price-row">
                 <span>Per Person (Base)</span>
@@ -403,7 +439,7 @@ export default function UmrahBookingForm() {
           <form onSubmit={handleSubmit}>
             <h2>Complete Your Booking</h2>
 
-            {/* ✨ UPDATED: Room Type Selection with all options */}
+            {/* Room Type Selection */}
             <div className="form-section">
               <h3>Room Type</h3>
               <div className="room-options">
@@ -475,7 +511,7 @@ export default function UmrahBookingForm() {
               </div>
             </div>
 
-            {/* ✨ NEW: Ziyarat Package Option */}
+            {/* Ziyarat Package Option */}
             {packageData.ziyaratEnabled && packageData.ziyaratPrice > 0 && (
               <div className="form-section">
                 <h3>🕌 Ziyarat Package</h3>
@@ -685,7 +721,7 @@ export default function UmrahBookingForm() {
               </div>
             </div>
 
-            {/* ✨ UPDATED: Price Breakdown with Ziyarat */}
+            {/* Price Breakdown */}
             <div className="form-section price-breakdown">
               <h3>Price Breakdown</h3>
               <div className="breakdown-row">
@@ -704,7 +740,6 @@ export default function UmrahBookingForm() {
                   <span>{money(infantCount * (packageData.infantPrice || 0))}</span>
                 </div>
               )}
-              {/* ✨ NEW: Ziyarat row */}
               {ziyaratEnabled && packageData.ziyaratEnabled && packageData.ziyaratPrice > 0 && (
                 <div className="breakdown-row" style={{ color: '#0a2463', fontWeight: '600' }}>
                   <span>🕌 Ziyarat Package</span>

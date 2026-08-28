@@ -71,6 +71,7 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -336,7 +337,7 @@
     background: rgba(99, 102, 241, 0.1);
     border-color: #818cf8;
   }
-  
+
   .pricing-item.total .value {
     color: #818cf8;
   }
@@ -456,10 +457,21 @@
   flex-shrink: 0;
 }
 
-.status-dot--pending { background: var(--umrah-warning); }
-.status-dot--confirmed { background: var(--umrah-success); }
-.status-dot--cancelled { background: var(--umrah-danger); }
-.status-dot--completed { background: var(--umrah-info); }
+.status-dot--pending {
+  background: var(--umrah-warning);
+}
+
+.status-dot--confirmed {
+  background: var(--umrah-success);
+}
+
+.status-dot--cancelled {
+  background: var(--umrah-danger);
+}
+
+.status-dot--completed {
+  background: var(--umrah-info);
+}
 
 .history-status {
   font-weight: 600;
@@ -616,7 +628,7 @@
   .btn--primary {
     background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
   }
-  
+
   .btn--primary:hover {
     box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
   }
@@ -727,22 +739,22 @@
     background: rgba(245, 158, 11, 0.15);
     color: #fbbf24;
   }
-  
+
   .tag--success {
     background: rgba(16, 185, 129, 0.15);
     color: #6ee7b7;
   }
-  
+
   .tag--danger {
     background: rgba(239, 68, 68, 0.15);
     color: #fca5a5;
   }
-  
+
   .tag--info {
     background: rgba(59, 130, 246, 0.15);
     color: #93c5fd;
   }
-  
+
   .tag--secondary {
     background: var(--umrah-bg-tertiary);
     color: var(--umrah-text-secondary);
@@ -875,7 +887,7 @@
   .umrah-booking-detail-wrapper {
     padding: 0.75rem;
   }
-  
+
   .pricing-grid {
     grid-template-columns: 1fr;
   }
@@ -887,15 +899,15 @@
   .header-right {
     width: 100%;
   }
-  
+
   .detail-header {
     padding: 0.75rem 1rem;
   }
-  
+
   .detail-section {
     padding: 0.75rem 1rem;
   }
-  
+
   .detail-actions {
     padding: 0.75rem 1rem;
   }
@@ -927,7 +939,7 @@
   .umrah-booking-detail-wrapper::-webkit-scrollbar-thumb {
     background: #818cf8;
   }
-  
+
   .umrah-booking-detail-wrapper::-webkit-scrollbar-thumb:hover {
     background: #a78bfa;
   }
@@ -971,5 +983,74 @@
 
   .tag {
     border: 1px solid #ddd !important;
+  }
+}
+
+/* Add to UmrahBookingDetail.css */
+
+/* ============================================
+   BAGGAGE DISPLAY
+   ============================================ */
+
+.package-baggage {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--umrah-border);
+}
+
+.package-baggage .baggage-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--umrah-text-muted);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.package-baggage .baggage-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.baggage-item {
+  font-size: 0.8rem;
+  padding: 4px 12px;
+  background: var(--umrah-bg-tertiary);
+  border-radius: 6px;
+  border: 1px solid var(--umrah-border);
+  color: var(--umrah-text-secondary);
+}
+
+.baggage-item.return-baggage {
+  background: var(--umrah-gold-soft);
+  border-color: var(--umrah-gold);
+  color: var(--umrah-gold-strong);
+  font-weight: 600;
+}
+
+@media (prefers-color-scheme: dark) {
+  .baggage-item {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--umrah-border);
+    color: var(--umrah-text-muted);
+  }
+
+  .baggage-item.return-baggage {
+    background: rgba(255, 161, 11, 0.1);
+    border-color: var(--umrah-gold);
+    color: var(--umrah-gold);
+  }
+}
+
+@media (max-width: 480px) {
+  .package-baggage .baggage-items {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .baggage-item {
+    font-size: 0.75rem;
+    padding: 3px 10px;
   }
 }
