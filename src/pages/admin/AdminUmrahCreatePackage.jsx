@@ -52,45 +52,6 @@ const AIRPORTS = [
   { code: 'NQS', city: 'King Khalid Military City', country: 'Saudi Arabia' },
   { code: 'DHA', city: 'Dhahran', country: 'Saudi Arabia' },
   
-  // ===== UAE AIRPORTS =====
-  { code: 'DXB', city: 'Dubai', country: 'UAE' },
-  { code: 'AUH', city: 'Abu Dhabi', country: 'UAE' },
-  { code: 'SHJ', city: 'Sharjah', country: 'UAE' },
-  { code: 'RKT', city: 'Ras Al Khaimah', country: 'UAE' },
-  
-  // ===== GULF COOPERATION COUNCIL (GCC) =====
-  { code: 'DOH', city: 'Doha', country: 'Qatar' },
-  { code: 'BAH', city: 'Manama', country: 'Bahrain' },
-  { code: 'KWI', city: 'Kuwait City', country: 'Kuwait' },
-  { code: 'MCT', city: 'Muscat', country: 'Oman' },
-  { code: 'SLL', city: 'Salalah', country: 'Oman' },
-  
-  // ===== OTHER MAJOR INTERNATIONAL AIRPORTS =====
-  { code: 'IST', city: 'Istanbul', country: 'Turkey' },
-  { code: 'SAW', city: 'Istanbul', country: 'Turkey' },
-  { code: 'ANK', city: 'Ankara', country: 'Turkey' },
-  { code: 'LHR', city: 'London', country: 'UK' },
-  { code: 'LGW', city: 'London', country: 'UK' },
-  { code: 'MAN', city: 'Manchester', country: 'UK' },
-  { code: 'BHX', city: 'Birmingham', country: 'UK' },
-  { code: 'JFK', city: 'New York', country: 'USA' },
-  { code: 'LAX', city: 'Los Angeles', country: 'USA' },
-  { code: 'ORD', city: 'Chicago', country: 'USA' },
-  { code: 'IAH', city: 'Houston', country: 'USA' },
-  { code: 'CDG', city: 'Paris', country: 'France' },
-  { code: 'FRA', city: 'Frankfurt', country: 'Germany' },
-  { code: 'AMS', city: 'Amsterdam', country: 'Netherlands' },
-  { code: 'SIN', city: 'Singapore', country: 'Singapore' },
-  { code: 'KUL', city: 'Kuala Lumpur', country: 'Malaysia' },
-  { code: 'BKK', city: 'Bangkok', country: 'Thailand' },
-  { code: 'NRT', city: 'Tokyo', country: 'Japan' },
-  { code: 'ICN', city: 'Seoul', country: 'South Korea' },
-  { code: 'HKG', city: 'Hong Kong', country: 'Hong Kong' },
-  { code: 'BEY', city: 'Beirut', country: 'Lebanon' },
-  { code: 'AMM', city: 'Amman', country: 'Jordan' },
-  { code: 'CAI', city: 'Cairo', country: 'Egypt' },
-  { code: 'JNB', city: 'Johannesburg', country: 'South Africa' },
-  
   // ===== CUSTOM OPTION =====
   { code: 'CUSTOM', city: 'Custom Airport', country: 'Custom' },
 ];

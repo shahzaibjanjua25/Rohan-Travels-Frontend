@@ -11,6 +11,7 @@ import './AdminUmrahPackageForm.css';
 // COMPLETE AIRPORTS LIST (same as Create)
 // ============================================
 const AIRPORTS = [
+  // ===== PAKISTAN AIRPORTS =====
   { code: 'ISB', city: 'Islamabad', country: 'Pakistan' },
   { code: 'LHE', city: 'Lahore', country: 'Pakistan' },
   { code: 'KHI', city: 'Karachi', country: 'Pakistan' },
@@ -30,6 +31,8 @@ const AIRPORTS = [
   { code: 'SGI', city: 'Sargodha', country: 'Pakistan' },
   { code: 'MWD', city: 'Mianwali', country: 'Pakistan' },
   { code: 'ZIA', city: 'Zhob', country: 'Pakistan' },
+  
+  // ===== SAUDI ARABIA AIRPORTS (ALL) =====
   { code: 'JED', city: 'Jeddah', country: 'Saudi Arabia' },
   { code: 'RUH', city: 'Riyadh', country: 'Saudi Arabia' },
   { code: 'DMM', city: 'Dammam', country: 'Saudi Arabia' },
@@ -48,39 +51,8 @@ const AIRPORTS = [
   { code: 'AQI', city: 'Qaisumah', country: 'Saudi Arabia' },
   { code: 'NQS', city: 'King Khalid Military City', country: 'Saudi Arabia' },
   { code: 'DHA', city: 'Dhahran', country: 'Saudi Arabia' },
-  { code: 'DXB', city: 'Dubai', country: 'UAE' },
-  { code: 'AUH', city: 'Abu Dhabi', country: 'UAE' },
-  { code: 'SHJ', city: 'Sharjah', country: 'UAE' },
-  { code: 'RKT', city: 'Ras Al Khaimah', country: 'UAE' },
-  { code: 'DOH', city: 'Doha', country: 'Qatar' },
-  { code: 'BAH', city: 'Manama', country: 'Bahrain' },
-  { code: 'KWI', city: 'Kuwait City', country: 'Kuwait' },
-  { code: 'MCT', city: 'Muscat', country: 'Oman' },
-  { code: 'SLL', city: 'Salalah', country: 'Oman' },
-  { code: 'IST', city: 'Istanbul', country: 'Turkey' },
-  { code: 'SAW', city: 'Istanbul', country: 'Turkey' },
-  { code: 'ANK', city: 'Ankara', country: 'Turkey' },
-  { code: 'LHR', city: 'London', country: 'UK' },
-  { code: 'LGW', city: 'London', country: 'UK' },
-  { code: 'MAN', city: 'Manchester', country: 'UK' },
-  { code: 'BHX', city: 'Birmingham', country: 'UK' },
-  { code: 'JFK', city: 'New York', country: 'USA' },
-  { code: 'LAX', city: 'Los Angeles', country: 'USA' },
-  { code: 'ORD', city: 'Chicago', country: 'USA' },
-  { code: 'IAH', city: 'Houston', country: 'USA' },
-  { code: 'CDG', city: 'Paris', country: 'France' },
-  { code: 'FRA', city: 'Frankfurt', country: 'Germany' },
-  { code: 'AMS', city: 'Amsterdam', country: 'Netherlands' },
-  { code: 'SIN', city: 'Singapore', country: 'Singapore' },
-  { code: 'KUL', city: 'Kuala Lumpur', country: 'Malaysia' },
-  { code: 'BKK', city: 'Bangkok', country: 'Thailand' },
-  { code: 'NRT', city: 'Tokyo', country: 'Japan' },
-  { code: 'ICN', city: 'Seoul', country: 'South Korea' },
-  { code: 'HKG', city: 'Hong Kong', country: 'Hong Kong' },
-  { code: 'BEY', city: 'Beirut', country: 'Lebanon' },
-  { code: 'AMM', city: 'Amman', country: 'Jordan' },
-  { code: 'CAI', city: 'Cairo', country: 'Egypt' },
-  { code: 'JNB', city: 'Johannesburg', country: 'South Africa' },
+  
+  // ===== CUSTOM OPTION =====
   { code: 'CUSTOM', city: 'Custom Airport', country: 'Custom' },
 ];
 

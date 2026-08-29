@@ -69,19 +69,49 @@ export const INTERNATIONAL_AIRPORTS = [
   { code: 'PRG', city: 'Prague', name: 'Václav Havel Airport Prague', country: 'Czech Republic' },
   { code: 'BUD', city: 'Budapest', name: 'Budapest Ferenc Liszt International Airport', country: 'Hungary' },
 
-  // --- Middle East ---
+  // --- Middle East / Gulf (COMPLETE LIST) ---
+  // UAE
   { code: 'DXB', city: 'Dubai', name: 'Dubai International Airport', country: 'UAE' },
   { code: 'AUH', city: 'Abu Dhabi', name: 'Abu Dhabi International Airport', country: 'UAE' },
-  { code: 'DOH', city: 'Doha', name: 'Hamad International Airport', country: 'Qatar' },
-  { code: 'BAH', city: 'Manama', name: 'Bahrain International Airport', country: 'Bahrain' },
-  { code: 'KWI', city: 'Kuwait City', name: 'Kuwait International Airport', country: 'Kuwait' },
-  { code: 'MCT', city: 'Muscat', name: 'Muscat International Airport', country: 'Oman' },
-  { code: 'RUH', city: 'Riyadh', name: 'King Khalid International Airport', country: 'Saudi Arabia' },
+  { code: 'SHJ', city: 'Sharjah', name: 'Sharjah International Airport', country: 'UAE' },
+  { code: 'RKT', city: 'Ras Al Khaimah', name: 'Ras Al Khaimah International Airport', country: 'UAE' },
+
+  // Saudi Arabia (ALL airports)
   { code: 'JED', city: 'Jeddah', name: 'King Abdulaziz International Airport', country: 'Saudi Arabia' },
+  { code: 'RUH', city: 'Riyadh', name: 'King Khalid International Airport', country: 'Saudi Arabia' },
+  { code: 'DMM', city: 'Dammam', name: 'King Fahd International Airport', country: 'Saudi Arabia' },
   { code: 'MED', city: 'Madinah', name: 'Prince Mohammad bin Abdulaziz International Airport', country: 'Saudi Arabia' },
-  { code: 'AMM', city: 'Amman', name: 'Queen Alia International Airport', country: 'Jordan' },
+  { code: 'TIF', city: 'Taif', name: 'Taif International Airport', country: 'Saudi Arabia' },
+  { code: 'AHB', city: 'Abha', name: 'Abha International Airport', country: 'Saudi Arabia' },
+  { code: 'GIZ', city: 'Jazan', name: 'Jazan International Airport', country: 'Saudi Arabia' },
+  { code: 'HOF', city: 'Hofuf', name: 'Al-Ahsa International Airport', country: 'Saudi Arabia' },
+  { code: 'TUU', city: 'Tabuk', name: 'Tabuk Regional Airport', country: 'Saudi Arabia' },
+  { code: 'EJN', city: 'Al Ula', name: 'Al Ula International Airport', country: 'Saudi Arabia' },
+  { code: 'ELQ', city: 'Gassim', name: 'Gassim Regional Airport', country: 'Saudi Arabia' },
+  { code: 'HBT', city: 'Hail', name: 'Hail Regional Airport', country: 'Saudi Arabia' },
+  { code: 'RAE', city: 'Arar', name: 'Arar Domestic Airport', country: 'Saudi Arabia' },
+  { code: 'URY', city: 'Gurayat', name: 'Gurayat Domestic Airport', country: 'Saudi Arabia' },
+  { code: 'YNB', city: 'Yanbu', name: 'Yanbu International Airport', country: 'Saudi Arabia' },
+  { code: 'AQI', city: 'Qaisumah', name: 'Qaisumah Domestic Airport', country: 'Saudi Arabia' },
+  { code: 'NQS', city: 'King Khalid Military City', name: 'King Khalid Military City Airport', country: 'Saudi Arabia' },
+  { code: 'DHA', city: 'Dhahran', name: 'King Abdulaziz Air Base', country: 'Saudi Arabia' },
+
+  // Qatar
+  { code: 'DOH', city: 'Doha', name: 'Hamad International Airport', country: 'Qatar' },
+
+  // Oman
+  { code: 'MCT', city: 'Muscat', name: 'Muscat International Airport', country: 'Oman' },
+  { code: 'SLL', city: 'Salalah', name: 'Salalah International Airport', country: 'Oman' },
+
+  // Bahrain
+  { code: 'BAH', city: 'Manama', name: 'Bahrain International Airport', country: 'Bahrain' },
+
+  // Kuwait
+  { code: 'KWI', city: 'Kuwait City', name: 'Kuwait International Airport', country: 'Kuwait' },
+
+  // Other Middle East
   { code: 'BEY', city: 'Beirut', name: 'Beirut-Rafic Hariri International Airport', country: 'Lebanon' },
-  { code: 'TLV', city: 'Tel Aviv', name: 'Ben Gurion Airport', country: 'Israel' },
+  { code: 'AMM', city: 'Amman', name: 'Queen Alia International Airport', country: 'Jordan' },
 
   // --- South Asia ---
   { code: 'DEL', city: 'Delhi', name: 'Indira Gandhi International Airport', country: 'India' },

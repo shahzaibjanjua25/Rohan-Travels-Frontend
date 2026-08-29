@@ -112,7 +112,7 @@ export default function FlightForm({ initialData = null, isEdit = false }) {
       arrivalTime: '',
       returnSegment: { departureTime: '', arrivalTime: '', flightNumber: '', aircraft: '' },
       segments: [],
-      baggageAllowance: { cabinKg: 7, checkedKg: 23 },
+      baggageAllowance: { cabinKg: 7, checkedKg: 23, returnCheckedKg: 0 },
       price: 0,
       totalSeats: 0,
       availableSeats: 0,
@@ -151,6 +151,8 @@ export default function FlightForm({ initialData = null, isEdit = false }) {
       baggageAllowance: {
         cabinKg: initialData.baggageAllowance?.cabinKg ?? 7,
         checkedKg: initialData.baggageAllowance?.checkedKg ?? 23,
+        // ✨ NEW: Load returnCheckedKg from existing data
+        returnCheckedKg: initialData.baggageAllowance?.returnCheckedKg ?? 0,
       },
       price: initialData.cabins?.economy?.price ?? 0,
       totalSeats: initialData.cabins?.economy?.totalSeats ?? 0,
@@ -441,6 +443,8 @@ export default function FlightForm({ initialData = null, isEdit = false }) {
         baggageAllowance: {
           cabinKg: Number(formData.baggageAllowance.cabinKg) || 7,
           checkedKg: Number(formData.baggageAllowance.checkedKg) || 23,
+          // ✨ NEW: Include returnCheckedKg in payload
+          returnCheckedKg: Number(formData.baggageAllowance.returnCheckedKg) || 0,
         },
         isActive: formData.isActive,
       };
@@ -1061,10 +1065,15 @@ export default function FlightForm({ initialData = null, isEdit = false }) {
             </div>
           </section>
 
-          {/* ---------------------------------------------- Baggage */}
+          {/* ---------------------------------------------- Baggage ✨ UPDATED with Return */}
           <section className="form-section">
             <h3 className="form-section-title">Baggage Allowance (kg)</h3>
-            <div className="form-row form-row--2col">
+            <p className="faint" style={{ marginBottom: 'var(--s-3)' }}>
+              {isRoundTrip 
+                ? 'Set baggage allowances for the outbound and return legs. Leave return blank to use the same as departure.'
+                : 'Baggage allowance for the entire journey.'}
+            </p>
+            <div className={`form-row ${isRoundTrip ? 'form-row--3col' : 'form-row--2col'}`}>
               <div className="field-group">
                 <label className="field__label">Cabin Baggage</label>
                 <input
@@ -1074,10 +1083,12 @@ export default function FlightForm({ initialData = null, isEdit = false }) {
                   onChange={handleChange}
                   className="field"
                   min="0"
+                  step="1"
                 />
+                <span className="field-helper">Hand luggage per passenger</span>
               </div>
               <div className="field-group">
-                <label className="field__label">Checked Baggage</label>
+                <label className="field__label">Checked Baggage (Departure)</label>
                 <input
                   type="number"
                   name="baggageAllowance.checkedKg"
@@ -1085,8 +1096,28 @@ export default function FlightForm({ initialData = null, isEdit = false }) {
                   onChange={handleChange}
                   className="field"
                   min="0"
+                  step="1"
                 />
+                <span className="field-helper">Per passenger on outbound leg</span>
               </div>
+              {isRoundTrip && (
+                <div className="field-group">
+                  <label className="field__label">Return Checked Baggage</label>
+                  <input
+                    type="number"
+                    name="baggageAllowance.returnCheckedKg"
+                    value={formData.baggageAllowance.returnCheckedKg || ''}
+                    onChange={handleChange}
+                    className="field"
+                    min="0"
+                    step="1"
+                    placeholder="Same as departure"
+                  />
+                  <span className="field-helper">
+                    Per passenger on return leg {formData.baggageAllowance.returnCheckedKg ? `(${formData.baggageAllowance.returnCheckedKg} kg)` : '(uses departure value)'}
+                  </span>
+                </div>
+              )}
             </div>
           </section>
 
